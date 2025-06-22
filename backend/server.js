@@ -11,6 +11,10 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'index.html'));
+});
+
 // Serve static files from the parent directory
 app.use(express.static(path.join(__dirname, '..')));
 
@@ -102,7 +106,6 @@ app.post('/api/vote', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
 
 async function getAggregatedVotes() {
     const votesResult = await db.execute("SELECT * FROM city_votes");
