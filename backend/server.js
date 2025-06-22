@@ -3,212 +3,194 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const { db, initializeDatabase } = require('./db');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
 
-const cityData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'cities.json'), 'utf8'));
-const VOTES_FILE = path.join(__dirname, 'votes.json');
-const USER_VOTES_FILE = path.join(__dirname, 'user_votes.json');
-let votes = new Map();
-let userVotes = {};
+// Serve static files from the parent directory
+app.use(express.static(path.join(__dirname, '..')));
 
-// Загрузка голосов городов из файла
-function loadVotes() {
-    if (fs.existsSync(VOTES_FILE)) {
-        try {
-            const votesData = JSON.parse(fs.readFileSync(VOTES_FILE, 'utf8'));
-            votes = new Map(Object.entries(votesData));
-        } catch (e) {
-            votes = new Map();
-        }
-    } else {
-        votes = new Map();
+const cityDataPath = path.join(__dirname, '..', 'cities.json');
+const cityData = JSON.parse(fs.readFileSync(cityDataPath, 'utf8'));
+
+// Fisher-Yates shuffle algorithm
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+app.get('/api/cities', async (req, res) => {
+    const { userId } = req.query;
+
+    if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    try {
+        const votedCitiesResult = await db.execute({
+            sql: "SELECT city_id FROM user_votes WHERE user_id = ?",
+            args: [userId]
+        });
+
+        const votedCityIds = new Set(votedCitiesResult.rows.map(row => row.city_id));
+        
+        const unvotedCities = cityData.filter(city => !votedCityIds.has(city.cityId));
+        
+        const shuffledCities = shuffleArray(unvotedCities);
+        
+        res.json({
+            cities: shuffledCities,
+            votedCount: votedCityIds.size,
+            totalCount: cityData.length
+        });
+    } catch (error) {
+        console.error('Error fetching unvoted cities:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.post('/api/vote', async (req, res) => {
+    const { userId, cityId, voteType } = req.body;
+
+    if (!userId || !cityId || !voteType) {
+        return res.status(400).json({ error: 'Missing required fields' });
     }
     
-    // Инициализация голосов для новых городов
-    cityData.forEach(city => {
-        if (!votes.has(city.cityId)) {
-            votes.set(city.cityId, {
-                likes: 0,
-                dislikes: 0,
-                dont_know: 0
-            });
-        }
-    });
-}
-
-// Сохранение голосов городов в файл
-function saveVotes() {
-    const votesObject = Object.fromEntries(votes);
-    fs.writeFileSync(VOTES_FILE, JSON.stringify(votesObject, null, 2), 'utf8');
-}
-
-// Загрузка голосов пользователей из файла
-function loadUserVotes() {
-    if (fs.existsSync(USER_VOTES_FILE)) {
-        try {
-            userVotes = JSON.parse(fs.readFileSync(USER_VOTES_FILE, 'utf8'));
-        } catch (e) {
-            userVotes = {};
-        }
-    } else {
-        userVotes = {};
-    }
-}
-
-// Сохранение голосов пользователей в файл
-function saveUserVotes() {
-    fs.writeFileSync(USER_VOTES_FILE, JSON.stringify(userVotes, null, 2), 'utf8');
-}
-
-// Загружаем данные при запуске
-loadVotes();
-loadUserVotes();
-
-// Vote endpoint - now uses cityId and userId
-app.post('/api/vote', (req, res) => {
-    const { cityId, voteType, userId } = req.body;
-    if (!cityId || !voteType || !userId) {
-        return res.status(400).json({ error: 'Missing cityId, voteType or userId' });
-    }
     const city = cityData.find(c => c.cityId === cityId);
     if (!city) {
         return res.status(404).json({ error: 'City not found' });
     }
-    // Проверка: голосовал ли уже пользователь за этот город
-    if (!userVotes[userId]) userVotes[userId] = [];
-    if (userVotes[userId].includes(cityId)) {
-        return res.status(403).json({ error: 'User already voted for this city' });
-    }
-    const voteData = votes.get(cityId);
-    if (!voteData) {
-        votes.set(cityId, { likes: 0, dislikes: 0, dont_know: 0 });
-    }
-    if (voteType === 'liked') {
-        votes.get(cityId).likes++;
-    } else if (voteType === 'disliked') {
-        votes.get(cityId).dislikes++;
-    } else if (voteType === 'dont_know') {
-        votes.get(cityId).dont_know++;
-    } else {
-        return res.status(400).json({ error: 'Invalid vote type' });
-    }
-    // Записываем, что пользователь проголосовал за этот город
-    userVotes[userId].push(cityId);
-    
-    // Сохраняем голоса в файлы
-    saveVotes();
-    saveUserVotes();
-    
-    console.log(`Vote recorded for ${city.name} by user ${userId}: ${voteType}. New score: L ${votes.get(cityId).likes} / D ${votes.get(cityId).dislikes} / DK ${votes.get(cityId).dont_know}`);
-    res.json({ success: true });
-});
 
-app.get('/api/rankings', (req, res) => {
-    const rankings = cityData.map(city => {
-        const voteData = votes.get(city.cityId);
-        const likes = voteData ? voteData.likes : 0;
-        const dislikes = voteData ? voteData.dislikes : 0;
-        const dont_know = voteData ? voteData.dont_know : 0;
-        
-        // Total votes excluding "dont_know" for rating calculation
-        const totalVotes = likes + dislikes;
-        
-        // Rating = likes / (likes + dislikes) - percentage of positive votes among people who visited
-        const rating = totalVotes > 0 ? likes / totalVotes : 0;
-        
-        // Popularity = (likes + dislikes) / (likes + dislikes + dont_know) - percentage of people who visited
-        const totalResponses = likes + dislikes + dont_know;
-        const popularity = totalResponses > 0 ? (likes + dislikes) / totalResponses : 0;
-        
-        return {
-            id: city.cityId,
-            name: city.name,
-            country: city.country,
-            flag: city.flag,
-            likes: likes,
-            dislikes: dislikes,
-            dont_know: dont_know,
-            rating: rating,
-            popularity: popularity,
-            totalVotes: totalVotes,
-            totalResponses: totalResponses
-        };
-    });
-    
-    // Sort by rating descending, then by popularity, then by total votes
-    rankings.sort((a, b) => {
-        if (a.rating !== b.rating) {
-            return b.rating - a.rating;
+    try {
+        // Check if user has already voted
+        const existingVote = await db.execute({
+            sql: "SELECT id FROM user_votes WHERE user_id = ? AND city_id = ?",
+            args: [userId, cityId]
+        });
+
+        if (existingVote.rows.length > 0) {
+            return res.status(409).json({ error: 'User has already voted for this city' });
         }
-        if (a.popularity !== b.popularity) {
-            return b.popularity - a.popularity;
-        }
-        return b.totalVotes - a.totalVotes;
-    });
-    
-    res.json(rankings);
-});
 
-// Hidden Jam Ratings endpoint - finds cities with high like percentage but low popularity
-app.get('/api/hidden-jam-ratings', (req, res) => {
-    const ratings = cityData.map(city => {
-        const voteData = votes.get(city.cityId);
-        const likes = voteData ? voteData.likes : 0;
-        const dislikes = voteData ? voteData.dislikes : 0;
-        const dont_know = voteData ? voteData.dont_know : 0;
-        
-        // Total votes excluding "dont_know" for rating calculation
-        const totalVotes = likes + dislikes;
-        
-        // Rating = likes / (likes + dislikes) - percentage of positive votes among people who visited
-        const rating = totalVotes > 0 ? likes / totalVotes : 0;
-        
-        // Popularity = (likes + dislikes) / (likes + dislikes + dont_know) - percentage of people who visited
-        const totalResponses = likes + dislikes + dont_know;
-        const popularity = totalResponses > 0 ? (likes + dislikes) / totalResponses : 0;
-        
-        // Hidden jam score: high rating but low popularity
-        const hiddenJamScore = rating * (1 - popularity);
-        
-        return {
-            id: city.cityId,
-            name: city.name,
-            country: city.country,
-            flag: city.flag,
-            likes: likes,
-            dislikes: dislikes,
-            dont_know: dont_know,
-            rating: rating,
-            popularity: popularity,
-            hiddenJamScore: hiddenJamScore,
-            totalVotes: totalVotes,
-            totalResponses: totalResponses
-        };
-    });
-    
-    // Filter cities with at least 1 vote and sort by hidden jam score
-    const filteredRatings = ratings.filter(city => city.totalVotes > 0);
-    filteredRatings.sort((a, b) => b.hiddenJamScore - a.hiddenJamScore);
-    
-    res.json(filteredRatings);
-});
+        // Record the new vote in the user_votes table
+        await db.execute({
+            sql: "INSERT INTO user_votes (user_id, city_id, vote_type) VALUES (?, ?, ?)",
+            args: [userId, cityId, voteType]
+        });
 
-// Get user's voted cities endpoint
-app.get('/api/user-votes/:userId', (req, res) => {
-    const { userId } = req.params;
-    if (!userId) {
-        return res.status(400).json({ error: 'Missing userId' });
+        // Update the aggregated votes in the city_votes table
+        const columnToIncrement = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
+        
+        await db.execute({
+            sql: `INSERT INTO city_votes (city_id, ${columnToIncrement}) VALUES (?, 1)
+                  ON CONFLICT(city_id) DO UPDATE SET ${columnToIncrement} = ${columnToIncrement} + 1`,
+            args: [cityId]
+        });
+        
+        console.log(`Vote recorded for ${city.name} by user ${userId}: ${voteType}`);
+        res.json({ success: true });
+
+    } catch (error) {
+        console.error('Error recording vote:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-    
-    const userVotedCities = userVotes[userId] || [];
-    res.json({ votedCities: userVotedCities });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+
+async function getAggregatedVotes() {
+    const votesResult = await db.execute("SELECT * FROM city_votes");
+    const votes = {};
+    for (const row of votesResult.rows) {
+        votes[row.city_id] = {
+            likes: row.likes,
+            dislikes: row.dislikes,
+            dont_know: row.dont_know,
+        };
+    }
+    return votes;
+}
+
+app.get('/api/rankings', async (req, res) => {
+    try {
+        const votes = await getAggregatedVotes();
+        const rankings = cityData.map(city => {
+            const cityVotes = votes[city.cityId] || { likes: 0, dislikes: 0, dont_know: 0 };
+            const { likes, dislikes, dont_know } = cityVotes;
+            
+            const totalVotes = likes + dislikes;
+            const rating = totalVotes > 0 ? (likes / totalVotes) : 0;
+            
+            const totalResponses = likes + dislikes + dont_know;
+            const popularity = totalResponses > 0 ? ((likes + dislikes) / totalResponses) : 0;
+            
+            return {
+                ...city,
+                ...cityVotes,
+                rating,
+                popularity,
+                totalVotes,
+                totalResponses
+            };
+        });
+        
+        rankings.sort((a, b) => {
+            if (a.rating !== b.rating) return b.rating - a.rating;
+            if (a.popularity !== b.popularity) return b.popularity - a.popularity;
+            return b.totalVotes - a.totalVotes;
+        });
+        
+        res.json(rankings);
+    } catch (error) {
+        console.error('Error fetching rankings:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.get('/api/hidden-jam-ratings', async (req, res) => {
+    try {
+        const votes = await getAggregatedVotes();
+        const ratings = cityData.map(city => {
+            const cityVotes = votes[city.cityId] || { likes: 0, dislikes: 0, dont_know: 0 };
+            const { likes, dislikes, dont_know } = cityVotes;
+            
+            const totalVotes = likes + dislikes;
+            const rating = totalVotes > 0 ? (likes / totalVotes) : 0;
+            
+            const totalResponses = likes + dislikes + dont_know;
+            const popularity = totalResponses > 0 ? ((likes + dislikes) / totalResponses) : 0;
+            
+            const hiddenJamScore = rating * (1 - popularity);
+            
+            return {
+                ...city,
+                ...cityVotes,
+                rating,
+                popularity,
+                hiddenJamScore,
+                totalVotes,
+                totalResponses
+            };
+        });
+        
+        const filteredRatings = ratings.filter(city => city.totalVotes > 0);
+        filteredRatings.sort((a, b) => b.hiddenJamScore - a.hiddenJamScore);
+        
+        res.json(filteredRatings);
+    } catch (error) {
+        console.error('Error fetching hidden jam ratings:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+initializeDatabase().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
 }); 
