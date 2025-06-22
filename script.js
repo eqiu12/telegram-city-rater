@@ -1,8 +1,15 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const tg = window.Telegram.WebApp;
-    tg.ready();
+document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация Telegram WebApp
+    if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.ready();
+        window.Telegram.WebApp.expand();
+        console.log('Telegram WebApp initialized');
+    }
 
-    const API_URL = 'http://localhost:3000';
+    // Автоматически определяем API URL в зависимости от окружения
+    const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+        ? 'http://localhost:3000' 
+        : 'https://telegram-city-rater-backend.onrender.com';
     let cities = [];
     let currentCityIndex = 0;
     let ratedCount = 0;
@@ -19,9 +26,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const ratingsList = document.getElementById('ratings-list');
     const closeRatingsBtn = document.getElementById('close-ratings-btn');
 
-    // Генерируем временный userId для тестирования
-    // В Telegram Mini App это будет получено из Telegram WebApp API
-    const userId = 'test_user_' + Math.random().toString(36).substr(2, 9);
+    // Получаем userId из Telegram WebApp API
+    // Если приложение запущено в Telegram, получаем реальный ID пользователя
+    // Если запущено локально или вне Telegram, используем fallback
+    let userId;
+    
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+        // Получаем реальный ID пользователя из Telegram
+        userId = window.Telegram.WebApp.initDataUnsafe.user.id.toString();
+        console.log('Telegram user ID:', userId);
+    } else {
+        // Fallback для локального тестирования или если приложение запущено вне Telegram
+        userId = 'local_user_' + Math.random().toString(36).substr(2, 9);
+        console.log('Using local user ID for testing:', userId);
+    }
 
     function setControlsEnabled(enabled) {
         likeBtn.disabled = !enabled;
