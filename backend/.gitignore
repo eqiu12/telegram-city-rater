@@ -1,5 +1,16 @@
+# JSON файлы с голосами (заменены на SQLite)
 user_votes.json
 votes.json
+
+# Node modules
 node_modules/
+
+# Environment variables
 .env
-*.log 
+
+# Logs
+*.log
+
+# Backup directories
+vote_backups/
+json_backups/ 
