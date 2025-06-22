@@ -1,4 +1,5 @@
 user_votes.json
+votes.json
 node_modules/
 .env
 *.log 

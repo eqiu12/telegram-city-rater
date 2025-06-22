@@ -11,18 +11,41 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const cityData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'cities.json'), 'utf8'));
-const votes = new Map();
+const VOTES_FILE = path.join(__dirname, 'votes.json');
 const USER_VOTES_FILE = path.join(__dirname, 'user_votes.json');
+let votes = new Map();
 let userVotes = {};
 
-// Initialize votes for all cities
-cityData.forEach(city => {
-    votes.set(city.cityId, {
-        likes: 0,
-        dislikes: 0,
-        dont_know: 0
+// Загрузка голосов городов из файла
+function loadVotes() {
+    if (fs.existsSync(VOTES_FILE)) {
+        try {
+            const votesData = JSON.parse(fs.readFileSync(VOTES_FILE, 'utf8'));
+            votes = new Map(Object.entries(votesData));
+        } catch (e) {
+            votes = new Map();
+        }
+    } else {
+        votes = new Map();
+    }
+    
+    // Инициализация голосов для новых городов
+    cityData.forEach(city => {
+        if (!votes.has(city.cityId)) {
+            votes.set(city.cityId, {
+                likes: 0,
+                dislikes: 0,
+                dont_know: 0
+            });
+        }
     });
-});
+}
+
+// Сохранение голосов городов в файл
+function saveVotes() {
+    const votesObject = Object.fromEntries(votes);
+    fs.writeFileSync(VOTES_FILE, JSON.stringify(votesObject, null, 2), 'utf8');
+}
 
 // Загрузка голосов пользователей из файла
 function loadUserVotes() {
@@ -42,6 +65,8 @@ function saveUserVotes() {
     fs.writeFileSync(USER_VOTES_FILE, JSON.stringify(userVotes, null, 2), 'utf8');
 }
 
+// Загружаем данные при запуске
+loadVotes();
 loadUserVotes();
 
 // Vote endpoint - now uses cityId and userId
@@ -74,7 +99,11 @@ app.post('/api/vote', (req, res) => {
     }
     // Записываем, что пользователь проголосовал за этот город
     userVotes[userId].push(cityId);
+    
+    // Сохраняем голоса в файлы
+    saveVotes();
     saveUserVotes();
+    
     console.log(`Vote recorded for ${city.name} by user ${userId}: ${voteType}. New score: L ${votes.get(cityId).likes} / D ${votes.get(cityId).dislikes} / DK ${votes.get(cityId).dont_know}`);
     res.json({ success: true });
 });
