@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tg = window.Telegram.WebApp;
     tg.ready();
 
-    const API_URL = 'http://localhost:3000'; // Change this to your deployed backend URL (e.g., 'https://your-app-name.onrender.com')
+    const API_URL = 'https://telegram-city-rater-backend.onrender.com';
     let cities = [];
     let currentCityIndex = 0;
     let ratedCount = 0;
