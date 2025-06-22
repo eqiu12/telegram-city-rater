@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Rater</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="city-card">
+            <h2 id="city-name"></h2>
+            <div id="city-images"></div>
+        </div>
+        <div class="controls">
+            <button id="dislike" disabled>🤮</button>
+            <button id="dont-know" disabled>🤷</button>
+            <button id="like" disabled>❤️</button>
+        </div>
+        <div class="rating-button-container">
+            <button id="show-ratings-btn">Cities Rating</button>
+        </div>
+    </div>
+    
+    <div id="ratings-modal" class="hidden">
+        <div class="modal-content">
+            <h2>Current City Rankings</h2>
+            <p>Top rated cities based on all votes:</p>
+            <ul id="ratings-list">
+            </ul>
+            <button id="close-ratings-btn">Close</button>
+        </div>
+    </div>
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
