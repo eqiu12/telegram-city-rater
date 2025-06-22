@@ -44,8 +44,8 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     text-align: center;
-    width: 80%;
-    max-width: 400px;
+    width: 90%;
+    max-width: 500px;
     max-height: 80vh;
     overflow-y: auto;
 }
@@ -54,12 +54,15 @@ body {
     list-style: none;
     padding: 0;
     margin: 15px 0;
+    max-height: 60vh;
+    overflow-y: auto;
 }
 
 #ratings-list li {
-    font-size: 1.1em;
+    font-size: 1em;
     padding: 8px 0;
     border-bottom: 1px solid #eee;
+    text-align: left;
 }
 
 #ratings-list li:last-child {
@@ -92,8 +95,9 @@ body {
 #city-images {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    align-items: center;
     margin-top: 10px;
+    min-height: 40px;
 }
 
 #city-images img {
@@ -107,4 +111,39 @@ body {
     border: none;
     background-color: transparent;
     cursor: pointer;
+}
+
+.country-info {
+    font-size: 1.2em;
+    color: #666;
+    font-style: italic;
+}
+
+.rating-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.rating-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.rating-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.rating-btn:active {
+    transform: translateY(0);
 } 

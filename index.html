@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Rater</title>
+    <title>Рейтинг Городов</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,22 +13,23 @@
             <div id="city-images"></div>
         </div>
         <div class="controls">
-            <button id="dislike" disabled>🤮</button>
-            <button id="dont-know" disabled>🤷</button>
-            <button id="like" disabled>❤️</button>
+            <button id="likeBtn" class="vote-btn like">❤️</button>
+            <button id="dislikeBtn" class="vote-btn dislike">👎</button>
+            <button id="dontKnowBtn" class="vote-btn dunno">🤷</button>
         </div>
-        <div class="rating-button-container">
-            <button id="show-ratings-btn">Cities Rating</button>
+        <div class="rating-buttons">
+            <button id="showRatingsBtn" class="rating-btn">Рейтинг городов</button>
+            <button id="showHiddenJamBtn" class="rating-btn">Хидден-джемовость</button>
         </div>
     </div>
     
     <div id="ratings-modal" class="hidden">
         <div class="modal-content">
-            <h2>Current City Rankings</h2>
-            <p>Top rated cities based on all votes:</p>
+            <h2>Текущий Рейтинг Городов</h2>
+            <p>Лучшие города по оценкам пользователей:</p>
             <ul id="ratings-list">
             </ul>
-            <button id="close-ratings-btn">Close</button>
+            <button id="close-ratings-btn">Закрыть</button>
         </div>
     </div>
     

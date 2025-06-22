@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tg = window.Telegram.WebApp;
     tg.ready();
 
-    const API_URL = 'https://telegram-city-rater-backend.onrender.com';
+    const API_URL = 'http://localhost:3000';
     let cities = [];
     let currentCityIndex = 0;
     let ratedCount = 0;
@@ -10,10 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const app = document.getElementById('app');
     const cityNameEl = document.getElementById('city-name');
     const cityImagesEl = document.getElementById('city-images');
-    const likeBtn = document.getElementById('like');
-    const dislikeBtn = document.getElementById('dislike');
-    const dontKnowBtn = document.getElementById('dont-know');
-    const showRatingsBtn = document.getElementById('show-ratings-btn');
+    const likeBtn = document.getElementById('likeBtn');
+    const dislikeBtn = document.getElementById('dislikeBtn');
+    const dontKnowBtn = document.getElementById('dontKnowBtn');
+    const showRatingsBtn = document.getElementById('showRatingsBtn');
+    const showHiddenJamBtn = document.getElementById('showHiddenJamBtn');
     const ratingsModal = document.getElementById('ratings-modal');
     const ratingsList = document.getElementById('ratings-list');
     const closeRatingsBtn = document.getElementById('close-ratings-btn');
@@ -32,7 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const cityData = await response.json();
             if (!cityData || cityData.length === 0) throw new Error("City data is empty or invalid.");
 
-            cities = cityData.map(city => ({ name: city.name, images: city.images }));
+            cities = cityData.map(city => ({ 
+                name: city.name, 
+                flag: city.flag || '🏳️', // Use flag if available, otherwise default flag
+                country: city.country || 'Неизвестно',
+                cityId: city.cityId
+            }));
             cities.sort(() => Math.random() - 0.5); // Shuffle cities
             
             setControlsEnabled(true);
@@ -40,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error("Failed to load cities:", error);
-            cityNameEl.textContent = "Could not load cities. Please try again later.";
+            cityNameEl.textContent = "Не удалось загрузить города. Попробуйте позже.";
             setControlsEnabled(false);
         }
     }
@@ -48,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function showCity() {
         if (currentCityIndex >= cities.length) {
             // When all cities are rated, offer to start over
-            cityNameEl.textContent = "You've rated all cities!";
+            cityNameEl.textContent = "Вы оценили все города!";
             cityImagesEl.innerHTML = '';
             likeBtn.style.display = 'none';
             dislikeBtn.style.display = 'none';
@@ -57,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!document.getElementById('restart-btn')) {
                 const restartBtn = document.createElement('button');
                 restartBtn.id = 'restart-btn';
-                restartBtn.textContent = 'Start Over';
+                restartBtn.textContent = 'Начать заново';
                 restartBtn.onclick = () => { window.location.reload(); };
                 app.appendChild(restartBtn);
             }
@@ -65,72 +71,128 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const city = cities[currentCityIndex];
-        cityNameEl.textContent = city.name;
-        cityImagesEl.innerHTML = '';
-        city.images.forEach(imageUrl => {
-            const img = document.createElement('img');
-            img.src = imageUrl;
-            cityImagesEl.appendChild(img);
-        });
+        cityNameEl.textContent = `${city.name} ${city.flag}`;
+        cityImagesEl.innerHTML = `<div class="country-info">${city.country}</div>`;
     }
 
     async function showRatings() {
+        console.log('showRatings called');
         try {
-            const response = await fetch(`${API_URL}/ratings`);
+            console.log('Fetching ratings from:', `${API_URL}/api/rankings`);
+            const response = await fetch(`${API_URL}/api/rankings`);
+            console.log('Response status:', response.status);
             const topCities = await response.json();
+            console.log('Received cities:', topCities.length);
+            
+            // Update modal title for regular ratings
+            const modalTitle = document.querySelector('#ratings-modal h2');
+            const modalDescription = document.querySelector('#ratings-modal p');
+            if (modalTitle) modalTitle.textContent = 'Рейтинг Городов';
+            if (modalDescription) modalDescription.textContent = 'Лучшие города по оценкам пользователей:';
             
             ratingsList.innerHTML = '';
             if (topCities.length === 0) {
-                ratingsList.innerHTML = '<li>No cities rated yet!</li>';
+                ratingsList.innerHTML = '<li>Пока нет оценок городов!</li>';
             } else {
                 topCities.forEach((city, index) => {
-                    const totalVotes = city.likes + city.dislikes;
-                    const likePercentage = totalVotes > 0 ? Math.round((city.likes / totalVotes) * 100) : 0;
+                    const ratingPercentage = Math.round(city.rating * 100);
                     const li = document.createElement('li');
-                    li.innerHTML = `<strong>${index + 1}.</strong> ${city.name}: ${likePercentage}% ❤️ (${totalVotes} votes)`;
+                    const flag = city.flag || '🏳️';
+                    const country = city.country || 'Неизвестно';
+                    li.innerHTML = `<strong>${index + 1}.</strong> ${city.name} ${flag} (${country}): ${ratingPercentage}% (❤️ ${city.likes})`;
                     ratingsList.appendChild(li);
                 });
             }
+            
+            console.log('Showing modal');
+            ratingsModal.classList.remove('hidden');
         } catch (error) {
-            console.error("Failed to fetch ratings:", error);
-            ratingsList.innerHTML = '<li>Could not load ratings.</li>';
+            console.error('Error in showRatings:', error);
+            ratingsList.innerHTML = '<li>Ошибка загрузки рейтинга</li>';
+            ratingsModal.classList.remove('hidden');
         }
-        
-        ratingsModal.classList.remove('hidden');
     }
 
     function hideRatings() {
         ratingsModal.classList.add('hidden');
     }
 
-    async function handleVote(voteType) {
+    async function vote(voteType) {
+        if (currentCityIndex >= cities.length) return;
         setControlsEnabled(false);
         const city = cities[currentCityIndex];
-
-        if (voteType === 'liked' || voteType === 'disliked') {
             try {
-                await fetch(`${API_URL}/vote`, {
+            const response = await fetch(`${API_URL}/api/vote`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ cityName: city.name, voteType }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    cityId: city.cityId,
+                    voteType: voteType
+                })
                 });
-            } catch (error) {
-                console.error("Failed to submit vote:", error);
-                // Optionally, inform the user the vote failed
+            if (response.ok) {
+                ratedCount++;
+                currentCityIndex++;
+                showCity();
+                setControlsEnabled(true);
+            } else {
+                console.error('Failed to record vote');
+                setControlsEnabled(true);
+            }
+        } catch (error) {
+            console.error('Error recording vote:', error);
+            setControlsEnabled(true);
             }
         }
         
-        ratedCount++;
-        currentCityIndex++;
-        // Just show the next city, no modal
-        showCity();
-        setControlsEnabled(true);
+    async function showHiddenJamRatings() {
+        console.log('showHiddenJamRatings called');
+        try {
+            console.log('Fetching hidden jam ratings from:', `${API_URL}/api/hidden-jam-ratings`);
+            const response = await fetch(`${API_URL}/api/hidden-jam-ratings`);
+            console.log('Response status:', response.status);
+            const hiddenJamCities = await response.json();
+            console.log('Received hidden jam cities:', hiddenJamCities.length);
+            
+            // Update modal title for hidden jam ratings
+            const modalTitle = document.querySelector('#ratings-modal h2');
+            const modalDescription = document.querySelector('#ratings-modal p');
+            if (modalTitle) modalTitle.textContent = 'Хидден-Джемовость';
+            if (modalDescription) modalDescription.textContent = 'Города с высоким рейтингом, но низкой популярностью:';
+            
+            ratingsList.innerHTML = '';
+            if (hiddenJamCities.length === 0) {
+                ratingsList.innerHTML = '<li>Пока нет данных для расчета хидден-джемовости!</li>';
+            } else {
+                hiddenJamCities.forEach((city, index) => {
+                    const li = document.createElement('li');
+                    
+                    // Use data directly from API response
+                    const flag = city.flag || '🏳️';
+                    const country = city.country || 'Неизвестно';
+                    const hiddenJamScorePercentage = Math.round(city.hiddenJamScore * 100);
+                    
+                    li.innerHTML = `<strong>${index + 1}.</strong> ${city.name} ${flag} (${country}): ${hiddenJamScorePercentage}% (❤️ ${city.likes})`;
+                    ratingsList.appendChild(li);
+                });
+            }
+            
+            console.log('Showing modal');
+            ratingsModal.classList.remove('hidden');
+        } catch (error) {
+            console.error('Error in showHiddenJamRatings:', error);
+            ratingsList.innerHTML = '<li>Ошибка загрузки рейтинга хидден-джемов</li>';
+            ratingsModal.classList.remove('hidden');
+        }
     }
 
-    likeBtn.addEventListener('click', () => handleVote('liked'));
-    dislikeBtn.addEventListener('click', () => handleVote('disliked'));
-    dontKnowBtn.addEventListener('click', () => handleVote('dunno'));
+    likeBtn.addEventListener('click', () => vote('liked'));
+    dislikeBtn.addEventListener('click', () => vote('disliked'));
+    dontKnowBtn.addEventListener('click', () => vote('dont_know'));
     showRatingsBtn.addEventListener('click', showRatings);
+    showHiddenJamBtn.addEventListener('click', showHiddenJamRatings);
     
     // Add debugging to close button
     if (closeRatingsBtn) {
