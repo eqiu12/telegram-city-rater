@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const ratingsList = document.getElementById('ratings-list');
     const closeRatingsBtn = document.getElementById('close-ratings-btn');
 
+    // Генерируем временный userId для тестирования
+    // В Telegram Mini App это будет получено из Telegram WebApp API
+    const userId = 'test_user_' + Math.random().toString(36).substr(2, 9);
+
     function setControlsEnabled(enabled) {
         likeBtn.disabled = !enabled;
         dislikeBtn.disabled = !enabled;
@@ -129,7 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({
                     cityId: city.cityId,
-                    voteType: voteType
+                    voteType: voteType,
+                    userId: userId
                 })
                 });
             if (response.ok) {
@@ -138,7 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 showCity();
                 setControlsEnabled(true);
             } else {
-                console.error('Failed to record vote');
+                const errorData = await response.json();
+                console.error('Failed to record vote:', errorData.error);
                 setControlsEnabled(true);
             }
         } catch (error) {
