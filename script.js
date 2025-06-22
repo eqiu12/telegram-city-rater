@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const ratingsModal = document.getElementById('ratings-modal');
     const ratingsList = document.getElementById('ratings-list');
     const closeRatingsBtn = document.getElementById('close-ratings-btn');
+    const statsTextEl = document.getElementById('stats-text');
 
     // Получаем userId из Telegram WebApp API
     // Если приложение запущено в Telegram, получаем реальный ID пользователя
@@ -47,6 +48,34 @@ document.addEventListener('DOMContentLoaded', function() {
         dontKnowBtn.disabled = !enabled;
     }
 
+    // Функция для обновления статистики пользователя
+    async function updateUserStats() {
+        try {
+            const response = await fetch(`${API_URL}/api/user-votes/${userId}`);
+            if (response.ok) {
+                const data = await response.json();
+                const votedCount = data.votedCities ? data.votedCities.length : 0;
+                
+                // Получаем общее количество городов из cities.json
+                const citiesResponse = await fetch('cities.json');
+                if (citiesResponse.ok) {
+                    const allCities = await citiesResponse.json();
+                    const totalCities = allCities.length;
+                    const remainingCities = totalCities - votedCount;
+                    
+                    statsTextEl.textContent = `Оценено городов: ${votedCount} из ${totalCities} (осталось: ${remainingCities})`;
+                } else {
+                    statsTextEl.textContent = `Оценено городов: ${votedCount}`;
+                }
+            } else {
+                statsTextEl.textContent = 'Статистика недоступна';
+            }
+        } catch (error) {
+            console.warn('Failed to update user stats:', error);
+            statsTextEl.textContent = 'Статистика недоступна';
+        }
+    }
+
     async function loadCities() {
         try {
             const response = await fetch('cities.json');
@@ -55,13 +84,52 @@ document.addEventListener('DOMContentLoaded', function() {
             const cityData = await response.json();
             if (!cityData || cityData.length === 0) throw new Error("City data is empty or invalid.");
 
-            cities = cityData.map(city => ({ 
+            // Получаем список уже оцененных пользователем городов
+            let userVotedCities = [];
+            try {
+                const userVotesResponse = await fetch(`${API_URL}/api/user-votes/${userId}`);
+                if (userVotesResponse.ok) {
+                    const userVotesData = await userVotesResponse.json();
+                    userVotedCities = userVotesData.votedCities || [];
+                    console.log('User has already voted for cities:', userVotedCities.length);
+                }
+            } catch (error) {
+                console.warn('Failed to load user votes, continuing with all cities:', error);
+            }
+
+            // Фильтруем города, за которые пользователь уже проголосовал
+            const availableCities = cityData.filter(city => !userVotedCities.includes(city.cityId));
+            
+            if (availableCities.length === 0) {
+                // Если все города уже оценены
+                cityNameEl.textContent = "Вы оценили все города!";
+                cityImagesEl.innerHTML = '';
+                likeBtn.style.display = 'none';
+                dislikeBtn.style.display = 'none';
+                dontKnowBtn.style.display = 'none';
+                // Show a restart button
+                if (!document.getElementById('restart-btn')) {
+                    const restartBtn = document.createElement('button');
+                    restartBtn.id = 'restart-btn';
+                    restartBtn.textContent = 'Начать заново';
+                    restartBtn.onclick = () => { window.location.reload(); };
+                    app.appendChild(restartBtn);
+                }
+                return;
+            }
+
+            cities = availableCities.map(city => ({ 
                 name: city.name, 
                 flag: city.flag || '🏳️', // Use flag if available, otherwise default flag
                 country: city.country || 'Неизвестно',
                 cityId: city.cityId
             }));
             cities.sort(() => Math.random() - 0.5); // Shuffle cities
+            
+            console.log(`Loaded ${cities.length} cities for voting (${userVotedCities.length} already voted)`);
+            
+            // Обновляем статистику пользователя
+            await updateUserStats();
             
             setControlsEnabled(true);
             showCity();
@@ -158,6 +226,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 ratedCount++;
                 currentCityIndex++;
+                
+                // Обновляем статистику после успешного голоса
+                await updateUserStats();
+                
                 showCity();
                 setControlsEnabled(true);
             } else {

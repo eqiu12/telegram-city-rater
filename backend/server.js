@@ -198,6 +198,17 @@ app.get('/api/hidden-jam-ratings', (req, res) => {
     res.json(filteredRatings);
 });
 
+// Get user's voted cities endpoint
+app.get('/api/user-votes/:userId', (req, res) => {
+    const { userId } = req.params;
+    if (!userId) {
+        return res.status(400).json({ error: 'Missing userId' });
+    }
+    
+    const userVotedCities = userVotes[userId] || [];
+    res.json({ votedCities: userVotedCities });
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 }); 

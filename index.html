@@ -3,37 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Рейтинг Городов</title>
+    <title>Telegram City Rater</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div id="app">
-        <div class="city-card">
-            <h2 id="city-name"></h2>
-            <div id="city-images"></div>
+        <h1>🏙️ Оцени Город</h1>
+        
+        <!-- Статистика пользователя -->
+        <div id="user-stats" class="user-stats">
+            <span id="stats-text">Загрузка...</span>
         </div>
-        <div class="controls">
-            <button id="likeBtn" class="vote-btn like">❤️</button>
-            <button id="dislikeBtn" class="vote-btn dislike">👎</button>
-            <button id="dontKnowBtn" class="vote-btn dunno">🤷</button>
+        
+        <div id="city-name" class="city-name">Загрузка...</div>
+        <div id="city-images" class="city-images"></div>
+        
+        <div class="buttons">
+            <button id="likeBtn" class="btn like-btn">❤️ Нравится</button>
+            <button id="dislikeBtn" class="btn dislike-btn">👎 Не нравится</button>
+            <button id="dontKnowBtn" class="btn dont-know-btn">❓ Не знаю</button>
         </div>
-        <div class="rating-buttons">
-            <button id="showRatingsBtn" class="rating-btn">Рейтинг городов</button>
-            <button id="showHiddenJamBtn" class="rating-btn">Хидден-джемовость</button>
+        
+        <div class="action-buttons">
+            <button id="showRatingsBtn" class="btn secondary-btn">🏆 Рейтинг Городов</button>
+            <button id="showHiddenJamBtn" class="btn secondary-btn">💎 Хидден-Джемы</button>
         </div>
     </div>
-    
-    <div id="ratings-modal" class="hidden">
+
+    <!-- Modal for ratings -->
+    <div id="ratings-modal" class="modal hidden">
         <div class="modal-content">
-            <h2>Текущий Рейтинг Городов</h2>
+            <h2>Рейтинг Городов</h2>
             <p>Лучшие города по оценкам пользователей:</p>
-            <ul id="ratings-list">
-            </ul>
-            <button id="close-ratings-btn">Закрыть</button>
+            <ul id="ratings-list"></ul>
+            <button id="close-ratings-btn" class="btn">Закрыть</button>
         </div>
     </div>
-    
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <script src="script.js"></script>
 </body>
 </html> 
