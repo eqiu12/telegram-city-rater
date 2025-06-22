@@ -13,14 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeRatingsBtn = document.getElementById('close-ratings-btn');
     const votedCountEl = document.getElementById('voted-count');
     const totalCountEl = document.getElementById('total-count');
+    const rankingsBody = document.getElementById('rankings-body');
+    const hiddenJamBody = document.getElementById('hidden-jam-body');
 
     let cities = [];
     let currentCityIndex = 0;
-    let userId = '';
+    let userId = localStorage.getItem('userId');
     let votedCount = 0;
     let totalCount = 0;
 
-    const API_URL = '/api';
+    const API_BASE_URL = 'https://telegram-city-rater-backend.onrender.com';
 
     function getUserId() {
         let id = localStorage.getItem('cityRaterUserId');
@@ -37,10 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchCities() {
+        if (!userId) {
+            console.error('User ID is not set.');
+            return;
+        }
         try {
-            const response = await fetch(`${API_URL}/cities?userId=${userId}`);
+            const response = await fetch(`${API_BASE_URL}/api/cities?userId=${userId}`);
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error('Network response was not ok');
             }
             const data = await response.json();
             cities = data.cities;
@@ -73,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const city = cities[currentCityIndex];
         try {
-            const response = await fetch(`${API_URL}/vote`, {
+            const response = await fetch(`${API_BASE_URL}/api/vote`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, cityId: city.cityId, voteType }),
@@ -105,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modalTitleEl.textContent = isGems ? 'Хидден-джемовость' : 'Рейтинг Городов';
 
         try {
-            const response = await fetch(`${API_URL}/${endpoint}`);
+            const response = await fetch(`${API_BASE_URL}/api/${endpoint}`);
             const data = await response.json();
             
             ratingsContentEl.innerHTML = '';
