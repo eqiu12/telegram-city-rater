@@ -17,21 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const hiddenJamBody = document.getElementById('hidden-jam-body');
 
     let cities = [];
-    let currentCityIndex = 0;
-    let userId = localStorage.getItem('userId');
-    let votedCount = 0;
-    let totalCount = 0;
+let currentCityIndex = 0;
+let votedCount = 0;
+let totalCount = 0;
 
-    const API_BASE_URL = 'https://telegram-city-rater-backend.onrender.com';
+const API_BASE_URL = 'https://telegram-city-rater-backend.onrender.com';
 
-    function getUserId() {
-        let id = localStorage.getItem('cityRaterUserId');
-        if (!id) {
-            id = crypto.randomUUID();
-            localStorage.setItem('cityRaterUserId', id);
-        }
-        return id;
+function getUserId() {
+    let id = localStorage.getItem('cityRaterUserId');
+    if (!id) {
+        id = crypto.randomUUID();
+        localStorage.setItem('cityRaterUserId', id);
     }
+    return id;
+}
+
+let userId = getUserId();
 
     function updateScore() {
         votedCountEl.textContent = votedCount;
