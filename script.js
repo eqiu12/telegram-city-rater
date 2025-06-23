@@ -213,17 +213,17 @@ let userId = getUserId();
     });
 
     // Загрузка реальных голосов пользователя
-    async function fetchUserVotes() {
-        try {
-            const res = await fetch(`/api/user-votes/${userId}`);
-            if (!res.ok) throw new Error('Ошибка загрузки голосов');
-            const data = await res.json();
-            return data.userVotes || [];
-        } catch (e) {
-            console.error(e);
-            return [];
-        }
+async function fetchUserVotes() {
+    try {
+        const res = await fetch(`${API_BASE_URL}/api/user-votes/${userId}`);
+        if (!res.ok) throw new Error('Ошибка загрузки голосов');
+        const data = await res.json();
+        return data.userVotes || [];
+    } catch (e) {
+        console.error(e);
+        return [];
     }
+}
 
     // Группировка по странам
     function groupVotesByCountry(votes) {
@@ -292,18 +292,18 @@ let userId = getUserId();
     }
 
     // Меняет голос через сервер
-    async function changeVote(cityId, newVote) {
-        try {
-            const res = await fetch('/api/change-vote', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId, cityId, voteType: newVote })
-            });
-            if (!res.ok) throw new Error('Ошибка смены голоса');
-            const data = await res.json();
-            if (!data.success) throw new Error(data.error || 'Ошибка смены голоса');
-        } catch (e) {
-            alert('Не удалось изменить голос: ' + (e.message || e));
-        }
+async function changeVote(cityId, newVote) {
+    try {
+        const res = await fetch(`${API_BASE_URL}/api/change-vote`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, cityId, voteType: newVote })
+        });
+        if (!res.ok) throw new Error('Ошибка смены голоса');
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'Ошибка смены голоса');
+    } catch (e) {
+        alert('Не удалось изменить голос: ' + (e.message || e));
     }
+}
 });
