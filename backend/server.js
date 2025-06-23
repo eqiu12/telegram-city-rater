@@ -9,7 +9,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
-    origin: 'https://eqiu12.github.io',
+    origin: [
+        'https://eqiu12.github.io',
+        'http://localhost:3000',
+        'http://127.0.0.1:3000'
+    ],
     optionsSuccessStatus: 200
 };
 
@@ -112,6 +116,50 @@ app.post('/api/vote', async (req, res) => {
     }
 });
 
+app.post('/api/change-vote', async (req, res) => {
+    const { userId, cityId, voteType } = req.body;
+    if (!userId || !cityId || !voteType) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+    try {
+        // Найти старый голос
+        const oldVoteRes = await db.execute({
+            sql: 'SELECT vote_type FROM user_votes WHERE user_id = ? AND city_id = ?',
+            args: [userId, cityId]
+        });
+        if (oldVoteRes.rows.length === 0) {
+            return res.status(404).json({ error: 'Vote not found for this user/city' });
+        }
+        const oldVote = oldVoteRes.rows[0].vote_type;
+        if (oldVote === voteType) {
+            return res.json({ success: true, message: 'Vote is already set to this value' });
+        }
+        // Обновить user_votes
+        await db.execute({
+            sql: 'UPDATE user_votes SET vote_type = ? WHERE user_id = ? AND city_id = ?',
+            args: [voteType, userId, cityId]
+        });
+        // Корректировать city_votes: уменьшить старый, увеличить новый
+        const voteMap = { liked: 'likes', disliked: 'dislikes', dont_know: 'dont_know' };
+        const oldCol = voteMap[oldVote];
+        const newCol = voteMap[voteType];
+        if (oldCol && newCol) {
+            await db.execute({
+                sql: `UPDATE city_votes SET ${oldCol} = CASE WHEN ${oldCol} > 0 THEN ${oldCol} - 1 ELSE 0 END WHERE city_id = ?`,
+                args: [cityId]
+            });
+            await db.execute({
+                sql: `UPDATE city_votes SET ${newCol} = ${newCol} + 1 WHERE city_id = ?`,
+                args: [cityId]
+            });
+        }
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error changing vote:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 async function getAggregatedVotes() {
     const votesResult = await db.execute("SELECT * FROM city_votes");
     const votes = {};
@@ -193,6 +241,34 @@ app.get('/api/hidden-jam-ratings', async (req, res) => {
         res.json(filteredRatings);
     } catch (error) {
         console.error('Error fetching hidden jam ratings:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.get('/api/user-votes/:userId', async (req, res) => {
+    const { userId } = req.params;
+    if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
+    }
+    try {
+        const votesResult = await db.execute({
+            sql: 'SELECT city_id, vote_type FROM user_votes WHERE user_id = ?',
+            args: [userId]
+        });
+        // enrich with city info
+        const userVotes = votesResult.rows.map(row => {
+            const city = cityData.find(c => c.cityId === row.city_id);
+            return city ? {
+                cityId: row.city_id,
+                voteType: row.vote_type,
+                name: city.name,
+                country: city.country,
+                flag: city.flag
+            } : null;
+        }).filter(Boolean);
+        res.json({ userVotes });
+    } catch (error) {
+        console.error('Error fetching user votes:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

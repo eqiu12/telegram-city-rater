@@ -8,21 +8,35 @@
 </head>
 <body>
     <div class="container">
-        <div id="score-display">
-             <span id="voted-count">0</span> / <span id="total-count">0</span>
+        <!-- Голосование -->
+        <div id="voting-page">
+            <div id="score-display">
+                 <span id="voted-count">0</span> / <span id="total-count">0</span>
+            </div>
+            <div id="city-display">
+                <h1 id="cityName"></h1>
+                <p id="countryName"></p>
+            </div>
+            <div class="buttons">
+                <button id="dislike-btn" class="btn emoji-btn dislike-btn">👎</button>
+                <button id="dont-know-btn" class="btn emoji-btn dont-know-btn">🤷‍♂️</button>
+                <button id="like-btn" class="btn emoji-btn like-btn">❤️</button>
+            </div>
+            <div class="action-buttons">
+                <button id="show-ratings-btn" class="action-btn">Рейтинг Городов</button>
+                <button id="show-hidden-gems-btn" class="action-btn">Хидден-джемовость</button>
+            </div>
         </div>
-        <div id="city-display">
-            <h1 id="cityName"></h1>
-            <p id="countryName"></p>
+        <!-- Профиль -->
+        <div id="profile-page" style="display:none;">
+            <h2>Личный кабинет</h2>
+            <div><b>Ваш UID:</b> <span id="user-uid"></span> <button id="copy-uid-btn" title="Скопировать UID">📋</button></div>
+            <div id="user-votes-list"></div>
         </div>
-        <div class="buttons">
-            <button id="dislike-btn" class="btn emoji-btn dislike-btn">👎</button>
-            <button id="dont-know-btn" class="btn emoji-btn dont-know-btn">🤷‍♂️</button>
-            <button id="like-btn" class="btn emoji-btn like-btn">❤️</button>
-        </div>
-        <div class="action-buttons">
-            <button id="show-ratings-btn" class="action-btn">Рейтинг Городов</button>
-            <button id="show-hidden-gems-btn" class="action-btn">Хидден-джемовость</button>
+        <!-- Таб-бар -->
+        <div class="tab-bar">
+            <button id="tab-voting" class="tab-btn active">Голосование</button>
+            <button id="tab-profile" class="tab-btn">Профиль</button>
         </div>
     </div>
 

@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let votedCount = 0;
     let totalCount = 0;
 
-    const API_BASE_URL = 'https://telegram-city-rater-backend.onrender.com';
+    const API_BASE_URL = 'http://localhost:3000';
 
     function getUserId() {
         let id = localStorage.getItem('cityRaterUserId');
@@ -176,4 +176,133 @@ document.addEventListener('DOMContentLoaded', () => {
 
     userId = getUserId();
     fetchCities();
+
+    // --- Profile & Tabs ---
+    const votingPage = document.getElementById('voting-page');
+    const profilePage = document.getElementById('profile-page');
+    const tabVoting = document.getElementById('tab-voting');
+    const tabProfile = document.getElementById('tab-profile');
+    const userUidEl = document.getElementById('user-uid');
+    const copyUidBtn = document.getElementById('copy-uid-btn');
+    const userVotesList = document.getElementById('user-votes-list');
+
+    // Переключение вкладок
+    function showVotingPage() {
+        votingPage.style.display = '';
+        profilePage.style.display = 'none';
+        tabVoting.classList.add('active');
+        tabProfile.classList.remove('active');
+    }
+    function showProfilePage() {
+        votingPage.style.display = 'none';
+        profilePage.style.display = '';
+        tabVoting.classList.remove('active');
+        tabProfile.classList.add('active');
+        renderProfile();
+    }
+    tabVoting.addEventListener('click', showVotingPage);
+    tabProfile.addEventListener('click', showProfilePage);
+
+    // UID пользователя
+    userUidEl.textContent = userId;
+    copyUidBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(userId);
+        copyUidBtn.textContent = '✅';
+        setTimeout(() => { copyUidBtn.textContent = '📋'; }, 1200);
+    });
+
+    // Загрузка реальных голосов пользователя
+    async function fetchUserVotes() {
+        try {
+            const res = await fetch(`/api/user-votes/${userId}`);
+            if (!res.ok) throw new Error('Ошибка загрузки голосов');
+            const data = await res.json();
+            return data.userVotes || [];
+        } catch (e) {
+            console.error(e);
+            return [];
+        }
+    }
+
+    // Группировка по странам
+    function groupVotesByCountry(votes) {
+        const grouped = {};
+        for (const v of votes) {
+            if (!grouped[v.country]) grouped[v.country] = { flag: v.flag, cities: [] };
+            grouped[v.country].cities.push(v);
+        }
+        // Возвращаем массив стран, отсортированных по алфавиту
+        return Object.entries(grouped)
+            .sort((a, b) => a[0].localeCompare(b[0], 'ru'))
+            .map(([country, data]) => ({ country, ...data }));
+    }
+
+    async function renderProfile() {
+        const votes = await fetchUserVotes();
+        const grouped = groupVotesByCountry(votes);
+        let html = '';
+        for (const group of grouped) {
+            const { country, flag, cities } = group;
+            html += `<div><b>${flag} ${country}</b></div><ul style="margin-top:0;">`;
+            for (const city of cities) {
+                const emoji = city.voteType === 'liked' ? '❤️' : city.voteType === 'disliked' ? '👎' : '🤷‍♂️';
+                html += `<li>${city.name} <span class="city-vote">${emoji}</span> <button class="change-vote-btn" data-cityid="${city.cityId}" data-country="${country}" title="Изменить голос">✏️</button></li>`;
+            }
+            html += '</ul>';
+        }
+        userVotesList.innerHTML = html || '<div>Вы ещё не проголосовали ни за один город.</div>';
+
+        // Добавляем обработчики на кнопки "Изменить"
+        document.querySelectorAll('.change-vote-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const cityId = this.getAttribute('data-cityid');
+                const country = this.getAttribute('data-country');
+                showVoteSelector(this, country, cityId);
+            });
+        });
+    }
+
+    // Показывает мини-меню для выбора голоса
+    function showVoteSelector(button, country, cityId) {
+        document.querySelectorAll('.vote-selector').forEach(el => el.remove());
+        const selector = document.createElement('span');
+        selector.className = 'vote-selector';
+        selector.innerHTML = `
+            <button class="vote-option" data-vote="liked">❤️</button>
+            <button class="vote-option" data-vote="disliked">👎</button>
+            <button class="vote-option" data-vote="dont_know">🤷‍♂️</button>
+        `;
+        button.parentNode.insertBefore(selector, button.nextSibling);
+        selector.querySelectorAll('.vote-option').forEach(opt => {
+            opt.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const newVote = opt.getAttribute('data-vote');
+                await changeVote(cityId, newVote);
+                selector.remove();
+                renderProfile();
+            });
+        });
+        setTimeout(() => {
+            document.addEventListener('click', closeSelector, { once: true });
+        }, 0);
+        function closeSelector(e) {
+            if (!selector.contains(e.target)) selector.remove();
+        }
+    }
+
+    // Меняет голос через сервер
+    async function changeVote(cityId, newVote) {
+        try {
+            const res = await fetch('/api/change-vote', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, cityId, voteType: newVote })
+            });
+            if (!res.ok) throw new Error('Ошибка смены голоса');
+            const data = await res.json();
+            if (!data.success) throw new Error(data.error || 'Ошибка смены голоса');
+        } catch (e) {
+            alert('Не удалось изменить голос: ' + (e.message || e));
+        }
+    }
 });
