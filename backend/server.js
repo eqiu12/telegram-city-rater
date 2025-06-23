@@ -273,6 +273,56 @@ app.get('/api/user-votes/:userId', async (req, res) => {
     }
 });
 
+app.post('/api/register-telegram', async (req, res) => {
+    const { telegramId, userId } = req.body;
+    if (!telegramId) {
+        return res.status(400).json({ error: 'Missing telegramId' });
+    }
+    try {
+        // 1. Check if a user with this telegramId exists
+        let userRes = await db.execute({
+            sql: 'SELECT * FROM users WHERE telegram_id = ?',
+            args: [telegramId]
+        });
+        if (userRes.rows.length > 0) {
+            return res.json({ success: true, user: userRes.rows[0] });
+        }
+        // 2. Check if a user with this userId exists
+        if (userId) {
+            userRes = await db.execute({
+                sql: 'SELECT * FROM users WHERE user_id = ?',
+                args: [userId]
+            });
+            if (userRes.rows.length > 0) {
+                // Link telegramId to this user
+                await db.execute({
+                    sql: 'UPDATE users SET telegram_id = ? WHERE user_id = ?',
+                    args: [telegramId, userId]
+                });
+                // Return the updated user
+                userRes = await db.execute({
+                    sql: 'SELECT * FROM users WHERE user_id = ?',
+                    args: [userId]
+                });
+                return res.json({ success: true, user: userRes.rows[0] });
+            }
+        }
+        // 3. Create a new user
+        await db.execute({
+            sql: 'INSERT INTO users (telegram_id, user_id) VALUES (?, ?)',
+            args: [telegramId, userId || null]
+        });
+        userRes = await db.execute({
+            sql: 'SELECT * FROM users WHERE telegram_id = ?',
+            args: [telegramId]
+        });
+        res.json({ success: true, user: userRes.rows[0] });
+    } catch (error) {
+        console.error('Error registering/updating Telegram user:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 initializeDatabase().then(() => {
     app.listen(PORT, () => {
         console.log(`Server is running on http://localhost:${PORT}`);

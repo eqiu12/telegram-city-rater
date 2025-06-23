@@ -25,6 +25,13 @@ async function initializeDatabase() {
                 UNIQUE(user_id, city_id)
             );
         `);
+        await db.execute(`
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                telegram_id TEXT UNIQUE NOT NULL,
+                user_id TEXT
+            );
+        `);
         console.log("Database initialized successfully.");
     } catch (error) {
         console.error("Error initializing database:", error);

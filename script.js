@@ -176,7 +176,38 @@ let userId = getUserId();
     });
 
     userId = getUserId();
-    fetchCities();
+
+    // --- Telegram Mini App User Registration ---
+    let telegramId = null;
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+        telegramId = window.Telegram.WebApp.initDataUnsafe.user.id;
+    }
+
+    if (telegramId) {
+        fetch(`${API_BASE_URL}/api/register-telegram`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ telegramId, userId })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success && data.user && data.user.user_id) {
+                userId = data.user.user_id;
+                localStorage.setItem('cityRaterUserId', userId);
+                console.log('Telegram user registered:', data.user);
+            } else {
+                console.error('Failed to register Telegram user:', data.error);
+            }
+            fetchCities();
+        })
+        .catch(err => {
+            console.error('Error registering Telegram user:', err);
+            fetchCities();
+        });
+    } else {
+        console.warn('Telegram user ID not found. Are you running inside Telegram?');
+        fetchCities();
+    }
 
     // --- Profile & Tabs ---
     const votingPage = document.getElementById('voting-page');
@@ -203,14 +234,6 @@ let userId = getUserId();
     }
     tabVoting.addEventListener('click', showVotingPage);
     tabProfile.addEventListener('click', showProfilePage);
-
-    // UID пользователя
-    userUidEl.textContent = userId;
-    copyUidBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText(userId);
-        copyUidBtn.textContent = '✅';
-        setTimeout(() => { copyUidBtn.textContent = '📋'; }, 1200);
-    });
 
     // Загрузка реальных голосов пользователя
 async function fetchUserVotes() {
@@ -239,6 +262,13 @@ async function fetchUserVotes() {
     }
 
     async function renderProfile() {
+        // Always show the latest userId in the profile tab
+        userUidEl.textContent = userId;
+        copyUidBtn.onclick = () => {
+            navigator.clipboard.writeText(userId);
+            copyUidBtn.textContent = '✅';
+            setTimeout(() => { copyUidBtn.textContent = '📋'; }, 1200);
+        };
         const votes = await fetchUserVotes();
         const grouped = groupVotesByCountry(votes);
         let html = '';
