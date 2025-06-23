@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let votedCount = 0;
     let totalCount = 0;
 
-    const API_BASE_URL = 'http://localhost:3000';
+    const API_BASE_URL = 'https://telegram-city-rater-backend.onrender.com';
 
     function getUserId() {
         let id = localStorage.getItem('cityRaterUserId');
