@@ -2621,119 +2621,1992 @@
     "images": [],
     "cityId": "city_essentuki_0010"
   },
-  {"name": "Севилья", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_sevilya_0011"},
-  {"name": "Бильбао", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_bilbao_0012"},
-  {"name": "Сан-Себастьян", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_sansebastian_0013"},
-  {"name": "Валенсия", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_valensiya_0014"},
-  {"name": "Малага", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_malaga_0015"},
-  {"name": "Гранада", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_granada_0016"},
-  {"name": "Ронда", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_ronda_0017"},
-  {"name": "Кордоба", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_kordoba_0018"},
-  {"name": "Толедо", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_toledo_0019"},
-  {"name": "Овьедо", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_oviedo_0020"},
-  {"name": "Сантьяго-де-Компостела", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_santiago_0021"},
-  {"name": "Аликанте", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_alikante_0022"},
-  {"name": "Марбелья", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_marbelia_0023"},
-  {"name": "Кадис", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_kadis_0024"},
-  {"name": "Тенерифе", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_tenerife_0025"},
-  {"name": "Ла-Пальма", "country": "Испания", "flag": "🇪🇸", "images": [], "cityId": "city_lapalma_0026"},
-  {"name": "Саппоро", "country": "Япония", "flag": "🇯🇵", "images": [], "cityId": "city_sapporo_0027"},
-  {"name": "Хиросима", "country": "Япония", "flag": "🇯🇵", "images": [], "cityId": "city_hiroshima_0028"},
-  {"name": "Хаконе", "country": "Япония", "flag": "🇯🇵", "images": [], "cityId": "city_hakone_0029"},
-  {"name": "Нагоя", "country": "Япония", "flag": "🇯🇵", "images": [], "cityId": "city_nagoya_0030"},
-  {"name": "Улан-Батор", "country": "Монголия", "flag": "🇲🇳", "images": [], "cityId": "city_ulanbator_0031"},
-  {"name": "Анкара", "country": "Турция", "flag": "🇹🇷", "images": [], "cityId": "city_ankara_0032"},
-  {"name": "Лион", "country": "Франция", "flag": "🇫🇷", "images": [], "cityId": "city_lion_0033"},
-  {"name": "Страсбур", "country": "Франция", "flag": "🇫🇷", "images": [], "cityId": "city_strasbourg_0034"},
-  {"name": "Канны", "country": "Франция", "flag": "🇫🇷", "images": [], "cityId": "city_cannes_0035"},
-  {"name": "Марсель", "country": "Франция", "flag": "🇫🇷", "images": [], "cityId": "city_marseille_0036"},
-  {"name": "Нант", "country": "Франция", "flag": "🇫🇷", "images": [], "cityId": "city_nantes_0037"},
-  {"name": "Гавр", "country": "Франция", "flag": "🇫🇷", "images": [], "cityId": "city_havre_0038"},
-  {"name": "Тулуза", "country": "Франция", "flag": "🇫🇷", "images": [], "cityId": "city_toulouse_0039"},
-  {"name": "Гренобль", "country": "Франция", "flag": "🇫🇷", "images": [], "cityId": "city_grenoble_0040"},
-  {"name": "Реймс", "country": "Франция", "flag": "🇫🇷", "images": [], "cityId": "city_reims_0041"},
-  {"name": "Люксембург", "country": "Люксембург", "flag": "🇱🇺", "images": [], "cityId": "city_luxembourg_0042"},
-  {"name": "Аддис-Абеба", "country": "Эфиопия", "flag": "🇪🇹", "images": [], "cityId": "city_addisabeba_0043"},
-  {"name": "Миконос", "country": "Греция", "flag": "🇬🇷", "images": [], "cityId": "city_mykonos_0044"},
-  {"name": "Санторини", "country": "Греция", "flag": "🇬🇷", "images": [], "cityId": "city_santorini_0045"},
-  {"name": "Салоники", "country": "Греция", "flag": "🇬🇷", "images": [], "cityId": "city_saloniki_0046"},
-  {"name": "Инсбрук", "country": "Австрия", "flag": "🇦🇹", "images": [], "cityId": "city_innsbruck_0047"},
-  {"name": "Зальцбург", "country": "Австрия", "flag": "🇦🇹", "images": [], "cityId": "city_salzburg_0048"},
-  {"name": "Фуншал", "country": "Португалия", "flag": "🇵🇹", "images": [], "cityId": "city_funchal_0049"},
-  {"name": "Понта-Делгада", "country": "Португалия", "flag": "🇵🇹", "images": [], "cityId": "city_pontadelgada_0050"},
-  {"name": "Агадир", "country": "Марокко", "flag": "🇲🇦", "images": [], "cityId": "city_agadir_0051"},
-  {"name": "Эс-Суэйра", "country": "Марокко", "flag": "🇲🇦", "images": [], "cityId": "city_essaouira_0052"},
-  {"name": "Касабланка", "country": "Марокко", "flag": "🇲🇦", "images": [], "cityId": "city_casablanca_0053"},
-  {"name": "Рабат", "country": "Марокко", "flag": "🇲🇦", "images": [], "cityId": "city_rabat_0054"},
-  {"name": "Танжер", "country": "Марокко", "flag": "🇲🇦", "images": [], "cityId": "city_tangier_0055"},
-  {"name": "Фес", "country": "Марокко", "flag": "🇲🇦", "images": [], "cityId": "city_fes_0056"},
-  {"name": "Шефшауэн", "country": "Марокко", "flag": "🇲🇦", "images": [], "cityId": "city_chefchaouen_0057"},
-  {"name": "Мекнес", "country": "Марокко", "flag": "🇲🇦", "images": [], "cityId": "city_meknes_0058"},
-  {"name": "Занзибар", "country": "Танзания", "flag": "🇹🇿", "images": [], "cityId": "city_zanzibar_0059"},
-  {"name": "Дар-эс-Салам", "country": "Танзания", "flag": "🇹🇿", "images": [], "cityId": "city_dar_es_salaam_0060"},
-  {"name": "Аруша", "country": "Танзания", "flag": "🇹🇿", "images": [], "cityId": "city_arusha_0061"},
-  {"name": "Найроби", "country": "Кения", "flag": "🇰🇪", "images": [], "cityId": "city_nairobi_0062"},
-  {"name": "Вьентян", "country": "Лаос", "flag": "🇱🇦", "images": [], "cityId": "city_vientiane_0063"},
-  {"name": "Луангпхабанг", "country": "Лаос", "flag": "🇱🇦", "images": [], "cityId": "city_luangprabang_0064"},
-  {"name": "Пномпень", "country": "Камбоджа", "flag": "🇰🇭", "images": [], "cityId": "city_phnompenh_0065"},
-  {"name": "Сиемреап", "country": "Камбоджа", "flag": "🇰🇭", "images": [], "cityId": "city_siemreap_0066"},
-  {"name": "Янгон", "country": "Мьянма", "flag": "🇲🇲", "images": [], "cityId": "city_yangon_0067"},
-  {"name": "Мандалай", "country": "Мьянма", "flag": "🇲🇲", "images": [], "cityId": "city_mandalay_0068"},
-  {"name": "Нейпьидо", "country": "Мьянма", "flag": "🇲🇲", "images": [], "cityId": "city_naypyidaw_0069"},
-  {"name": "Санья", "country": "Китай", "flag": "🇨🇳", "images": [], "cityId": "city_sanya_0070"},
-  {"name": "Пхеньян", "country": "Северная Корея", "flag": "🇰🇵", "images": [], "cityId": "city_pyongyang_0071"},
-  {"name": "Дамаск", "country": "Сирия", "flag": "🇸🇾", "images": [], "cityId": "city_damascus_0072"},
-  {"name": "Бейрут", "country": "Ливан", "flag": "🇱🇧", "images": [], "cityId": "city_beirut_0073"},
-  {"name": "Турин", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_turin_0074"},
-  {"name": "Генуя", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_genoa_0075"},
-  {"name": "Болонья", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_bologna_0076"},
-  {"name": "Комо", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_como_0077"},
-  {"name": "Бергамо", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_bergamo_0078"},
-  {"name": "Пиза", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_pisa_0079"},
-  {"name": "Римини", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_rimini_0080"},
-  {"name": "Сан-Марино", "country": "Сан-Марино", "flag": "🇸🇲", "images": [], "cityId": "city_sanmarino_0081"},
-  {"name": "Чинкве-Терре", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_cinqueterre_0082"},
-  {"name": "Сиена", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_siena_0083"},
-  {"name": "Бари", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_bari_0084"},
-  {"name": "Палермо", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_palermo_0085"},
-  {"name": "Кальяри", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_cagliari_0086"},
-  {"name": "Матера", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_matera_0087"},
-  {"name": "Катанья", "country": "Италия", "flag": "🇮🇹", "images": [], "cityId": "city_catania_0088"},
-  {"name": "Дрезден", "country": "Германия", "flag": "🇩🇪", "images": [], "cityId": "city_dresden_0089"},
-  {"name": "Лейпциг", "country": "Германия", "flag": "🇩🇪", "images": [], "cityId": "city_leipzig_0090"},
-  {"name": "Денвер", "country": "США", "flag": "🇺🇸", "images": [], "cityId": "city_denver_0091"},
-  {"name": "Остин", "country": "США", "flag": "🇺🇸", "images": [], "cityId": "city_austin_0092"},
-  {"name": "Портленд", "country": "США", "flag": "🇺🇸", "images": [], "cityId": "city_portland_0093"},
-  {"name": "Солт-Лейк-Сити", "country": "США", "flag": "🇺🇸", "images": [], "cityId": "city_saltlakecity_0094"},
-  {"name": "Филадельфия", "country": "США", "flag": "🇺🇸", "images": [], "cityId": "city_philadelphia_0095"},
-  {"name": "Вашингтон", "country": "США", "flag": "🇺🇸", "images": [], "cityId": "city_washington_0096"},
-  {"name": "Манчестер", "country": "Великобритания", "flag": "🇬🇧", "images": [], "cityId": "city_manchester_0097"},
-  {"name": "Ливерпуль", "country": "Великобритания", "flag": "🇬🇧", "images": [], "cityId": "city_liverpool_0098"},
-  {"name": "Глазго", "country": "Великобритания", "flag": "🇬🇧", "images": [], "cityId": "city_glasgow_0099"},
-  {"name": "Эдинбург", "country": "Великобритания", "flag": "🇬🇧", "images": [], "cityId": "city_edinburgh_0100"},
-  {"name": "Кембридж", "country": "Великобритания", "flag": "🇬🇧", "images": [], "cityId": "city_cambridge_0101"},
-  {"name": "Оксфорд", "country": "Великобритания", "flag": "🇬🇧", "images": [], "cityId": "city_oxford_0102"},
-  {"name": "Кардифф", "country": "Великобритания", "flag": "🇬🇧", "images": [], "cityId": "city_cardiff_0103"},
-  {"name": "Борнмут", "country": "Великобритания", "flag": "🇬🇧", "images": [], "cityId": "city_bournemouth_0104"},
-  {"name": "Бирмингем", "country": "Великобритания", "flag": "🇬🇧", "images": [], "cityId": "city_birmingham_0105"},
-  {"name": "Белфаст", "country": "Великобритания", "flag": "🇬🇧", "images": [], "cityId": "city_belfast_0106"},
-  {"name": "Рейкьявик", "country": "Исландия", "flag": "🇮🇸", "images": [], "cityId": "city_reykjavik_0107"},
-  {"name": "Мале", "country": "Мальдивы", "flag": "🇲🇻", "images": [], "cityId": "city_male_0108"},
-  {"name": "Виктория", "country": "Сейшелы", "flag": "🇸🇨", "images": [], "cityId": "city_victoria_0109"},
-  {"name": "Праслен", "country": "Сейшелы", "flag": "🇸🇨", "images": [], "cityId": "city_praslin_0110"},
-  {"name": "Ла-Диг", "country": "Сейшелы", "flag": "🇸🇨", "images": [], "cityId": "city_ladigue_0111"},
-  {"name": "Буэнос-Айрес", "country": "Аргентина", "flag": "🇦🇷", "images": [], "cityId": "city_buenosaires_0112"},
-  {"name": "Ушуайя", "country": "Аргентина", "flag": "🇦🇷", "images": [], "cityId": "city_ushuaia_0113"},
-  {"name": "Эль Калафате", "country": "Аргентина", "flag": "🇦🇷", "images": [], "cityId": "city_elcalafate_0114"},
-  {"name": "Мендоса", "country": "Аргентина", "flag": "🇦🇷", "images": [], "cityId": "city_mendoza_0115"},
-  {"name": "Сантьяго", "country": "Чили", "flag": "🇨🇱", "images": [], "cityId": "city_santiago_0116"},
-  {"name": "Вальпараисо", "country": "Чили", "flag": "🇨🇱", "images": [], "cityId": "city_valparaiso_0117"},
-  {"name": "Пунта Аренас", "country": "Чили", "flag": "🇨🇱", "images": [], "cityId": "city_puntaarenas_0118"},
-  {"name": "Антофагаста", "country": "Чили", "flag": "🇨🇱", "images": [], "cityId": "city_antofagasta_0119"},
-  {"name": "Монтевидео", "country": "Уругвай", "flag": "🇺🇾", "images": [], "cityId": "city_montevideo_0120"},
-  {"name": "Сан-Паулу", "country": "Бразилия", "flag": "🇧🇷", "images": [], "cityId": "city_sanpaulo_0121"},
-  {"name": "Медельин", "country": "Колумбия", "flag": "🇨🇴", "images": [], "cityId": "city_medellin_0122"},
-  {"name": "Маскат", "country": "Оман", "flag": "🇴🇲", "images": [], "cityId": "city_muscat_0123"},
-  {"name": "Низва", "country": "Оман", "flag": "🇴🇲", "images": [], "cityId": "city_nizwa_0124"},
-  {"name": "Сокотра", "country": "Йемен", "flag": "🇾🇪", "images": [], "cityId": "city_sokotra_0126"}
+  {
+    "name": "Севилья",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_sevilya_0011"
+  },
+  {
+    "name": "Бильбао",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_bilbao_0012"
+  },
+  {
+    "name": "Сан-Себастьян",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_sansebastian_0013"
+  },
+  {
+    "name": "Валенсия",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_valensiya_0014"
+  },
+  {
+    "name": "Малага",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_malaga_0015"
+  },
+  {
+    "name": "Гранада",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_granada_0016"
+  },
+  {
+    "name": "Ронда",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_ronda_0017"
+  },
+  {
+    "name": "Кордоба",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_kordoba_0018"
+  },
+  {
+    "name": "Толедо",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_toledo_0019"
+  },
+  {
+    "name": "Овьедо",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_oviedo_0020"
+  },
+  {
+    "name": "Сантьяго-де-Компостела",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_santiago_0021"
+  },
+  {
+    "name": "Аликанте",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_alikante_0022"
+  },
+  {
+    "name": "Марбелья",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_marbelia_0023"
+  },
+  {
+    "name": "Кадис",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_kadis_0024"
+  },
+  {
+    "name": "Тенерифе",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_tenerife_0025"
+  },
+  {
+    "name": "Ла-Пальма",
+    "country": "Испания",
+    "flag": "🇪🇸",
+    "images": [],
+    "cityId": "city_lapalma_0026"
+  },
+  {
+    "name": "Саппоро",
+    "country": "Япония",
+    "flag": "🇯🇵",
+    "images": [],
+    "cityId": "city_sapporo_0027"
+  },
+  {
+    "name": "Хиросима",
+    "country": "Япония",
+    "flag": "🇯🇵",
+    "images": [],
+    "cityId": "city_hiroshima_0028"
+  },
+  {
+    "name": "Хаконе",
+    "country": "Япония",
+    "flag": "🇯🇵",
+    "images": [],
+    "cityId": "city_hakone_0029"
+  },
+  {
+    "name": "Нагоя",
+    "country": "Япония",
+    "flag": "🇯🇵",
+    "images": [],
+    "cityId": "city_nagoya_0030"
+  },
+  {
+    "name": "Улан-Батор",
+    "country": "Монголия",
+    "flag": "🇲🇳",
+    "images": [],
+    "cityId": "city_ulanbator_0031"
+  },
+  {
+    "name": "Анкара",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": [],
+    "cityId": "city_ankara_0032"
+  },
+  {
+    "name": "Лион",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_lion_0033"
+  },
+  {
+    "name": "Страсбур",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_strasbourg_0034"
+  },
+  {
+    "name": "Канны",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_cannes_0035"
+  },
+  {
+    "name": "Марсель",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_marseille_0036"
+  },
+  {
+    "name": "Нант",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_nantes_0037"
+  },
+  {
+    "name": "Гавр",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_havre_0038"
+  },
+  {
+    "name": "Тулуза",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_toulouse_0039"
+  },
+  {
+    "name": "Гренобль",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_grenoble_0040"
+  },
+  {
+    "name": "Реймс",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_reims_0041"
+  },
+  {
+    "name": "Люксембург",
+    "country": "Люксембург",
+    "flag": "🇱🇺",
+    "images": [],
+    "cityId": "city_luxembourg_0042"
+  },
+  {
+    "name": "Аддис-Абеба",
+    "country": "Эфиопия",
+    "flag": "🇪🇹",
+    "images": [],
+    "cityId": "city_addisabeba_0043"
+  },
+  {
+    "name": "Миконос",
+    "country": "Греция",
+    "flag": "🇬🇷",
+    "images": [],
+    "cityId": "city_mykonos_0044"
+  },
+  {
+    "name": "Санторини",
+    "country": "Греция",
+    "flag": "🇬🇷",
+    "images": [],
+    "cityId": "city_santorini_0045"
+  },
+  {
+    "name": "Салоники",
+    "country": "Греция",
+    "flag": "🇬🇷",
+    "images": [],
+    "cityId": "city_saloniki_0046"
+  },
+  {
+    "name": "Инсбрук",
+    "country": "Австрия",
+    "flag": "🇦🇹",
+    "images": [],
+    "cityId": "city_innsbruck_0047"
+  },
+  {
+    "name": "Зальцбург",
+    "country": "Австрия",
+    "flag": "🇦🇹",
+    "images": [],
+    "cityId": "city_salzburg_0048"
+  },
+  {
+    "name": "Фуншал",
+    "country": "Португалия",
+    "flag": "🇵🇹",
+    "images": [],
+    "cityId": "city_funchal_0049"
+  },
+  {
+    "name": "Понта-Делгада",
+    "country": "Португалия",
+    "flag": "🇵🇹",
+    "images": [],
+    "cityId": "city_pontadelgada_0050"
+  },
+  {
+    "name": "Агадир",
+    "country": "Марокко",
+    "flag": "🇲🇦",
+    "images": [],
+    "cityId": "city_agadir_0051"
+  },
+  {
+    "name": "Эс-Суэйра",
+    "country": "Марокко",
+    "flag": "🇲🇦",
+    "images": [],
+    "cityId": "city_essaouira_0052"
+  },
+  {
+    "name": "Касабланка",
+    "country": "Марокко",
+    "flag": "🇲🇦",
+    "images": [],
+    "cityId": "city_casablanca_0053"
+  },
+  {
+    "name": "Рабат",
+    "country": "Марокко",
+    "flag": "🇲🇦",
+    "images": [],
+    "cityId": "city_rabat_0054"
+  },
+  {
+    "name": "Танжер",
+    "country": "Марокко",
+    "flag": "🇲🇦",
+    "images": [],
+    "cityId": "city_tangier_0055"
+  },
+  {
+    "name": "Фес",
+    "country": "Марокко",
+    "flag": "🇲🇦",
+    "images": [],
+    "cityId": "city_fes_0056"
+  },
+  {
+    "name": "Шефшауэн",
+    "country": "Марокко",
+    "flag": "🇲🇦",
+    "images": [],
+    "cityId": "city_chefchaouen_0057"
+  },
+  {
+    "name": "Мекнес",
+    "country": "Марокко",
+    "flag": "🇲🇦",
+    "images": [],
+    "cityId": "city_meknes_0058"
+  },
+  {
+    "name": "Занзибар",
+    "country": "Танзания",
+    "flag": "🇹🇿",
+    "images": [],
+    "cityId": "city_zanzibar_0059"
+  },
+  {
+    "name": "Дар-эс-Салам",
+    "country": "Танзания",
+    "flag": "🇹🇿",
+    "images": [],
+    "cityId": "city_dar_es_salaam_0060"
+  },
+  {
+    "name": "Аруша",
+    "country": "Танзания",
+    "flag": "🇹🇿",
+    "images": [],
+    "cityId": "city_arusha_0061"
+  },
+  {
+    "name": "Найроби",
+    "country": "Кения",
+    "flag": "🇰🇪",
+    "images": [],
+    "cityId": "city_nairobi_0062"
+  },
+  {
+    "name": "Вьентян",
+    "country": "Лаос",
+    "flag": "🇱🇦",
+    "images": [],
+    "cityId": "city_vientiane_0063"
+  },
+  {
+    "name": "Луангпхабанг",
+    "country": "Лаос",
+    "flag": "🇱🇦",
+    "images": [],
+    "cityId": "city_luangprabang_0064"
+  },
+  {
+    "name": "Пномпень",
+    "country": "Камбоджа",
+    "flag": "🇰🇭",
+    "images": [],
+    "cityId": "city_phnompenh_0065"
+  },
+  {
+    "name": "Сиемреап",
+    "country": "Камбоджа",
+    "flag": "🇰🇭",
+    "images": [],
+    "cityId": "city_siemreap_0066"
+  },
+  {
+    "name": "Янгон",
+    "country": "Мьянма",
+    "flag": "🇲🇲",
+    "images": [],
+    "cityId": "city_yangon_0067"
+  },
+  {
+    "name": "Мандалай",
+    "country": "Мьянма",
+    "flag": "🇲🇲",
+    "images": [],
+    "cityId": "city_mandalay_0068"
+  },
+  {
+    "name": "Нейпьидо",
+    "country": "Мьянма",
+    "flag": "🇲🇲",
+    "images": [],
+    "cityId": "city_naypyidaw_0069"
+  },
+  {
+    "name": "Санья",
+    "country": "Китай",
+    "flag": "🇨🇳",
+    "images": [],
+    "cityId": "city_sanya_0070"
+  },
+  {
+    "name": "Пхеньян",
+    "country": "Северная Корея",
+    "flag": "🇰🇵",
+    "images": [],
+    "cityId": "city_pyongyang_0071"
+  },
+  {
+    "name": "Дамаск",
+    "country": "Сирия",
+    "flag": "🇸🇾",
+    "images": [],
+    "cityId": "city_damascus_0072"
+  },
+  {
+    "name": "Бейрут",
+    "country": "Ливан",
+    "flag": "🇱🇧",
+    "images": [],
+    "cityId": "city_beirut_0073"
+  },
+  {
+    "name": "Турин",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_turin_0074"
+  },
+  {
+    "name": "Генуя",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_genoa_0075"
+  },
+  {
+    "name": "Болонья",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_bologna_0076"
+  },
+  {
+    "name": "Комо",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_como_0077"
+  },
+  {
+    "name": "Бергамо",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_bergamo_0078"
+  },
+  {
+    "name": "Пиза",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_pisa_0079"
+  },
+  {
+    "name": "Римини",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_rimini_0080"
+  },
+  {
+    "name": "Сан-Марино",
+    "country": "Сан-Марино",
+    "flag": "🇸🇲",
+    "images": [],
+    "cityId": "city_sanmarino_0081"
+  },
+  {
+    "name": "Чинкве-Терре",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_cinqueterre_0082"
+  },
+  {
+    "name": "Сиена",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_siena_0083"
+  },
+  {
+    "name": "Бари",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_bari_0084"
+  },
+  {
+    "name": "Палермо",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_palermo_0085"
+  },
+  {
+    "name": "Кальяри",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_cagliari_0086"
+  },
+  {
+    "name": "Матера",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_matera_0087"
+  },
+  {
+    "name": "Катанья",
+    "country": "Италия",
+    "flag": "🇮🇹",
+    "images": [],
+    "cityId": "city_catania_0088"
+  },
+  {
+    "name": "Дрезден",
+    "country": "Германия",
+    "flag": "🇩🇪",
+    "images": [],
+    "cityId": "city_dresden_0089"
+  },
+  {
+    "name": "Лейпциг",
+    "country": "Германия",
+    "flag": "🇩🇪",
+    "images": [],
+    "cityId": "city_leipzig_0090"
+  },
+  {
+    "name": "Денвер",
+    "country": "США",
+    "flag": "🇺🇸",
+    "images": [],
+    "cityId": "city_denver_0091"
+  },
+  {
+    "name": "Остин",
+    "country": "США",
+    "flag": "🇺🇸",
+    "images": [],
+    "cityId": "city_austin_0092"
+  },
+  {
+    "name": "Портленд",
+    "country": "США",
+    "flag": "🇺🇸",
+    "images": [],
+    "cityId": "city_portland_0093"
+  },
+  {
+    "name": "Солт-Лейк-Сити",
+    "country": "США",
+    "flag": "🇺🇸",
+    "images": [],
+    "cityId": "city_saltlakecity_0094"
+  },
+  {
+    "name": "Филадельфия",
+    "country": "США",
+    "flag": "🇺🇸",
+    "images": [],
+    "cityId": "city_philadelphia_0095"
+  },
+  {
+    "name": "Вашингтон",
+    "country": "США",
+    "flag": "🇺🇸",
+    "images": [],
+    "cityId": "city_washington_0096"
+  },
+  {
+    "name": "Манчестер",
+    "country": "Великобритания",
+    "flag": "🇬🇧",
+    "images": [],
+    "cityId": "city_manchester_0097"
+  },
+  {
+    "name": "Ливерпуль",
+    "country": "Великобритания",
+    "flag": "🇬🇧",
+    "images": [],
+    "cityId": "city_liverpool_0098"
+  },
+  {
+    "name": "Глазго",
+    "country": "Великобритания",
+    "flag": "🇬🇧",
+    "images": [],
+    "cityId": "city_glasgow_0099"
+  },
+  {
+    "name": "Эдинбург",
+    "country": "Великобритания",
+    "flag": "🇬🇧",
+    "images": [],
+    "cityId": "city_edinburgh_0100"
+  },
+  {
+    "name": "Кембридж",
+    "country": "Великобритания",
+    "flag": "🇬🇧",
+    "images": [],
+    "cityId": "city_cambridge_0101"
+  },
+  {
+    "name": "Оксфорд",
+    "country": "Великобритания",
+    "flag": "🇬🇧",
+    "images": [],
+    "cityId": "city_oxford_0102"
+  },
+  {
+    "name": "Кардифф",
+    "country": "Великобритания",
+    "flag": "🇬🇧",
+    "images": [],
+    "cityId": "city_cardiff_0103"
+  },
+  {
+    "name": "Борнмут",
+    "country": "Великобритания",
+    "flag": "🇬🇧",
+    "images": [],
+    "cityId": "city_bournemouth_0104"
+  },
+  {
+    "name": "Бирмингем",
+    "country": "Великобритания",
+    "flag": "🇬🇧",
+    "images": [],
+    "cityId": "city_birmingham_0105"
+  },
+  {
+    "name": "Белфаст",
+    "country": "Великобритания",
+    "flag": "🇬🇧",
+    "images": [],
+    "cityId": "city_belfast_0106"
+  },
+  {
+    "name": "Рейкьявик",
+    "country": "Исландия",
+    "flag": "🇮🇸",
+    "images": [],
+    "cityId": "city_reykjavik_0107"
+  },
+  {
+    "name": "Мале",
+    "country": "Мальдивы",
+    "flag": "🇲🇻",
+    "images": [],
+    "cityId": "city_male_0108"
+  },
+  {
+    "name": "Виктория",
+    "country": "Сейшелы",
+    "flag": "🇸🇨",
+    "images": [],
+    "cityId": "city_victoria_0109"
+  },
+  {
+    "name": "Праслен",
+    "country": "Сейшелы",
+    "flag": "🇸🇨",
+    "images": [],
+    "cityId": "city_praslin_0110"
+  },
+  {
+    "name": "Ла-Диг",
+    "country": "Сейшелы",
+    "flag": "🇸🇨",
+    "images": [],
+    "cityId": "city_ladigue_0111"
+  },
+  {
+    "name": "Буэнос-Айрес",
+    "country": "Аргентина",
+    "flag": "🇦🇷",
+    "images": [],
+    "cityId": "city_buenosaires_0112"
+  },
+  {
+    "name": "Ушуайя",
+    "country": "Аргентина",
+    "flag": "🇦🇷",
+    "images": [],
+    "cityId": "city_ushuaia_0113"
+  },
+  {
+    "name": "Эль Калафате",
+    "country": "Аргентина",
+    "flag": "🇦🇷",
+    "images": [],
+    "cityId": "city_elcalafate_0114"
+  },
+  {
+    "name": "Мендоса",
+    "country": "Аргентина",
+    "flag": "🇦🇷",
+    "images": [],
+    "cityId": "city_mendoza_0115"
+  },
+  {
+    "name": "Сантьяго",
+    "country": "Чили",
+    "flag": "🇨🇱",
+    "images": [],
+    "cityId": "city_santiago_0116"
+  },
+  {
+    "name": "Вальпараисо",
+    "country": "Чили",
+    "flag": "🇨🇱",
+    "images": [],
+    "cityId": "city_valparaiso_0117"
+  },
+  {
+    "name": "Пунта Аренас",
+    "country": "Чили",
+    "flag": "🇨🇱",
+    "images": [],
+    "cityId": "city_puntaarenas_0118"
+  },
+  {
+    "name": "Антофагаста",
+    "country": "Чили",
+    "flag": "🇨🇱",
+    "images": [],
+    "cityId": "city_antofagasta_0119"
+  },
+  {
+    "name": "Монтевидео",
+    "country": "Уругвай",
+    "flag": "🇺🇾",
+    "images": [],
+    "cityId": "city_montevideo_0120"
+  },
+  {
+    "name": "Сан-Паулу",
+    "country": "Бразилия",
+    "flag": "🇧🇷",
+    "images": [],
+    "cityId": "city_sanpaulo_0121"
+  },
+  {
+    "name": "Медельин",
+    "country": "Колумбия",
+    "flag": "🇨🇴",
+    "images": [],
+    "cityId": "city_medellin_0122"
+  },
+  {
+    "name": "Маскат",
+    "country": "Оман",
+    "flag": "🇴🇲",
+    "images": [],
+    "cityId": "city_muscat_0123"
+  },
+  {
+    "name": "Низва",
+    "country": "Оман",
+    "flag": "🇴🇲",
+    "images": [],
+    "cityId": "city_nizwa_0124"
+  },
+  {
+    "name": "Сокотра",
+    "country": "Йемен",
+    "flag": "🇾🇪",
+    "images": [],
+    "cityId": "city_sokotra_0126"
+  },
+  {
+    "name": "Аделаида",
+    "country": "Австралия",
+    "flag": "🇦🇺",
+    "images": [],
+    "cityId": "city_adelaida_9983"
+  },
+  {
+    "name": "Актау",
+    "country": "Казахстан",
+    "flag": "🇰🇿",
+    "images": [],
+    "cityId": "city_aktau_9984"
+  },
+  {
+    "name": "Актобе",
+    "country": "Казахстан",
+    "flag": "🇰🇿",
+    "images": [],
+    "cityId": "city_aktobe_9985"
+  },
+  {
+    "name": "Алжир",
+    "country": "Алжир",
+    "flag": "🇩��",
+    "images": [],
+    "cityId": "city_alzhir_9986"
+  },
+  {
+    "name": "Амьен",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_amen_9987"
+  },
+  {
+    "name": "Андорра-ла-Велья",
+    "country": "Андорра",
+    "flag": "🇦🇩",
+    "images": [],
+    "cityId": "city_andorralavelya_9988"
+  },
+  {
+    "name": "Антверпен",
+    "country": "Бельгия",
+    "flag": "🇧🇪",
+    "images": [],
+    "cityId": "city_antverpen_9989"
+  },
+  {
+    "name": "Атырау",
+    "country": "Казахстан",
+    "flag": "🇰🇿",
+    "images": [],
+    "cityId": "city_atyrau_9990"
+  },
+  {
+    "name": "Базель",
+    "country": "Швейцария",
+    "flag": "🇨🇭",
+    "images": [],
+    "cityId": "city_bazel_9991"
+  },
+  {
+    "name": "Бандар-Сери-Бегаван",
+    "country": "Бруней",
+    "flag": "🇧🇳",
+    "images": [],
+    "cityId": "city_bandarseribegav_9992"
+  },
+  {
+    "name": "Баня-Лука",
+    "country": "Босния и Герцеговина",
+    "flag": "🇧🇦",
+    "images": [],
+    "cityId": "city_banyaluka_9993"
+  },
+  {
+    "name": "Бар",
+    "country": "Черногория",
+    "flag": "🇲🇪",
+    "images": [],
+    "cityId": "city_bar_9994"
+  },
+  {
+    "name": "Барановичи",
+    "country": "Беларусь",
+    "flag": "🇧🇾",
+    "images": [],
+    "cityId": "city_baranovichi_9995"
+  },
+  {
+    "name": "Белен",
+    "country": "Бразилия",
+    "flag": "🇧🇷",
+    "images": [],
+    "cityId": "city_belen_9996"
+  },
+  {
+    "name": "Белиз Сити",
+    "country": "Белиз",
+    "flag": "🇧🇿",
+    "images": [],
+    "cityId": "city_belizsiti_9997"
+  },
+  {
+    "name": "Белу-Оризонти",
+    "country": "Бразилия",
+    "flag": "🇧🇷",
+    "images": [],
+    "cityId": "city_beluorizonti_9998"
+  },
+  {
+    "name": "Берн",
+    "country": "Швейцария",
+    "flag": "🇨🇭",
+    "images": [],
+    "cityId": "city_bern_9999"
+  },
+  {
+    "name": "Бобруйск",
+    "country": "Беларусь",
+    "flag": "��🇾",
+    "images": [],
+    "cityId": "city_bobruysk_10000"
+  },
+  {
+    "name": "Борисов",
+    "country": "Беларусь",
+    "flag": "🇧🇾",
+    "images": [],
+    "cityId": "city_borisov_10001"
+  },
+  {
+    "name": "Брага",
+    "country": "Португалия",
+    "flag": "🇵🇹",
+    "images": [],
+    "cityId": "city_braga_10002"
+  },
+  {
+    "name": "Бразилиа",
+    "country": "Бразилия",
+    "flag": "🇧🇷",
+    "images": [],
+    "cityId": "city_brazilia_10003"
+  },
+  {
+    "name": "Брест",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_brest_10004"
+  },
+  {
+    "name": "Бриджтаун",
+    "country": "Барбадос",
+    "flag": "🇧🇧",
+    "images": [],
+    "cityId": "city_bridzhtaun_10005"
+  },
+  {
+    "name": "Брисбен",
+    "country": "Австралия",
+    "flag": "🇦🇺",
+    "images": [],
+    "cityId": "city_brisben_10006"
+  },
+  {
+    "name": "Брюгге",
+    "country": "Бельгия",
+    "flag": "🇧🇪",
+    "images": [],
+    "cityId": "city_bryugge_10007"
+  },
+  {
+    "name": "Бужумбура",
+    "country": "Бурунди",
+    "flag": "🇧🇮",
+    "images": [],
+    "cityId": "city_buzhumbura_10008"
+  },
+  {
+    "name": "Бургас",
+    "country": "Болгария",
+    "flag": "🇧🇬",
+    "images": [],
+    "cityId": "city_burgas_10009"
+  },
+  {
+    "name": "Быдгощ",
+    "country": "Польша",
+    "flag": "🇵🇱",
+    "images": [],
+    "cityId": "city_bydgosch_10010"
+  },
+  {
+    "name": "Валли",
+    "country": "Ангилья",
+    "flag": "��🇮",
+    "images": [],
+    "cityId": "city_valli_10011"
+  },
+  {
+    "name": "Ванадзор",
+    "country": "Армения",
+    "flag": "🇦🇲",
+    "images": [],
+    "cityId": "city_vanadzor_10012"
+  },
+  {
+    "name": "Варна",
+    "country": "Болгария",
+    "flag": "🇧🇬",
+    "images": [],
+    "cityId": "city_varna_10013"
+  },
+  {
+    "name": "Виннипег",
+    "country": "Канада",
+    "flag": "🇨🇦",
+    "images": [],
+    "cityId": "city_vinnipeg_10014"
+  },
+  {
+    "name": "Вроцлав",
+    "country": "Польша",
+    "flag": "🇵🇱",
+    "images": [],
+    "cityId": "city_vrotslav_10015"
+  },
+  {
+    "name": "Гаага",
+    "country": "Нидерланды",
+    "flag": "🇳🇱",
+    "images": [],
+    "cityId": "city_gaaga_10016"
+  },
+  {
+    "name": "Габороне",
+    "country": "Ботсвана",
+    "flag": "🇧🇼",
+    "images": [],
+    "cityId": "city_gaborone_10017"
+  },
+  {
+    "name": "Газимагуса",
+    "country": "Северный Кипр",
+    "flag": "🇹🇷",
+    "images": [],
+    "cityId": "city_gazimagusa_10018"
+  },
+  {
+    "name": "Галифакс",
+    "country": "Канада",
+    "flag": "🇨🇦",
+    "images": [],
+    "cityId": "city_galifaks_10019"
+  },
+  {
+    "name": "Гамильтон",
+    "country": "Бермуды",
+    "flag": "🇧🇲",
+    "images": [],
+    "cityId": "city_gamilton_10020"
+  },
+  {
+    "name": "Гданьск",
+    "country": "Польша",
+    "flag": "🇵🇱",
+    "images": [],
+    "cityId": "city_gdansk_10021"
+  },
+  {
+    "name": "Гент",
+    "country": "Бельгия",
+    "flag": "🇧🇪",
+    "images": [],
+    "cityId": "city_gent_10022"
+  },
+  {
+    "name": "Гимарайнш",
+    "country": "Португалия",
+    "flag": "🇵🇹",
+    "images": [],
+    "cityId": "city_gimaraynsh_10023"
+  },
+  {
+    "name": "Гирне",
+    "country": "Северный Кипр",
+    "flag": "🇹🇷",
+    "images": [],
+    "cityId": "city_girne_10024"
+  },
+  {
+    "name": "Гитега",
+    "country": "Бурунди",
+    "flag": "🇧🇮",
+    "images": [],
+    "cityId": "city_gitega_10025"
+  },
+  {
+    "name": "Грац",
+    "country": "Австрия",
+    "flag": "🇦🇹",
+    "images": [],
+    "cityId": "city_grats_10026"
+  },
+  {
+    "name": "Гюмри",
+    "country": "Армения",
+    "flag": "🇦🇲",
+    "images": [],
+    "cityId": "city_gyumri_10027"
+  },
+  {
+    "name": "Гянджа",
+    "country": "Азербайджан",
+    "flag": "🇦🇿",
+    "images": [],
+    "cityId": "city_gyandzha_10028"
+  },
+  {
+    "name": "Далянь",
+    "country": "Китай",
+    "flag": "🇨🇳",
+    "images": [],
+    "cityId": "city_dalyan_10029"
+  },
+  {
+    "name": "Дижон",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_dizhon_10030"
+  },
+  {
+    "name": "Дилижан",
+    "country": "Армения",
+    "flag": "🇦🇲",
+    "images": [],
+    "cityId": "city_dilizhan_10031"
+  },
+  {
+    "name": "Дуала",
+    "country": "Камерун",
+    "flag": "🇨🇲",
+    "images": [],
+    "cityId": "city_duala_10032"
+  },
+  {
+    "name": "Дубровник",
+    "country": "Хорватия",
+    "flag": "🇭🇷",
+    "images": [],
+    "cityId": "city_dubrovnik_10033"
+  },
+  {
+    "name": "Дунгуань",
+    "country": "Китай",
+    "flag": "🇨🇳",
+    "images": [],
+    "cityId": "city_dunguan_10034"
+  },
+  {
+    "name": "Женева",
+    "country": "Швейцария",
+    "flag": "🇨🇭",
+    "images": [],
+    "cityId": "city_zheneva_10035"
+  },
+  {
+    "name": "Задар",
+    "country": "Хорватия",
+    "flag": "🇭🇷",
+    "images": [],
+    "cityId": "city_zadar_10036"
+  },
+  {
+    "name": "Ижевск",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": [],
+    "cityId": "city_izhevsk_10037"
+  },
+  {
+    "name": "Иокогама",
+    "country": "Япония",
+    "flag": "🇯🇵",
+    "images": [],
+    "cityId": "city_iokogama_10038"
+  },
+  {
+    "name": "Кабул",
+    "country": "Афганистан",
+    "flag": "🇦🇫",
+    "images": [],
+    "cityId": "city_kabul_10039"
+  },
+  {
+    "name": "Кавасаки",
+    "country": "Япония",
+    "flag": "🇯🇵",
+    "images": [],
+    "cityId": "city_kavasaki_10040"
+  },
+  {
+    "name": "Калгари",
+    "country": "Канада",
+    "flag": "🇨🇦",
+    "images": [],
+    "cityId": "city_kalgari_10041"
+  },
+  {
+    "name": "Кале",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_kale_10042"
+  },
+  {
+    "name": "Канберра",
+    "country": "Австралия",
+    "flag": "🇦🇺",
+    "images": [],
+    "cityId": "city_kanberra_10043"
+  },
+  {
+    "name": "Караганда",
+    "country": "Казахстан",
+    "flag": "��🇿",
+    "images": [],
+    "cityId": "city_karaganda_10044"
+  },
+  {
+    "name": "Квебек",
+    "country": "Канада",
+    "flag": "🇨🇦",
+    "images": [],
+    "cityId": "city_kvebek_10045"
+  },
+  {
+    "name": "Кигали",
+    "country": "Руанда",
+    "flag": "🇷🇼",
+    "images": [],
+    "cityId": "city_kigali_10046"
+  },
+  {
+    "name": "Китакюсю",
+    "country": "Япония",
+    "flag": "🇯🇵",
+    "images": [],
+    "cityId": "city_kitakyusyu_10047"
+  },
+  {
+    "name": "Китцбюэль",
+    "country": "Австрия",
+    "flag": "🇦🇹",
+    "images": [],
+    "cityId": "city_kittsbyuel_10048"
+  },
+  {
+    "name": "Кобе",
+    "country": "Япония",
+    "flag": "🇯🇵",
+    "images": [],
+    "cityId": "city_kobe_10049"
+  },
+  {
+    "name": "Коимбра",
+    "country": "Португалия",
+    "flag": "🇵🇹",
+    "images": [],
+    "cityId": "city_koimbra_10050"
+  },
+  {
+    "name": "Кордова",
+    "country": "Аргентина",
+    "flag": "🇦🇷",
+    "images": [],
+    "cityId": "city_kordova_10051"
+  },
+  {
+    "name": "Котону",
+    "country": "Бенин",
+    "flag": "🇧🇯",
+    "images": [],
+    "cityId": "city_kotonu_10052"
+  },
+  {
+    "name": "Кошице",
+    "country": "Словакия",
+    "flag": "🇸🇰",
+    "images": [],
+    "cityId": "city_koshitse_10053"
+  },
+  {
+    "name": "Кралендейк",
+    "country": "Бонайре",
+    "flag": "🇳🇱",
+    "images": [],
+    "cityId": "city_kralendeyk_10054"
+  },
+  {
+    "name": "Красная Поляна",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": [],
+    "cityId": "city_krasnayapolyana_10055"
+  },
+  {
+    "name": "Кумамото",
+    "country": "Япония",
+    "flag": "🇯🇵",
+    "images": [],
+    "cityId": "city_kumamoto_10056"
+  },
+  {
+    "name": "Куритиба",
+    "country": "Бразилия",
+    "flag": "🇧🇷",
+    "images": [],
+    "cityId": "city_kuritiba_10057"
+  },
+  {
+    "name": "Ла-Пас",
+    "country": "Боливия",
+    "flag": "🇧🇴",
+    "images": [],
+    "cityId": "city_lapas_10058"
+  },
+  {
+    "name": "Лефкоша",
+    "country": "Северный Кипр",
+    "flag": "🇹🇷",
+    "images": [],
+    "cityId": "city_lefkosha_10059"
+  },
+  {
+    "name": "Линц",
+    "country": "Австрия",
+    "flag": "🇦🇹",
+    "images": [],
+    "cityId": "city_lints_10060"
+  },
+  {
+    "name": "Липецк",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": [],
+    "cityId": "city_lipetsk_10061"
+  },
+  {
+    "name": "Лодзь",
+    "country": "Польша",
+    "flag": "🇵🇱",
+    "images": [],
+    "cityId": "city_lodz_10062"
+  },
+  {
+    "name": "Лозанна",
+    "country": "Швейцария",
+    "flag": "🇨🇭",
+    "images": [],
+    "cityId": "city_lozanna_10063"
+  },
+  {
+    "name": "Луанда",
+    "country": "Ангола",
+    "flag": "🇦🇴",
+    "images": [],
+    "cityId": "city_luanda_10064"
+  },
+  {
+    "name": "Лугано",
+    "country": "Швейцария",
+    "flag": "🇨🇭",
+    "images": [],
+    "cityId": "city_lugano_10065"
+  },
+  {
+    "name": "Льеж",
+    "country": "Бельгия",
+    "flag": "🇧🇪",
+    "images": [],
+    "cityId": "city_lezh_10066"
+  },
+  {
+    "name": "Люблин",
+    "country": "Польша",
+    "flag": "🇵🇱",
+    "images": [],
+    "cityId": "city_lyublin_10067"
+  },
+  {
+    "name": "Люцерн",
+    "country": "Швейцария",
+    "flag": "🇨🇭",
+    "images": [],
+    "cityId": "city_lyutsern_10068"
+  },
+  {
+    "name": "Маастрихт",
+    "country": "Нидерланды",
+    "flag": "🇳🇱",
+    "images": [],
+    "cityId": "city_maastrikht_10069"
+  },
+  {
+    "name": "Манаус",
+    "country": "Бразилия",
+    "flag": "🇧🇷",
+    "images": [],
+    "cityId": "city_manaus_10070"
+  },
+  {
+    "name": "Мариехамн",
+    "country": "Аландские о-ва",
+    "flag": "🇫🇮",
+    "images": [],
+    "cityId": "city_mariekhamn_10071"
+  },
+  {
+    "name": "Мец",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_mets_10072"
+  },
+  {
+    "name": "Могилев",
+    "country": "Беларусь",
+    "flag": "🇧🇾",
+    "images": [],
+    "cityId": "city_mogilev_10073"
+  },
+  {
+    "name": "Момбаса",
+    "country": "Кения",
+    "flag": "🇰🇪",
+    "images": [],
+    "cityId": "city_mombasa_10074"
+  },
+  {
+    "name": "Монако",
+    "country": "Монако",
+    "flag": "🇲🇨",
+    "images": [],
+    "cityId": "city_monako_10075"
+  },
+  {
+    "name": "Мостар",
+    "country": "Босния и Герцеговина",
+    "flag": "🇧🇦",
+    "images": [],
+    "cityId": "city_mostar_10076"
+  },
+  {
+    "name": "Муром",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": [],
+    "cityId": "city_murom_10077"
+  },
+  {
+    "name": "Мухаррак",
+    "country": "Бахрейн",
+    "flag": "🇧🇭",
+    "images": [],
+    "cityId": "city_mukharrak_10078"
+  },
+  {
+    "name": "Нагасаки",
+    "country": "Япония",
+    "flag": "🇯🇵",
+    "images": [],
+    "cityId": "city_nagasaki_10079"
+  },
+  {
+    "name": "Нассау",
+    "country": "Багамские Острова",
+    "flag": "🇧🇸",
+    "images": [],
+    "cityId": "city_nassau_10080"
+  },
+  {
+    "name": "Нахичевань",
+    "country": "Азербайджан",
+    "flag": "🇦🇿",
+    "images": [],
+    "cityId": "city_nakhichevan_10081"
+  },
+  {
+    "name": "Несебр",
+    "country": "Болгария",
+    "flag": "🇧🇬",
+    "images": [],
+    "cityId": "city_nesebr_10082"
+  },
+  {
+    "name": "Ниш",
+    "country": "Сербия",
+    "flag": "🇷🇸",
+    "images": [],
+    "cityId": "city_nish_10083"
+  },
+  {
+    "name": "Нови-Сад",
+    "country": "Сербия",
+    "flag": "🇷🇸",
+    "images": [],
+    "cityId": "city_novisad_10084"
+  },
+  {
+    "name": "Оран",
+    "country": "Алжир",
+    "flag": "��🇿",
+    "images": [],
+    "cityId": "city_oran_10085"
+  },
+  {
+    "name": "Ораньестад",
+    "country": "Аруба",
+    "flag": "🇦🇼",
+    "images": [],
+    "cityId": "city_oranestad_10086"
+  },
+  {
+    "name": "Оттава",
+    "country": "Канада",
+    "flag": "🇨🇦",
+    "images": [],
+    "cityId": "city_ottava_10087"
+  },
+  {
+    "name": "Охрид",
+    "country": "Северная Македония",
+    "flag": "🇲🇰",
+    "images": [],
+    "cityId": "city_okhrid_10088"
+  },
+  {
+    "name": "Павлодар",
+    "country": "Казахстан",
+    "flag": "🇰🇿",
+    "images": [],
+    "cityId": "city_pavlodar_10089"
+  },
+  {
+    "name": "Панама-Сити",
+    "country": "Панама",
+    "flag": "🇵🇦",
+    "images": [],
+    "cityId": "city_panamasiti_10090"
+  },
+  {
+    "name": "Пенза",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": [],
+    "cityId": "city_penza_10091"
+  },
+  {
+    "name": "Перт",
+    "country": "Австралия",
+    "flag": "🇦🇺",
+    "images": [],
+    "cityId": "city_pert_10092"
+  },
+  {
+    "name": "Пловдив",
+    "country": "Болгария",
+    "flag": "🇧🇬",
+    "images": [],
+    "cityId": "city_plovdiv_10093"
+  },
+  {
+    "name": "Познань",
+    "country": "Польша",
+    "flag": "🇵🇱",
+    "images": [],
+    "cityId": "city_poznan_10094"
+  },
+  {
+    "name": "Порту-Алегри",
+    "country": "Бразилия",
+    "flag": "🇧🇷",
+    "images": [],
+    "cityId": "city_portualegri_10095"
+  },
+  {
+    "name": "Прая",
+    "country": "Кабо-Верде",
+    "flag": "🇨🇻",
+    "images": [],
+    "cityId": "city_praya_10096"
+  },
+  {
+    "name": "Пула",
+    "country": "Хорватия",
+    "flag": "🇭🇷",
+    "images": [],
+    "cityId": "city_pula_10097"
+  },
+  {
+    "name": "Пуэрто-Игуасу",
+    "country": "Аргентина",
+    "flag": "🇦🇷",
+    "images": [],
+    "cityId": "city_puertoiguasu_10098"
+  },
+  {
+    "name": "Ресифи",
+    "country": "Бразилия",
+    "flag": "🇧🇷",
+    "images": [],
+    "cityId": "city_resifi_10099"
+  },
+  {
+    "name": "Риека",
+    "country": "Хорватия",
+    "flag": "🇭🇷",
+    "images": [],
+    "cityId": "city_rieka_10100"
+  },
+  {
+    "name": "Род-Таун",
+    "country": "Брит. Виргинские О-ва",
+    "flag": "🇻🇬",
+    "images": [],
+    "cityId": "city_rodtaun_10101"
+  },
+  {
+    "name": "Росарио",
+    "country": "Аргентина",
+    "flag": "��🇷",
+    "images": [],
+    "cityId": "city_rosario_10102"
+  },
+  {
+    "name": "Ростов Великий",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": [],
+    "cityId": "city_rostovvelikiy_10103"
+  },
+  {
+    "name": "Роттердам",
+    "country": "Нидерланды",
+    "flag": "🇳🇱",
+    "images": [],
+    "cityId": "city_rotterdam_10104"
+  },
+  {
+    "name": "Сальта",
+    "country": "Аргентина",
+    "flag": "🇦🇷",
+    "images": [],
+    "cityId": "city_salta_10105"
+  },
+  {
+    "name": "Сан-Карлос-де-Барилоче",
+    "country": "Аргентина",
+    "flag": "🇦🇷",
+    "images": [],
+    "cityId": "city_sankarlosdebari_10106"
+  },
+  {
+    "name": "Санкт-Галлен",
+    "country": "Швейцария",
+    "flag": "🇨🇭",
+    "images": [],
+    "cityId": "city_sanktgallen_10107"
+  },
+  {
+    "name": "Санта-Крус",
+    "country": "Боливия",
+    "flag": "🇧🇴",
+    "images": [],
+    "cityId": "city_santakrus_10108"
+  },
+  {
+    "name": "Санта-Фе",
+    "country": "Аргентина",
+    "flag": "🇦🇷",
+    "images": [],
+    "cityId": "city_santafe_10109"
+  },
+  {
+    "name": "Сараево",
+    "country": "Босния и Герцеговина",
+    "flag": "🇧🇦",
+    "images": [],
+    "cityId": "city_saraevo_10110"
+  },
+  {
+    "name": "Севан",
+    "country": "Армения",
+    "flag": "🇦🇲",
+    "images": [],
+    "cityId": "city_sevan_10111"
+  },
+  {
+    "name": "Семей",
+    "country": "Казахстан",
+    "flag": "🇰🇿",
+    "images": [],
+    "cityId": "city_semey_10112"
+  },
+  {
+    "name": "Сен-Тропе",
+    "country": "Франция",
+    "flag": "🇫🇷",
+    "images": [],
+    "cityId": "city_sentrope_10113"
+  },
+  {
+    "name": "Сендай",
+    "country": "Япония",
+    "flag": "🇯🇵",
+    "images": [],
+    "cityId": "city_senday_10114"
+  },
+  {
+    "name": "Сент-Джонс",
+    "country": "Антигуа и Барбуда",
+    "flag": "🇦🇬",
+    "images": [],
+    "cityId": "city_sentdzhons_10115"
+  },
+  {
+    "name": "Сиануквиль",
+    "country": "Камбоджа",
+    "flag": "🇰🇭",
+    "images": [],
+    "cityId": "city_sianukvil_10116"
+  },
+  {
+    "name": "Сидзуока",
+    "country": "Япония",
+    "flag": "🇯🇵",
+    "images": [],
+    "cityId": "city_sidzuoka_10117"
+  },
+  {
+    "name": "Синтра",
+    "country": "Португалия",
+    "flag": "🇵��",
+    "images": [],
+    "cityId": "city_sintra_10118"
+  },
+  {
+    "name": "Скопье",
+    "country": "Северная Македония",
+    "flag": "🇲🇰",
+    "images": [],
+    "cityId": "city_skope_10119"
+  },
+  {
+    "name": "Сплит",
+    "country": "Хорватия",
+    "flag": "🇭🇷",
+    "images": [],
+    "cityId": "city_split_10120"
+  },
+  {
+    "name": "Сукре",
+    "country": "Боливия",
+    "flag": "🇧🇴",
+    "images": [],
+    "cityId": "city_sukre_10121"
+  },
+  {
+    "name": "Сумгаит",
+    "country": "Азербайджан",
+    "flag": "🇦🇿",
+    "images": [],
+    "cityId": "city_sumgait_10122"
+  },
+  {
+    "name": "Сухум",
+    "country": "Абхазия",
+    "flag": "🇬🇪",
+    "images": [],
+    "cityId": "city_sukhum_10123"
+  },
+  {
+    "name": "Таганрог",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": [],
+    "cityId": "city_taganrog_10124"
+  },
+  {
+    "name": "Тараз",
+    "country": "Казахстан",
+    "flag": "🇰🇿",
+    "images": [],
+    "cityId": "city_taraz_10125"
+  },
+  {
+    "name": "Тиба",
+    "country": "Япония",
+    "flag": "🇯🇵",
+    "images": [],
+    "cityId": "city_tiba_10126"
+  },
+  {
+    "name": "Тирана",
+    "country": "Албания",
+    "flag": "🇦🇱",
+    "images": [],
+    "cityId": "city_tirana_10127"
+  },
+  {
+    "name": "Тузла",
+    "country": "Босния и Герцеговина",
+    "flag": "🇧🇦",
+    "images": [],
+    "cityId": "city_tuzla_10128"
+  },
+  {
+    "name": "Тхимпху",
+    "country": "Бутан",
+    "flag": "🇧🇹",
+    "images": [],
+    "cityId": "city_tkhimpkhu_10129"
+  },
+  {
+    "name": "Тяньцзинь",
+    "country": "Китай",
+    "flag": "🇨🇳",
+    "images": [],
+    "cityId": "city_tyantszin_10130"
+  },
+  {
+    "name": "Уагадугу",
+    "country": "Буркина-Фасо",
+    "flag": "🇧🇫",
+    "images": [],
+    "cityId": "city_uagadugu_10131"
+  },
+  {
+    "name": "Уберландия",
+    "country": "Бразилия",
+    "flag": "🇧🇷",
+    "images": [],
+    "cityId": "city_uberlandiya_10132"
+  },
+  {
+    "name": "Усть-Каменогорск",
+    "country": "Казахстан",
+    "flag": "🇰🇿",
+    "images": [],
+    "cityId": "city_ustkamenogorsk_10133"
+  },
+  {
+    "name": "Утрехт",
+    "country": "Нидерланды",
+    "flag": "🇳🇱",
+    "images": [],
+    "cityId": "city_utrekht_10134"
+  },
+  {
+    "name": "Ухань",
+    "country": "Китай",
+    "flag": "🇨🇳",
+    "images": [],
+    "cityId": "city_ukhan_10135"
+  },
+  {
+    "name": "Фару",
+    "country": "Португалия",
+    "flag": "🇵🇹",
+    "images": [],
+    "cityId": "city_faru_10136"
+  },
+  {
+    "name": "Флорианополис",
+    "country": "Бразилия",
+    "flag": "🇧🇷",
+    "images": [],
+    "cityId": "city_florianopolis_10137"
+  },
+  {
+    "name": "Форталеза",
+    "country": "Бразилия",
+    "flag": "🇧🇷",
+    "images": [],
+    "cityId": "city_fortaleza_10138"
+  },
+  {
+    "name": "Фос-ду-Игуасу",
+    "country": "Бразилия",
+    "flag": "🇧🇷",
+    "images": [],
+    "cityId": "city_fosduiguasu_10139"
+  },
+  {
+    "name": "Херцег-Нови",
+    "country": "Черногория",
+    "flag": "🇲🇪",
+    "images": [],
+    "cityId": "city_khertsegnovi_10140"
+  },
+  {
+    "name": "Хэйхэ",
+    "country": "Китай",
+    "flag": "🇨🇳",
+    "images": [],
+    "cityId": "city_kheykhe_10141"
+  },
+  {
+    "name": "Циндао",
+    "country": "Китай",
+    "flag": "🇨🇳",
+    "images": [],
+    "cityId": "city_tsindao_10142"
+  },
+  {
+    "name": "Читтагонг",
+    "country": "Бангладеш",
+    "flag": "🇧🇩",
+    "images": [],
+    "cityId": "city_chittagong_10143"
+  },
+  {
+    "name": "Чунцин",
+    "country": "Китай",
+    "flag": "🇨🇳",
+    "images": [],
+    "cityId": "city_chuntsin_10144"
+  },
+  {
+    "name": "Чэнду",
+    "country": "Китай",
+    "flag": "🇨🇳",
+    "images": [],
+    "cityId": "city_chendu_10145"
+  },
+  {
+    "name": "Шерегеш",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": [],
+    "cityId": "city_sheregesh_10146"
+  },
+  {
+    "name": "Шымкент",
+    "country": "Казахстан",
+    "flag": "🇰🇿",
+    "images": [],
+    "cityId": "city_shymkent_10147"
+  },
+  {
+    "name": "Шэньян",
+    "country": "Китай",
+    "flag": "🇨🇳",
+    "images": [],
+    "cityId": "city_shenyan_10148"
+  },
+  {
+    "name": "Эдмонтон",
+    "country": "Канада",
+    "flag": "🇨🇦",
+    "images": [],
+    "cityId": "city_edmonton_10149"
+  },
+  {
+    "name": "Эйндховен",
+    "country": "Нидерланды",
+    "flag": "🇳🇱",
+    "images": [],
+    "cityId": "city_eyndkhoven_10150"
+  },
+  {
+    "name": "Яунде",
+    "country": "Камерун",
+    "flag": "🇨🇲",
+    "images": [],
+    "cityId": "city_yaunde_10151"
+  }
 ]
