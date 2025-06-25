@@ -177,37 +177,104 @@ let userId = getUserId();
 
     userId = getUserId();
 
-    // --- Telegram Mini App User Registration ---
-    let telegramId = null;
-    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
-        telegramId = window.Telegram.WebApp.initDataUnsafe.user.id;
+    // --- Secure Telegram Mini App User Registration with Restoration ---
+    function initializeUser() {
+        // Check if we're in Telegram environment and get secure initData
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+            const initData = window.Telegram.WebApp.initData;
+            
+            if (initData && initData.trim() !== '') {
+                console.log('🔐 Secure initData found, checking for existing user...');
+                
+                // First, check if this Telegram user already exists (for restoration)
+                fetch(`${API_BASE_URL}/api/get-user-by-telegram`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ initData })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        if (data.found && data.user && data.user.user_id) {
+                            // User exists - restore their UUID
+                            const restoredUserId = data.user.user_id;
+                            const currentUserId = localStorage.getItem('cityRaterUserId');
+                            
+                            if (currentUserId !== restoredUserId) {
+                                console.log(`🔄 Restoring user account: ${currentUserId || 'new device'} -> ${restoredUserId}`);
+                                userId = restoredUserId;
+                                localStorage.setItem('cityRaterUserId', userId);
+                                console.log('👋 Welcome back! Your account has been restored.');
+                            } else {
+                                console.log('✅ User already has correct UUID, no restoration needed.');
+                            }
+                            fetchCities();
+                        } else {
+                            // New Telegram user - register them
+                            console.log('👤 New Telegram user detected, registering...');
+                            registerNewTelegramUser(initData);
+                        }
+                    } else {
+                        console.error('❌ Failed to check existing user:', data.error);
+                        fallbackToLocalMode();
+                    }
+                })
+                .catch(err => {
+                    console.error('❌ Error checking existing user:', err);
+                    fallbackToLocalMode();
+                });
+            } else {
+                console.warn('⚠️ Empty initData. Running in web browser or test environment.');
+                fallbackToLocalMode();
+            }
+        } else {
+            console.warn('⚠️ Not running inside Telegram. Using local UUID only.');
+            fallbackToLocalMode();
+        }
     }
 
-    if (telegramId) {
+    function registerNewTelegramUser(initData) {
         fetch(`${API_BASE_URL}/api/register-telegram`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ telegramId, userId })
+            body: JSON.stringify({ initData, userId })
         })
         .then(res => res.json())
         .then(data => {
-            if (data.success && data.user && data.user.user_id) {
-                userId = data.user.user_id;
-                localStorage.setItem('cityRaterUserId', userId);
-                console.log('Telegram user registered:', data.user);
+            if (data.success && data.user) {
+                if (data.user.user_id) {
+                    // Use the user_id from the database (could be existing UUID or new one)
+                    userId = data.user.user_id;
+                    localStorage.setItem('cityRaterUserId', userId);
+                    
+                    if (data.isExistingUser) {
+                        console.log('👋 Welcome back! Existing user found:', data.user);
+                    } else if (data.isLinked) {
+                        console.log('🔗 Your UUID has been linked to your Telegram account!');
+                    } else if (data.isNewUser) {
+                        console.log('🆕 New Telegram user registered:', data.user);
+                    }
+                } else {
+                    console.warn('⚠️ User registered but no user_id received. Using current UUID.');
+                }
             } else {
-                console.error('Failed to register Telegram user:', data.error);
+                console.error('❌ Failed to register Telegram user:', data.error);
             }
             fetchCities();
         })
         .catch(err => {
-            console.error('Error registering Telegram user:', err);
-            fetchCities();
+            console.error('❌ Error registering Telegram user:', err);
+            fallbackToLocalMode();
         });
-    } else {
-        console.warn('Telegram user ID not found. Are you running inside Telegram?');
+    }
+
+    function fallbackToLocalMode() {
+        console.log('📱 Using local UUID mode.');
         fetchCities();
     }
+
+    // Start the initialization process
+    initializeUser();
 
     // --- Profile & Tabs ---
     const votingPage = document.getElementById('voting-page');

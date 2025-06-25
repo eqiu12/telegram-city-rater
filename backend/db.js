@@ -29,9 +29,31 @@ async function initializeDatabase() {
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 telegram_id TEXT UNIQUE NOT NULL,
-                user_id TEXT
+                user_id TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             );
         `);
+        
+        // Create index for faster lookups
+        await db.execute(`
+            CREATE INDEX IF NOT EXISTS idx_users_telegram_id ON users(telegram_id);
+        `);
+        
+        await db.execute(`
+            CREATE INDEX IF NOT EXISTS idx_users_user_id ON users(user_id);
+        `);
+        
+        // Clean up any debug data (as mentioned in requirements)
+        try {
+            await db.execute(`
+                DELETE FROM users WHERE telegram_id LIKE 'debug-telegram-id%';
+            `);
+            console.log("Cleaned up debug telegram ID entries.");
+        } catch (error) {
+            // Ignore errors if no debug entries exist
+            console.log("No debug entries to clean up.");
+        }
+        
         console.log("Database initialized successfully.");
     } catch (error) {
         console.error("Error initializing database:", error);

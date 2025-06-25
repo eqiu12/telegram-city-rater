@@ -1,12 +1,21 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const { db, initializeDatabase } = require('./db');
+const { validate, parse } = require('@telegram-apps/init-data-node');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// You'll need to set this in your environment variables
+const BOT_TOKEN = process.env.BOT_TOKEN;
+
+if (!BOT_TOKEN) {
+    console.warn('WARNING: BOT_TOKEN not set. Telegram init data validation will fail.');
+}
 
 const corsOptions = {
     origin: [
@@ -329,55 +338,179 @@ app.get('/api/user-votes/:userId', async (req, res) => {
 });
 
 app.post('/api/register-telegram', async (req, res) => {
-    const { telegramId, userId } = req.body;
-    if (!telegramId) {
-        return res.status(400).json({ error: 'Missing telegramId' });
+    const { initData, userId } = req.body;
+    
+    if (!initData) {
+        return res.status(400).json({ error: 'Missing initData' });
     }
+
     try {
-        // 1. Check if a user with this telegramId exists
+        // Validate the initData signature
+        if (!BOT_TOKEN) {
+            console.error('BOT_TOKEN not configured');
+            return res.status(500).json({ error: 'Server configuration error' });
+        }
+
+        // Validate initData using Telegram's signature verification
+        validate(initData, BOT_TOKEN, {
+            expirationTime: 86400 // 24 hours in seconds
+        });
+
+        // Parse the validated initData to extract user information
+        const parsedData = parse(initData);
+        const telegramUser = parsedData.user;
+        
+        if (!telegramUser || !telegramUser.id) {
+            return res.status(400).json({ error: 'Invalid user data in initData' });
+        }
+
+        const telegramId = telegramUser.id.toString();
+        
+        console.log(`✅ Telegram ID validated: ${telegramId} for user: ${telegramUser.firstName || 'Unknown'}`);
+
+        // 1. Check if a user with this telegramId already exists
         let userRes = await db.execute({
             sql: 'SELECT * FROM users WHERE telegram_id = ?',
             args: [telegramId]
         });
+        
         if (userRes.rows.length > 0) {
-            return res.json({ success: true, user: userRes.rows[0] });
+            // User exists, return their existing userId
+            const existingUser = userRes.rows[0];
+            console.log(`📋 Existing user found: telegramId=${telegramId} -> userId=${existingUser.user_id}`);
+            return res.json({ 
+                success: true, 
+                user: existingUser,
+                isExistingUser: true
+            });
         }
-        // 2. Check if a user with this userId exists
+
+        // 2. Check if the provided userId (current UUID) exists and needs to be linked
         if (userId) {
             userRes = await db.execute({
                 sql: 'SELECT * FROM users WHERE user_id = ?',
                 args: [userId]
             });
+            
             if (userRes.rows.length > 0) {
-                // Link telegramId to this user
+                // Link telegramId to this existing user (preserving their UUID and votes)
                 await db.execute({
                     sql: 'UPDATE users SET telegram_id = ? WHERE user_id = ?',
                     args: [telegramId, userId]
                 });
+                
                 // Return the updated user
                 userRes = await db.execute({
                     sql: 'SELECT * FROM users WHERE user_id = ?',
                     args: [userId]
                 });
-                return res.json({ success: true, user: userRes.rows[0] });
+                
+                console.log(`🔗 Linked telegramId=${telegramId} to existing userId=${userId}`);
+                return res.json({ 
+                    success: true, 
+                    user: userRes.rows[0],
+                    isLinked: true
+                });
             }
         }
-        // 3. Create a new user
+
+        // 3. Create a new user with both telegramId and the provided userId (or null if none)
         await db.execute({
             sql: 'INSERT INTO users (telegram_id, user_id) VALUES (?, ?)',
             args: [telegramId, userId || null]
         });
+        
         userRes = await db.execute({
             sql: 'SELECT * FROM users WHERE telegram_id = ?',
             args: [telegramId]
         });
-        res.json({ success: true, user: userRes.rows[0] });
+        
+        console.log(`🆕 Created new user: telegramId=${telegramId}, userId=${userId || 'null'}`);
+        return res.json({ 
+            success: true, 
+            user: userRes.rows[0],
+            isNewUser: true
+        });
+
     } catch (error) {
-        console.error('Error registering/updating Telegram user:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        if (error.message && error.message.includes('Validation')) {
+            console.error('❌ Invalid initData signature:', error.message);
+            return res.status(403).json({ 
+                error: 'Invalid Telegram authentication data. Please restart the app.' 
+            });
+        }
+        
+        console.error('Error processing Telegram registration:', error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 });
 
+
+// Get user by Telegram initData for restoration purposes
+app.post('/api/get-user-by-telegram', async (req, res) => {
+    const { initData } = req.body;
+    
+    if (!initData) {
+        return res.status(400).json({ error: 'Missing initData' });
+    }
+
+    try {
+        // Validate the initData signature
+        if (!BOT_TOKEN) {
+            console.error('BOT_TOKEN not configured');
+            return res.status(500).json({ error: 'Server configuration error' });
+        }
+
+        // Validate initData using Telegram's signature verification
+        validate(initData, BOT_TOKEN, {
+            expirationTime: 86400 // 24 hours in seconds
+        });
+
+        // Parse the validated initData to extract user information
+        const parsedData = parse(initData);
+        const telegramUser = parsedData.user;
+        
+        if (!telegramUser || !telegramUser.id) {
+            return res.status(400).json({ error: 'Invalid user data in initData' });
+        }
+
+        const telegramId = telegramUser.id.toString();
+        
+        // Look up user by telegram_id
+        const userRes = await db.execute({
+            sql: 'SELECT * FROM users WHERE telegram_id = ?',
+            args: [telegramId]
+        });
+        
+        if (userRes.rows.length > 0) {
+            const user = userRes.rows[0];
+            console.log(`🔄 User restoration: telegramId=${telegramId} -> userId=${user.user_id}`);
+            return res.json({ 
+                success: true, 
+                user: user,
+                found: true
+            });
+        } else {
+            console.log(`👤 New Telegram user: telegramId=${telegramId}`);
+            return res.json({ 
+                success: true, 
+                found: false,
+                telegramId: telegramId
+            });
+        }
+
+    } catch (error) {
+        if (error.message && error.message.includes('Validation')) {
+            console.error('❌ Invalid initData signature:', error.message);
+            return res.status(403).json({ 
+                error: 'Invalid Telegram authentication data. Please restart the app.' 
+            });
+        }
+        
+        console.error('Error looking up Telegram user:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 // Validate user endpoint for frontend login
 app.post("/api/validate-user", async (req, res) => {
