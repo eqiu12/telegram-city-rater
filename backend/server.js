@@ -23,19 +23,29 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
-// Migration-safe user validation function
-async function validateUserMigrationSafe(userId) {
-    // Check if userId is a UUID (existing users)
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    
-    if (uuidRegex.test(userId)) {
-        // UUID format - existing user, always allow (grandfathered in)
-        console.log(`✅ VALID: Existing UUID user ${userId}`);
-        return { valid: true, type: "existing" };
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'index.html'));
+});
+
+// Serve static files from the parent directory
+app.use(express.static(path.join(__dirname, '..')));
+
+const cityDataPath = path.join(__dirname, '..', 'cities.json');
+const cityData = JSON.parse(fs.readFileSync(cityDataPath, 'utf8'));
+
+// Fisher-Yates shuffle algorithm
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
-    
-    // Non-UUID format - new user, must be registered
-    try {
+    return array;
+}
+
+app.get('/api/cities', async (req, res) => {
+    const { userId } = req.query;
+
+    if (!userId) {
         return res.status(400).json({ error: 'User ID is required' });
     }
 
@@ -66,18 +76,33 @@ app.post('/api/vote', async (req, res) => {
     const { userId, cityId, voteType } = req.body;
 
     if (!userId || !cityId || !voteType) {
-        return res.status(400).json({ error: "Missing required fields" });
-    }
-    
-    // Validate user exists in database
         return res.status(400).json({ error: 'Missing required fields' });
     }
     
     const city = cityData.find(c => c.cityId === cityId);
     if (!city) {
-
-    // Validate user exists in database
         return res.status(404).json({ error: 'City not found' });
+
+    // Migration-safe validation: Allow UUIDs (existing users) or registered users
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    
+    if (!uuidRegex.test(userId)) {
+        // Non-UUID format - check if registered
+        const userCheck = await db.execute({
+            sql: "SELECT id FROM users WHERE user_id = ?",
+            args: [userId]
+        });
+        
+        if (userCheck.rows.length === 0) {
+            console.log(`❌ VOTE REJECTED: Invalid userId ${userId}`);
+            return res.status(403).json({ 
+                error: "Invalid User ID. Please get a valid User ID from the Telegram mini app first." 
+            });
+        }
+        console.log(`✅ VOTE ACCEPTED: Registered user ${userId}`);
+    } else {
+        console.log(`✅ VOTE ACCEPTED: Existing UUID user ${userId}`);
+    }
     }
 
     try {
@@ -118,10 +143,6 @@ app.post('/api/vote', async (req, res) => {
 app.post('/api/change-vote', async (req, res) => {
     const { userId, cityId, voteType } = req.body;
     if (!userId || !cityId || !voteType) {
-        return res.status(400).json({ error: "Missing required fields" });
-    }
-    
-    // Validate user exists in database
         return res.status(400).json({ error: 'Missing required fields' });
     }
     try {
@@ -251,10 +272,6 @@ app.get('/api/hidden-jam-ratings', async (req, res) => {
 app.get('/api/user-votes/:userId', async (req, res) => {
     const { userId } = req.params;
     if (!userId) {
-        console.log(`🔍 Cities request from userId: ${userId}`);
-    }
-    
-    // Validate user exists in database
         return res.status(400).json({ error: 'User ID is required' });
     }
     try {
@@ -330,95 +347,6 @@ app.post('/api/register-telegram', async (req, res) => {
     }
 });
 
-
-// POST /api/register - Register user and get userId
-app.post("/api/register", async (req, res) => {
-    const { telegramId } = req.body;
-    
-    if (!telegramId) {
-        return res.status(400).json({ error: "Telegram ID is required" });
-    }
-    
-    // Validate Telegram ID format (8-10 digits)
-    if (!/^\d{8,10}$/.test(telegramId.toString())) {
-        return res.status(400).json({ error: "Invalid Telegram ID format" });
-    }
-    
-    try {
-        // Check if user already exists
-        let userRes = await db.execute({
-            sql: "SELECT * FROM users WHERE telegram_id = ?",
-            args: [telegramId]
-        });
-        
-        if (userRes.rows.length > 0) {
-            // User exists, return existing userId
-            return res.json({ 
-                success: true, 
-                userId: userRes.rows[0].user_id,
-                message: "User already registered"
-            });
-        }
-        
-        // Generate new unique userId
-        const userId = `user_${Math.random().toString(36).substring(2, 15)}_${Date.now()}`;
-        
-        // Create new user
-        await db.execute({
-            sql: "INSERT INTO users (telegram_id, user_id) VALUES (?, ?)",
-            args: [telegramId, userId]
-        });
-        
-        console.log(`New user registered: telegramId=${telegramId}, userId=${userId}`);
-        
-        res.json({ 
-            success: true, 
-            userId: userId,
-            message: "User registered successfully"
-        });
-        
-    } catch (error) {
-        console.error("Error registering user:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-});
-
-// GET /api/validate-user - Validate if userId exists
-app.get("/api/validate-user/:userId", async (req, res) => {
-    const { userId } = req.params;
-    
-    if (!userId) {
-        console.log(`🔍 Cities request from userId: ${userId}`);
-    }
-    
-    // Validate user exists in database
-        return res.status(400).json({ error: "User ID is required" });
-    }
-    
-    try {
-        const userRes = await db.execute({
-            sql: "SELECT id FROM users WHERE user_id = ?",
-            args: [userId]
-        });
-        
-        if (userRes.rows.length === 0) {
-            return res.status(404).json({ 
-                valid: false,
-                error: "User ID not found. Please get a valid User ID from the Telegram mini app first.",
-                telegramBot: "@rottentravelbot"
-            });
-        }
-        
-        res.json({ 
-            valid: true,
-            message: "User ID is valid"
-        });
-        
-    } catch (error) {
-        console.error("Error validating user:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-});
 initializeDatabase().then(() => {
     app.listen(PORT, () => {
         console.log(`Server is running on http://localhost:${PORT}`);
