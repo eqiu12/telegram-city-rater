@@ -3450,7 +3450,7 @@
   {
     "name": "Алжир",
     "country": "Алжир",
-    "flag": "🇩��",
+    "flag": "🇩🇿",
     "images": [],
     "cityId": "city_alzhir_9986"
   },
@@ -3548,7 +3548,7 @@
   {
     "name": "Бобруйск",
     "country": "Беларусь",
-    "flag": "��🇾",
+    "flag": "🇧🇾",
     "images": [],
     "cityId": "city_bobruysk_10000"
   },
@@ -3625,7 +3625,7 @@
   {
     "name": "Валли",
     "country": "Ангилья",
-    "flag": "��🇮",
+    "flag": "🇦🇮",
     "images": [],
     "cityId": "city_valli_10011"
   },
@@ -3856,7 +3856,7 @@
   {
     "name": "Караганда",
     "country": "Казахстан",
-    "flag": "��🇿",
+    "flag": "🇰🇿",
     "images": [],
     "cityId": "city_karaganda_10044"
   },
@@ -4143,7 +4143,7 @@
   {
     "name": "Оран",
     "country": "Алжир",
-    "flag": "��🇿",
+    "flag": "🇩🇿",
     "images": [],
     "cityId": "city_oran_10085"
   },
@@ -4262,7 +4262,7 @@
   {
     "name": "Росарио",
     "country": "Аргентина",
-    "flag": "��🇷",
+    "flag": "🇦🇷",
     "images": [],
     "cityId": "city_rosario_10102"
   },
@@ -4608,5 +4608,726 @@
     "flag": "🇨🇲",
     "images": [],
     "cityId": "city_yaunde_10151"
+  },
+  {
+    "name": "Адана",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_adana_2001"
+  },
+  {
+    "name": "Акьяка",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_akyaka_2002"
+  },
+  {
+    "name": "Альметьевск",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_almetyevsk_2003"
+  },
+  {
+    "name": "Анапа",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_anapa_2004"
+  },
+  {
+    "name": "Андижан",
+    "country": "Узбекистан",
+    "flag": "🇺🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_andijan_2005"
+  },
+  {
+    "name": "Асунсьон",
+    "country": "Парагвай",
+    "flag": "🇵🇾",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_asuncion_2006"
+  },
+  {
+    "name": "Благовещенск",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_blagoveshchensk_2007"
+  },
+  {
+    "name": "Бодрум",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_bodrum_2008"
+  },
+  {
+    "name": "Брашов",
+    "country": "Румыния",
+    "flag": "🇷🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_brasov_2009"
+  },
+  {
+    "name": "Бурса",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_bursa_2010"
+  },
+  {
+    "name": "Бухарест",
+    "country": "Румыния",
+    "flag": "🇷🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_bucharest_2011"
+  },
+  {
+    "name": "Виктория-Фоллс",
+    "country": "Зимбабве",
+    "flag": "🇿🇼",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_victoria_falls_2012"
+  },
+  {
+    "name": "Гагра",
+    "country": "Абхазия",
+    "flag": "🇬🇪",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_gagra_2013"
+  },
+  {
+    "name": "Газиантеп",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_gaziantep_2014"
+  },
+  {
+    "name": "Галац",
+    "country": "Румыния",
+    "flag": "🇷🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_galati_2015"
+  },
+  {
+    "name": "Галле",
+    "country": "Шри-Ланка",
+    "flag": "🇱🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_galle_2016"
+  },
+  {
+    "name": "Герат",
+    "country": "Афганистан",
+    "flag": "🇦🇫",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_herat_2017"
+  },
+  {
+    "name": "Далат",
+    "country": "Вьетнам",
+    "flag": "🇻🇳",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_dalat_2018"
+  },
+  {
+    "name": "Денизли",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_denizli_2019"
+  },
+  {
+    "name": "Джуно",
+    "country": "США",
+    "flag": "🇺🇸",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_juneau_2020"
+  },
+  {
+    "name": "Дивногорск",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_divnogorsk_2021"
+  },
+  {
+    "name": "Диярбакыр",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_diyarbakir_2022"
+  },
+  {
+    "name": "Исламабад",
+    "country": "Пакистан",
+    "flag": "🇵🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_islamabad_2023"
+  },
+  {
+    "name": "Исфахан",
+    "country": "Иран",
+    "flag": "🇮🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_isfahan_2024"
+  },
+  {
+    "name": "Йошкар-Ола",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_yoshkar_ola_2025"
+  },
+  {
+    "name": "Кайсери",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_kayseri_2026"
+  },
+  {
+    "name": "Кандагар",
+    "country": "Афганистан",
+    "flag": "🇦🇫",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_kandahar_2027"
+  },
+  {
+    "name": "Канди",
+    "country": "Шри-Ланка",
+    "flag": "🇱🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_kandy_2028"
+  },
+  {
+    "name": "Канзас-Сити",
+    "country": "США",
+    "flag": "🇺🇸",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_kansas_city_2029"
+  },
+  {
+    "name": "Кантхо",
+    "country": "Вьетнам",
+    "flag": "🇻🇳",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_can_tho_2030"
+  },
+  {
+    "name": "Карачи",
+    "country": "Пакистан",
+    "flag": "🇵🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_karachi_2031"
+  },
+  {
+    "name": "Карловы Вары",
+    "country": "Чехия",
+    "flag": "🇨🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_karlovy_vary_2032"
+  },
+  {
+    "name": "Карс",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_kars_2033"
+  },
+  {
+    "name": "Карши",
+    "country": "Узбекистан",
+    "flag": "🇺🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_karshi_2034"
+  },
+  {
+    "name": "Кемер",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_kemer_2035"
+  },
+  {
+    "name": "Клуж-Напока",
+    "country": "Румыния",
+    "flag": "🇷🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_cluj_napoca_2036"
+  },
+  {
+    "name": "Коканд",
+    "country": "Узбекистан",
+    "flag": "🇺🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_kokand_2037"
+  },
+  {
+    "name": "Коломбо",
+    "country": "Шри-Ланка",
+    "flag": "🇱🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_colombo_2038"
+  },
+  {
+    "name": "Колорадо-Спрингс",
+    "country": "США",
+    "flag": "🇺🇸",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_colorado_springs_2039"
+  },
+  {
+    "name": "Констанца",
+    "country": "Румыния",
+    "flag": "🇷🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_constanta_2040"
+  },
+  {
+    "name": "Конья",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_konya_2041"
+  },
+  {
+    "name": "Котте",
+    "country": "Шри-Ланка",
+    "flag": "🇱🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_kotte_2042"
+  },
+  {
+    "name": "Крайова",
+    "country": "Румыния",
+    "flag": "🇷🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_craiova_2043"
+  },
+  {
+    "name": "Кушадасы",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_kusadasi_2044"
+  },
+  {
+    "name": "Лаутока",
+    "country": "Фиджи",
+    "flag": "🇫🇯",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_lautoka_2045"
+  },
+  {
+    "name": "Лахор",
+    "country": "Пакистан",
+    "flag": "🇵🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_lahore_2046"
+  },
+  {
+    "name": "Либерец",
+    "country": "Чехия",
+    "flag": "🇨🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_liberec_2047"
+  },
+  {
+    "name": "Ливингстон",
+    "country": "Замбия",
+    "flag": "🇿🇲",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_livingstone_2048"
+  },
+  {
+    "name": "Лусака",
+    "country": "Замбия",
+    "flag": "🇿🇲",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_lusaka_2049"
+  },
+  {
+    "name": "Магадан",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_magadan_2050"
+  },
+  {
+    "name": "Мазари-Шариф",
+    "country": "Афганистан",
+    "flag": "🇦🇫",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_mazar_i_sharif_2051"
+  },
+  {
+    "name": "Мардин",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_mardin_2052"
+  },
+  {
+    "name": "Мармарис",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_marmaris_2053"
+  },
+  {
+    "name": "Мерсин",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_mersin_2054"
+  },
+  {
+    "name": "Мешхед",
+    "country": "Иран",
+    "flag": "🇮🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_mashhad_2055"
+  },
+  {
+    "name": "Моратува",
+    "country": "Шри-Ланка",
+    "flag": "🇱🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_moratuwa_2056"
+  },
+  {
+    "name": "Мосул",
+    "country": "Ирак",
+    "flag": "🇮🇶",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_mosul_2057"
+  },
+  {
+    "name": "Наманган",
+    "country": "Узбекистан",
+    "flag": "🇺🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_namangan_2058"
+  },
+  {
+    "name": "Нанди",
+    "country": "Фиджи",
+    "flag": "🇫🇯",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_nadi_2059"
+  },
+  {
+    "name": "Нукус",
+    "country": "Узбекистан",
+    "flag": "🇺🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_nukus_2060"
+  },
+  {
+    "name": "Оломоуц",
+    "country": "Чехия",
+    "flag": "🇨🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_olomouc_2061"
+  },
+  {
+    "name": "Орадя",
+    "country": "Румыния",
+    "flag": "🇷🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_oradea_2062"
+  },
+  {
+    "name": "Острава",
+    "country": "Чехия",
+    "flag": "🇨🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_ostrava_2063"
+  },
+  {
+    "name": "Плоешти",
+    "country": "Румыния",
+    "flag": "🇷🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_ploesti_2064"
+  },
+  {
+    "name": "Пльзень",
+    "country": "Чехия",
+    "flag": "🇨🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_plzen_2065"
+  },
+  {
+    "name": "Равалпинди",
+    "country": "Пакистан",
+    "flag": "🇵🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_rawalpindi_2066"
+  },
+  {
+    "name": "Салала",
+    "country": "Оман",
+    "flag": "🇴🇲",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_salalah_2067"
+  },
+  {
+    "name": "Самарра",
+    "country": "Ирак",
+    "flag": "🇮🇶",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_samarra_2068"
+  },
+  {
+    "name": "Сан-Диего",
+    "country": "США",
+    "flag": "🇺🇸",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_san_diego_2069"
+  },
+  {
+    "name": "Сафанболу",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_safranbolu_2070"
+  },
+  {
+    "name": "Севастополь",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_sevastopol_2071"
+  },
+  {
+    "name": "Сиде",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_side_2072"
+  },
+  {
+    "name": "Скарду",
+    "country": "Пакистан",
+    "flag": "🇵🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_skardu_2073"
+  },
+  {
+    "name": "Сува",
+    "country": "Фиджи",
+    "flag": "🇫🇯",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_suva_2074"
+  },
+  {
+    "name": "Сыктывкар",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_syktyvkar_2075"
+  },
+  {
+    "name": "Сьюдад-дель-Эсте",
+    "country": "Парагвай",
+    "flag": "🇵🇾",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_ciudad_del_este_2076"
+  },
+  {
+    "name": "Тебриз",
+    "country": "Иран",
+    "flag": "🇮🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_tabriz_2077"
+  },
+  {
+    "name": "Термез",
+    "country": "Узбекистан",
+    "flag": "🇺🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_termez_2078"
+  },
+  {
+    "name": "Тимишоара",
+    "country": "Румыния",
+    "flag": "🇷🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_timișoara_2079"
+  },
+  {
+    "name": "Торсхавн",
+    "country": "Фарерские о-ва",
+    "flag": "🇫🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_torshavn_2080"
+  },
+  {
+    "name": "Трабзон",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_trabzon_2081"
+  },
+  {
+    "name": "Тринкомали",
+    "country": "Шри-Ланка",
+    "flag": "🇱🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_trincomalee_2082"
+  },
+  {
+    "name": "Туапсе",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_tuapse_2083"
+  },
+  {
+    "name": "Ургенч",
+    "country": "Узбекистан",
+    "flag": "🇺🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_urgench_2084"
+  },
+  {
+    "name": "Фейсалабад",
+    "country": "Пакистан",
+    "flag": "🇵🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_faisalabad_2085"
+  },
+  {
+    "name": "Фергана",
+    "country": "Узбекистан",
+    "flag": "🇺🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_fergana_2086"
+  },
+  {
+    "name": "Финикc",
+    "country": "США",
+    "flag": "🇺🇸",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_phoenix_2087"
+  },
+  {
+    "name": "Фукуок",
+    "country": "Вьетнам",
+    "flag": "🇻🇳",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_phu_quoc_2088"
+  },
+  {
+    "name": "Хайфон",
+    "country": "Вьетнам",
+    "flag": "🇻🇳",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_haiphong_2089"
+  },
+  {
+    "name": "Хараре",
+    "country": "Зимбабве",
+    "flag": "🇿🇼",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_harare_2090"
+  },
+  {
+    "name": "Хива",
+    "country": "Узбекистан",
+    "flag": "🇺🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_khiva_2091"
+  },
+  {
+    "name": "Хиккадува",
+    "country": "Шри-Ланка",
+    "flag": "🇱🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_hikkaduwa_2092"
+  },
+  {
+    "name": "Хьюстон",
+    "country": "США",
+    "flag": "🇺🇸",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_houston_2093"
+  },
+  {
+    "name": "Черкесск",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_cherkessk_2094"
+  },
+  {
+    "name": "Ческе-Будеевице",
+    "country": "Чехия",
+    "flag": "🇨🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_ceske_budejovice_2095"
+  },
+  {
+    "name": "Чешме",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_chesme_2096"
+  },
+  {
+    "name": "Чита",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_chita_2097"
+  },
+  {
+    "name": "Шанлыурфа",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_sanliurfa_2098"
+  },
+  {
+    "name": "Шираз",
+    "country": "Иран",
+    "flag": "🇮🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_shiraz_2099"
+  },
+  {
+    "name": "Энкарнасьон",
+    "country": "Парагвай",
+    "flag": "🇵🇾",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_encarnacion_2100"
+  },
+  {
+    "name": "Эрбиль",
+    "country": "Иракский Курдистан",
+    "flag": "🇮🇶",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_erbil_2101"
+  },
+  {
+    "name": "Эрзурум",
+    "country": "Турция",
+    "flag": "🇹🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_erzurum_2102"
+  },
+  {
+    "name": "Яссы",
+    "country": "Румыния",
+    "flag": "🇷🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_iasi_2103"
   }
 ]
