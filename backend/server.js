@@ -23,47 +23,19 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'index.html'));
-});
-
-// Serve static files from the parent directory
-app.use(express.static(path.join(__dirname, '..')));
-
-const cityDataPath = path.join(__dirname, '..', 'cities.json');
-const cityData = JSON.parse(fs.readFileSync(cityDataPath, 'utf8'));
-
-// Fisher-Yates shuffle algorithm
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-
-app.get('/api/cities', async (req, res) => {
-    const { userId } = req.query;
-
-    if (!userId) {
-        console.log(`🔍 Cities request from userId: ${userId}`);
+// Migration-safe user validation function
+async function validateUserMigrationSafe(userId) {
+    // Check if userId is a UUID (existing users)
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    
+    if (uuidRegex.test(userId)) {
+        // UUID format - existing user, always allow (grandfathered in)
+        console.log(`✅ VALID: Existing UUID user ${userId}`);
+        return { valid: true, type: "existing" };
     }
     
-    // Validate user exists in database
-    const userValidation = await db.execute({
-        sql: "SELECT id FROM users WHERE user_id = ?",
-        args: [userId]
-    });
-    
-    if (userValidation.rows.length === 0) {
-        console.log(`❌ CITIES REJECTED: Invalid userId ${userId}`);
-        return res.status(403).json({ 
-            error: "Invalid User ID. Please get a valid User ID from the Telegram mini app first.",
-            telegramBot: "@rottentravelbot"
-        });
-    }
-    
-    console.log(`✅ CITIES ACCEPTED: Valid user ${userId}`);
+    // Non-UUID format - new user, must be registered
+    try {
         return res.status(400).json({ error: 'User ID is required' });
     }
 
@@ -98,20 +70,6 @@ app.post('/api/vote', async (req, res) => {
     }
     
     // Validate user exists in database
-    const userValidation = await db.execute({
-        sql: "SELECT id FROM users WHERE user_id = ?",
-        args: [userId]
-    });
-    
-    if (userValidation.rows.length === 0) {
-        console.log(`❌ CHANGE-VOTE REJECTED: Invalid userId ${userId}`);
-        return res.status(403).json({ 
-            error: "Invalid User ID. Please get a valid User ID from the Telegram mini app first.",
-            telegramBot: "@rottentravelbot"
-        });
-    }
-    
-    console.log(`✅ CHANGE-VOTE ACCEPTED: Valid user ${userId}`);
         return res.status(400).json({ error: 'Missing required fields' });
     }
     
@@ -119,20 +77,6 @@ app.post('/api/vote', async (req, res) => {
     if (!city) {
 
     // Validate user exists in database
-    const userValidation = await db.execute({
-        sql: "SELECT id FROM users WHERE user_id = ?",
-        args: [userId]
-    });
-    
-    if (userValidation.rows.length === 0) {
-        console.log(`❌ VOTE REJECTED: Invalid userId ${userId}`);
-        return res.status(403).json({ 
-            error: "Invalid User ID. Please get a valid User ID from the Telegram mini app first.",
-            telegramBot: "@rottentravelbot"
-        });
-    }
-    
-    console.log(`✅ VOTE ACCEPTED: Valid user ${userId}`);
         return res.status(404).json({ error: 'City not found' });
     }
 
@@ -178,20 +122,6 @@ app.post('/api/change-vote', async (req, res) => {
     }
     
     // Validate user exists in database
-    const userValidation = await db.execute({
-        sql: "SELECT id FROM users WHERE user_id = ?",
-        args: [userId]
-    });
-    
-    if (userValidation.rows.length === 0) {
-        console.log(`❌ CHANGE-VOTE REJECTED: Invalid userId ${userId}`);
-        return res.status(403).json({ 
-            error: "Invalid User ID. Please get a valid User ID from the Telegram mini app first.",
-            telegramBot: "@rottentravelbot"
-        });
-    }
-    
-    console.log(`✅ CHANGE-VOTE ACCEPTED: Valid user ${userId}`);
         return res.status(400).json({ error: 'Missing required fields' });
     }
     try {
@@ -325,20 +255,6 @@ app.get('/api/user-votes/:userId', async (req, res) => {
     }
     
     // Validate user exists in database
-    const userValidation = await db.execute({
-        sql: "SELECT id FROM users WHERE user_id = ?",
-        args: [userId]
-    });
-    
-    if (userValidation.rows.length === 0) {
-        console.log(`❌ CITIES REJECTED: Invalid userId ${userId}`);
-        return res.status(403).json({ 
-            error: "Invalid User ID. Please get a valid User ID from the Telegram mini app first.",
-            telegramBot: "@rottentravelbot"
-        });
-    }
-    
-    console.log(`✅ CITIES ACCEPTED: Valid user ${userId}`);
         return res.status(400).json({ error: 'User ID is required' });
     }
     try {
@@ -476,20 +392,6 @@ app.get("/api/validate-user/:userId", async (req, res) => {
     }
     
     // Validate user exists in database
-    const userValidation = await db.execute({
-        sql: "SELECT id FROM users WHERE user_id = ?",
-        args: [userId]
-    });
-    
-    if (userValidation.rows.length === 0) {
-        console.log(`❌ CITIES REJECTED: Invalid userId ${userId}`);
-        return res.status(403).json({ 
-            error: "Invalid User ID. Please get a valid User ID from the Telegram mini app first.",
-            telegramBot: "@rottentravelbot"
-        });
-    }
-    
-    console.log(`✅ CITIES ACCEPTED: Valid user ${userId}`);
         return res.status(400).json({ error: "User ID is required" });
     }
     
