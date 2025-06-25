@@ -378,6 +378,47 @@ app.post('/api/register-telegram', async (req, res) => {
     }
 });
 
+
+// Validate user endpoint for frontend login
+app.post("/api/validate-user", async (req, res) => {
+    const { userId } = req.body;
+    
+    if (!userId) {
+        return res.status(400).json({ error: "Missing userId" });
+    }
+    
+    try {
+        // Use the same migration-safe validation logic
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        
+        if (uuidRegex.test(userId)) {
+            // UUID format - existing user, always valid
+            console.log(`✅ LOGIN: Valid UUID user ${userId}`);
+            return res.json({ valid: true, type: "existing" });
+        }
+        
+        // Non-UUID format - check if registered via Telegram
+        const userCheck = await db.execute({
+            sql: "SELECT id FROM users WHERE user_id = ?",
+            args: [userId]
+        });
+        
+        if (userCheck.rows.length === 0) {
+            console.log(`❌ LOGIN REJECTED: Invalid userId ${userId}`);
+            return res.json({ 
+                valid: false, 
+                error: "Invalid User ID. Please get a valid User ID from the Telegram mini app first."
+            });
+        }
+        
+        console.log(`✅ LOGIN: Valid registered user ${userId}`);
+        return res.json({ valid: true, type: "registered" });
+        
+    } catch (error) {
+        console.error("Error validating user for login:", error);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+});
 initializeDatabase().then(() => {
     app.listen(PORT, () => {
         console.log(`Server is running on http://localhost:${PORT}`);
