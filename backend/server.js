@@ -76,33 +76,38 @@ app.post('/api/vote', async (req, res) => {
     const { userId, cityId, voteType } = req.body;
 
     if (!userId || !cityId || !voteType) {
-        return res.status(400).json({ error: 'Missing required fields' });
+        return res.status(400).json({ error: "Missing required fields" });
     }
-    
-    const city = cityData.find(c => c.cityId === cityId);
-    if (!city) {
-        return res.status(404).json({ error: 'City not found' });
 
     // Migration-safe validation: Allow UUIDs (existing users) or registered users
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     
     if (!uuidRegex.test(userId)) {
         // Non-UUID format - check if registered
-        const userCheck = await db.execute({
-            sql: "SELECT id FROM users WHERE user_id = ?",
-            args: [userId]
-        });
-        
-        if (userCheck.rows.length === 0) {
-            console.log(`❌ VOTE REJECTED: Invalid userId ${userId}`);
-            return res.status(403).json({ 
-                error: "Invalid User ID. Please get a valid User ID from the Telegram mini app first." 
+        try {
+            const userCheck = await db.execute({
+                sql: "SELECT id FROM users WHERE user_id = ?",
+                args: [userId]
             });
+            
+            if (userCheck.rows.length === 0) {
+                console.log(`❌ VOTE REJECTED: Invalid userId ${userId}`);
+                return res.status(403).json({ 
+                    error: "Invalid User ID. Please get a valid User ID from the Telegram mini app first." 
+                });
+            }
+            console.log(`✅ VOTE ACCEPTED: Registered user ${userId}`);
+        } catch (error) {
+            console.error("Error validating user:", error);
+            return res.status(500).json({ error: "Internal server error" });
         }
-        console.log(`✅ VOTE ACCEPTED: Registered user ${userId}`);
     } else {
         console.log(`✅ VOTE ACCEPTED: Existing UUID user ${userId}`);
     }
+    
+    const city = cityData.find(c => c.cityId === cityId);
+    if (!city) {
+        return res.status(404).json({ error: 'City not found' });
     }
 
     try {
@@ -143,7 +148,33 @@ app.post('/api/vote', async (req, res) => {
 app.post('/api/change-vote', async (req, res) => {
     const { userId, cityId, voteType } = req.body;
     if (!userId || !cityId || !voteType) {
-        return res.status(400).json({ error: 'Missing required fields' });
+        return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    // Migration-safe validation: Allow UUIDs (existing users) or registered users
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    
+    if (!uuidRegex.test(userId)) {
+        // Non-UUID format - check if registered
+        try {
+            const userCheck = await db.execute({
+                sql: "SELECT id FROM users WHERE user_id = ?",
+                args: [userId]
+            });
+            
+            if (userCheck.rows.length === 0) {
+                console.log(`❌ VOTE REJECTED: Invalid userId ${userId}`);
+                return res.status(403).json({ 
+                    error: "Invalid User ID. Please get a valid User ID from the Telegram mini app first." 
+                });
+            }
+            console.log(`✅ VOTE ACCEPTED: Registered user ${userId}`);
+        } catch (error) {
+            console.error("Error validating user:", error);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+    } else {
+        console.log(`✅ VOTE ACCEPTED: Existing UUID user ${userId}`);
     }
     try {
         // Найти старый голос
