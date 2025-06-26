@@ -192,7 +192,19 @@ app.post('/api/change-vote', async (req, res) => {
             args: [userId, cityId]
         });
         if (oldVoteRes.rows.length === 0) {
-            return res.status(404).json({ error: 'Vote not found for this user/city' });
+            // No previous vote: insert new vote (like /api/vote)
+            await db.execute({
+                sql: "INSERT INTO user_votes (user_id, city_id, vote_type) VALUES (?, ?, ?)",
+                args: [userId, cityId, voteType]
+            });
+            // Update city_votes
+            const columnToIncrement = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
+            await db.execute({
+                sql: `INSERT INTO city_votes (city_id, ${columnToIncrement}) VALUES (?, 1)
+                      ON CONFLICT(city_id) DO UPDATE SET ${columnToIncrement} = ${columnToIncrement} + 1`,
+                args: [cityId]
+            });
+            return res.json({ success: true, message: 'Vote created' });
         }
         const oldVote = oldVoteRes.rows[0].vote_type;
         if (oldVote === voteType) {
