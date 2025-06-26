@@ -617,7 +617,7 @@
   },
   {
     "name": "Гонконг",
-    "country": "Китай",
+    "country": "Гонконг (САР)",
     "flag": "🇨🇳",
     "images": [
       "https://via.placeholder.com/150",
@@ -980,7 +980,7 @@
   },
   {
     "name": "Макао",
-    "country": "Китай",
+    "country": "Макао (САР)",
     "flag": "🇨🇳",
     "images": [
       "https://via.placeholder.com/150",
@@ -4374,7 +4374,7 @@
   {
     "name": "Синтра",
     "country": "Португалия",
-    "flag": "🇵��",
+    "flag": "🇵🇹",
     "images": [],
     "cityId": "city_sintra_10118"
   },
@@ -4409,7 +4409,7 @@
   {
     "name": "Сухум",
     "country": "Абхазия",
-    "flag": "🇬🇪",
+    "flag": "🏳",
     "images": [],
     "cityId": "city_sukhum_10123"
   },
@@ -4696,7 +4696,7 @@
   {
     "name": "Гагра",
     "country": "Абхазия",
-    "flag": "🇬🇪",
+    "flag": "🏳",
     "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
     "cityId": "city_gagra_2013"
   },
@@ -5093,7 +5093,7 @@
     "cityId": "city_san_diego_2069"
   },
   {
-    "name": "Сафанболу",
+    "name": "Сафранболу",
     "country": "Турция",
     "flag": "🇹🇷",
     "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
@@ -5329,5 +5329,531 @@
     "flag": "🇷🇴",
     "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
     "cityId": "city_iasi_2103"
+  },
+  ,
+  {
+    "name": "Манила",
+    "country": "Филиппины",
+    "flag": "🇵🇭",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_manila_1001"
+  },
+  {
+    "name": "Кесон-Сити",
+    "country": "Филиппины",
+    "flag": "🇵🇭",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_queson_1002"
+  },
+  {
+    "name": "Давао-Сити",
+    "country": "Филиппины",
+    "flag": "🇵🇭",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_davao_1003"
+  },
+  {
+    "name": "Себу",
+    "country": "Филиппины",
+    "flag": "🇵🇭",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_cebu_1004"
+  },
+  {
+    "name": "Боракай",
+    "country": "Филиппины",
+    "flag": "🇵🇭",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_boracay_1005"
+  },
+  {
+    "name": "Киев",
+    "country": "Украина",
+    "flag": "🇺🇦",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_kyiv_1006"
+  },
+  {
+    "name": "Львов",
+    "country": "Украина",
+    "flag": "🇺🇦",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_lviv_1007"
+  },
+  {
+    "name": "Одесса",
+    "country": "Украина",
+    "flag": "🇺🇦",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_odessa_1008"
+  },
+  {
+    "name": "Днепр",
+    "country": "Украина",
+    "flag": "🇺🇦",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_dnipro_1009"
+  },
+  {
+    "name": "Дакар",
+    "country": "Сенегал",
+    "flag": "🇸🇳",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_dakar_1010"
+  },
+  {
+    "name": "Сент-Луи",
+    "country": "Сенегал",
+    "flag": "🇸🇳",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_saintlouis_1011"
+  },
+  {
+    "name": "Фритаун",
+    "country": "Сьерра-Леоне",
+    "flag": "🇸🇱",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_freetown_1012"
+  },
+  {
+    "name": "Ватикан",
+    "country": "Ватикан",
+    "flag": "🇻🇦",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_vatican_1013"
+  },
+  {
+    "name": "Гибралтар",
+    "country": "Гибралтар",
+    "flag": "🇬🇮",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_gibraltar_1014"
+  },
+  {
+    "name": "Окленд",
+    "country": "Новая Зеландия",
+    "flag": "🇳🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_auckland_1015"
+  },
+  {
+    "name": "Веллингтон",
+    "country": "Новая Зеландия",
+    "flag": "🇳🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_wellington_1016"
+  },
+  {
+    "name": "Крайстчерч",
+    "country": "Новая Зеландия",
+    "flag": "🇳🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_christchurch_1017"
+  },
+  {
+    "name": "Квинстаун",
+    "country": "Новая Зеландия",
+    "flag": "🇳🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_queenstown_1018"
+  },
+  {
+    "name": "Роторуа",
+    "country": "Новая Зеландия",
+    "flag": "🇳🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_rotorua_1019"
+  },
+  {
+    "name": "Никосия",
+    "country": "Кипр",
+    "flag": "🇨🇾",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_nicosia_1020"
+  },
+  {
+    "name": "Лимассол",
+    "country": "Кипр",
+    "flag": "🇨🇾",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_limassol_1021"
+  },
+  {
+    "name": "Пафос",
+    "country": "Кипр",
+    "flag": "🇨🇾",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_paphos_1022"
+  },
+  {
+    "name": "Ларнака",
+    "country": "Кипр",
+    "flag": "🇨🇾",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_larnaca_1023"
+  },
+  {
+    "name": "Айя-Напа",
+    "country": "Кипр",
+    "flag": "🇨🇾",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_ayianapa_1024"
+  },
+  {
+    "name": "Валлетта",
+    "country": "Мальта",
+    "flag": "🇲🇹",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_valletta_1025"
+  },
+  {
+    "name": "Слима",
+    "country": "Мальта",
+    "flag": "🇲🇹",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_sliema_1026"
+  },
+  {
+    "name": "Порт-Луи",
+    "country": "Маврикий",
+    "flag": "🇲🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_portlouis_1027"
+  },
+  {
+    "name": "Гранд-Бей",
+    "country": "Маврикий",
+    "flag": "🇲🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_grandbaie_1028"
+  },
+  {
+    "name": "Гавана",
+    "country": "Куба",
+    "flag": "🇨🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_havana_1029"
+  },
+  {
+    "name": "Варадеро",
+    "country": "Куба",
+    "flag": "🇨🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_varadero_1030"
+  },
+  {
+    "name": "Тринидад",
+    "country": "Куба",
+    "flag": "🇨🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_trinidad_1031"
+  },
+  {
+    "name": "Манагуа",
+    "country": "Никарагуа",
+    "flag": "🇳🇮",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_managua_1032"
+  },
+  {
+    "name": "Гранада",
+    "country": "Никарагуа",
+    "flag": "🇳🇮",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_granada_1033"
+  },
+  {
+    "name": "Сан-Хосе",
+    "country": "Коста-Рика",
+    "flag": "🇨🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_sanjose_1034"
+  },
+  {
+    "name": "Пуэрто-Вьехо",
+    "country": "Коста-Рика",
+    "flag": "🇨🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_puertoviejo_1035"
+  },
+  {
+    "name": "Кито",
+    "country": "Эквадор",
+    "flag": "🇪🇨",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_quito_1036"
+  },
+  {
+    "name": "Пуэрто-Айора",
+    "country": "Эквадор",
+    "flag": "🇪🇨",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_puertoayora_1037"
+  },
+  {
+    "name": "Кувейт-Сити",
+    "country": "Кувейт",
+    "flag": "🇰🇼",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_kuwaitcity_1038"
+  },
+  {
+    "name": "Асмэра",
+    "country": "Эритрея",
+    "flag": "🇪🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_asmara_1039"
+  },
+  {
+    "name": "Масссауа",
+    "country": "Эритрея",
+    "flag": "🇪🇷",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_massawa_1040"
+  },
+  {
+    "name": "Джибути",
+    "country": "Джибути",
+    "flag": "🇩🇯",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_djibouti_1041"
+  },
+  {
+    "name": "Таджура",
+    "country": "Джибути",
+    "flag": "🇩🇯",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_tadjoura_1042"
+  },
+  {
+    "name": "Розо",
+    "country": "Доминика",
+    "flag": "🇩🇲",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_roseau_1043"
+  },
+  {
+    "name": "Портсмут",
+    "country": "Доминика",
+    "flag": "🇩🇲",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_portsmouth_1044"
+  },
+  {
+    "name": "Санто-Доминго",
+    "country": "Доминиканская Республика",
+    "flag": "🇩🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_santodomingo_1045"
+  },
+  {
+    "name": "Пунта-Кана",
+    "country": "Доминиканская Республика",
+    "flag": "🇩🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_puntacana_1046"
+  },
+  {
+    "name": "Порт-о-Пренс",
+    "country": "Гаити",
+    "flag": "🇭🇹",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_portauprince_1047"
+  },
+  {
+    "name": "Приштина",
+    "country": "Косово",
+    "flag": "🇽🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_pristina_1048"
+  },
+  {
+    "name": "Призрен",
+    "country": "Косово",
+    "flag": "🇽🇰",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_prizren_1049"
+  },
+  {
+    "name": "Тегусигальпа",
+    "country": "Гондурас",
+    "flag": "🇭🇳",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_tegucigalpa_1050"
+  },
+  {
+    "name": "Сан-Педро-Сула",
+    "country": "Гондурас",
+    "flag": "🇭🇳",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_sanpedrosula_1051"
+  },
+  {
+    "name": "Рамаллах",
+    "country": "Палестина",
+    "flag": "🇵🇸",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_ramallah_1052"
+  },
+  {
+    "name": "Вифлеем",
+    "country": "Палестина",
+    "flag": "🇵🇸",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_bethlehem_1053"
+  },
+  {
+    "name": "Ломе",
+    "country": "Того",
+    "flag": "🇹🇬",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_lome_1054"
+  },
+  {
+    "name": "Нукуалофа",
+    "country": "Тонга",
+    "flag": "🇹🇴",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_nukualofa_1055"
+  },
+  {
+    "name": "Кампала",
+    "country": "Уганда",
+    "flag": "🇺🇬",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_kampala_1056"
+  },
+  {
+    "name": "Энтеббе",
+    "country": "Уганда",
+    "flag": "🇺🇬",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_entebbe_1057"
+  },
+  {
+    "name": "Ниамей",
+    "country": "Нигер",
+    "flag": "🇳🇪",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_niamey_1058"
+  },
+  {
+    "name": "Агадес",
+    "country": "Нигер",
+    "flag": "🇳🇪",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_agadez_1059"
+  },
+  {
+    "name": "Масеру",
+    "country": "Лесото",
+    "flag": "🇱🇸",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_maseru_1060"
+  },
+  {
+    "name": "Лагос",
+    "country": "Нигерия",
+    "flag": "🇳🇬",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_lagos_1061"
+  },
+  {
+    "name": "Абуджа",
+    "country": "Нигерия",
+    "flag": "🇳🇬",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_abuja_1062"
+  },
+  {
+    "name": "Мбабане",
+    "country": "Эсватини",
+    "flag": "🇸🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_mbabane_1063"
+  },
+  {
+    "name": "Манзини",
+    "country": "Эсватини",
+    "flag": "🇸🇿",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_manzini_1064"
+  },
+  {
+    "name": "Катманду",
+    "country": "Непал",
+    "flag": "🇳🇵",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_kathmandu_1065"
+  },
+  {
+    "name": "Покхара",
+    "country": "Непал",
+    "flag": "🇳🇵",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_pokhara_1066"
+  },
+  {
+    "name": "Лукла",
+    "country": "Непал",
+    "flag": "🇳🇵",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_lukla_1067"
+  },
+  {
+    "name": "Минеральные Воды",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_mineralnievody_1068"
+  },
+  {
+    "name": "Симферополь",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_simferopol_1069"
+  },
+  {
+    "name": "Саранск",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_saransk_1070"
+  },
+  {
+    "name": "Суздаль",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_suzdal_1071"
+  },
+  {
+    "name": "Переславль-Залесский",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_pereslavl_1072"
+  },
+  {
+    "name": "Сортавала",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_sortavala_1073"
+  },
+  {
+    "name": "Торжок",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_torzhok_1074"
+  },
+  {
+    "name": "Териберка",
+    "country": "Россия",
+    "flag": "🇷🇺",
+    "images": ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
+    "cityId": "city_teriberka_1075"
   }
 ]
