@@ -552,6 +552,12 @@ app.post("/api/validate-user", async (req, res) => {
         return res.status(500).json({ error: "Internal server error" });
     }
 });
+
+// Add this endpoint after cityData is loaded
+app.get('/api/all-cities', (req, res) => {
+    res.json({ cities: cityData });
+});
+
 initializeDatabase().then(() => {
     app.listen(PORT, () => {
         console.log(`Server is running on http://localhost:${PORT}`);
