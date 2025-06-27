@@ -374,6 +374,9 @@ let userId = getUserId();
         const totalCountries = Object.keys(grouped).length;
         // Render stats, filter
         let html = '';
+        html += `<div class="info-box" id="uid-info-box">
+        Ваш UID — это ваш логин для веб-версии бота, доступной по адресу <a href="https://www.ratethis.town/" target="_blank">https://www.ratethis.town/</a>. Дополнительная авторизация не требуется. Веб-сайт удобнее и функциональнее, поэтому мы рекомендуем пользоваться им. Обязательно сохраните свой UID (например, переслав его в чат с ботом или сохранив в «Избранном» в мессенджере). В случае смены устройства, очистки кэша или технического сбоя у вас не будет возможности восстановить UID и историю голосований.
+        </div>`;
         html += `<div class=\"profile-stats\">\n`
             + `<div><span class=\"stat-num\">${visitedCities}</span> / <span class=\"stat-num\">${totalCities}</span> городов посещено</div>`
             + `<div><span class=\"stat-num\">${visitedCountries.length}</span> / <span class=\"stat-num\">${totalCountries}</span> стран посещено</div>`
@@ -523,6 +526,10 @@ async function changeVote(cityId, newVote) {
         // Attach scroll event to the main container
         const container = document.querySelector('.container');
         if (!container) return;
+        // Remove previous scroll event if any
+        if (container._profileScrollHandler) {
+            container.removeEventListener('scroll', container._profileScrollHandler);
+        }
         function checkScroll() {
             const scrollTop = container.scrollTop;
             const scrollHeight = container.scrollHeight - container.clientHeight;
@@ -532,6 +539,7 @@ async function changeVote(cityId, newVote) {
                 scrollToTopBtn.style.display = 'none';
             }
         }
+        container._profileScrollHandler = checkScroll;
         container.addEventListener('scroll', checkScroll);
         checkScroll();
         scrollToTopBtn.onclick = () => {
