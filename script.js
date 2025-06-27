@@ -284,108 +284,222 @@ let userId = getUserId();
     const userUidEl = document.getElementById('user-uid');
     const copyUidBtn = document.getElementById('copy-uid-btn');
     const userVotesList = document.getElementById('user-votes-list');
+    const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
 
-    // Переключение вкладок
-    function showVotingPage() {
-        votingPage.style.display = '';
-        profilePage.style.display = 'none';
-        tabVoting.classList.add('active');
-        tabProfile.classList.remove('active');
-    }
-    function showProfilePage() {
-        votingPage.style.display = 'none';
-        profilePage.style.display = '';
-        tabVoting.classList.remove('active');
-        tabProfile.classList.add('active');
-        renderProfile();
-    }
-    tabVoting.addEventListener('click', showVotingPage);
-    tabProfile.addEventListener('click', showProfilePage);
+    // --- Profile Tab State ---
+    let profileCities = [];
+    let profileLoading = false;
+    let profileError = null;
+    let showVisitedOnly = false;
+    let showRemoveVisited = false;
 
-    // Загрузка реальных голосов пользователя
-async function fetchUserVotes() {
-    try {
-        const res = await fetch(`${API_BASE_URL}/api/user-votes/${userId}`);
-        if (!res.ok) throw new Error('Ошибка загрузки голосов');
-        const data = await res.json();
-        return data.userVotes || [];
-    } catch (e) {
-        console.error(e);
-        return [];
-    }
-}
-
-    // Группировка по странам
-    function groupVotesByCountry(votes) {
-        const grouped = {};
-        for (const v of votes) {
-            if (!grouped[v.country]) grouped[v.country] = { flag: v.flag, cities: [] };
-            grouped[v.country].cities.push(v);
+    // --- Profile Tab Fetch & Merge Logic ---
+    async function fetchProfileData() {
+        profileLoading = true;
+        profileError = null;
+        try {
+            const [citiesRes, votesRes, ratingsRes] = await Promise.all([
+                fetch(`${API_BASE_URL}/api/all-cities`).then(r => r.json()),
+                fetch(`${API_BASE_URL}/api/user-votes/${userId}`).then(r => r.json()),
+                fetch(`${API_BASE_URL}/api/rankings`).then(r => r.json()),
+            ]);
+            const allCities = citiesRes.cities || [];
+            const userVotes = (votesRes.userVotes || []);
+            const ratingsMap = {};
+            (ratingsRes || []).forEach(r => { ratingsMap[r.cityId] = r; });
+            const votesMap = {};
+            userVotes.forEach(v => { votesMap[v.cityId] = v; });
+            profileCities = allCities.map(city => {
+                const vote = votesMap[city.cityId];
+                const rating = ratingsMap[city.cityId];
+                return {
+                    ...city,
+                    voteType: vote ? vote.voteType : undefined,
+                    rating: rating ? rating.rating : null,
+                    likes: rating ? rating.likes : 0,
+                    dislikes: rating ? rating.dislikes : 0,
+                    dont_know: rating ? rating.dont_know : 0,
+                };
+            });
+            profileLoading = false;
+        } catch (e) {
+            profileError = 'Не удалось загрузить данные';
+            profileLoading = false;
         }
-        // Возвращаем массив стран, отсортированных по алфавиту
-        return Object.entries(grouped)
-            .sort((a, b) => a[0].localeCompare(b[0], 'ru'))
-            .map(([country, data]) => ({ country, ...data }));
     }
 
+    // --- Profile Tab Render ---
     async function renderProfile() {
-        // Always show the latest userId in the profile tab
         userUidEl.textContent = userId;
         copyUidBtn.onclick = () => {
             navigator.clipboard.writeText(userId);
-            copyUidBtn.textContent = '✅';
-            setTimeout(() => { copyUidBtn.textContent = '📋'; }, 1200);
+            copyUidBtn.textContent = '\u2705';
+            setTimeout(() => { copyUidBtn.textContent = '\ud83d\udccb'; }, 1200);
         };
-        const votes = await fetchUserVotes();
-        const grouped = groupVotesByCountry(votes);
-        let html = '';
-        for (const group of grouped) {
-            const { country, flag, cities } = group;
-            html += `<div><b>${flag} ${country}</b></div><ul style="margin-top:0;">`;
-            for (const city of cities) {
-                const emoji = city.voteType === 'liked' ? '❤️' : city.voteType === 'disliked' ? '👎' : '🤷‍♂️';
-                html += `<li>${city.name} <span class="city-vote">${emoji}</span> <button class="change-vote-btn" data-cityid="${city.cityId}" data-country="${country}" title="Изменить голос">✏️</button></li>`;
-            }
-            html += '</ul>';
+        await fetchProfileData();
+        if (profileLoading) {
+            userVotesList.innerHTML = '<div class="placeholder">Загрузка данных...</div>';
+            return;
         }
-        userVotesList.innerHTML = html || '<div>Вы ещё не проголосовали ни за один город.</div>';
-
-        // Добавляем обработчики на кнопки "Изменить"
-        document.querySelectorAll('.change-vote-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const cityId = this.getAttribute('data-cityid');
-                const country = this.getAttribute('data-country');
-                showVoteSelector(this, country, cityId);
-            });
+        if (profileError) {
+            userVotesList.innerHTML = `<div class="placeholder">${profileError}</div>`;
+            return;
+        }
+        // Group by country
+        const grouped = {};
+        profileCities.forEach(c => {
+            if (!grouped[c.country]) grouped[c.country] = [];
+            grouped[c.country].push(c);
         });
-    }
-
-    // Показывает мини-меню для выбора голоса
-    function showVoteSelector(button, country, cityId) {
-        document.querySelectorAll('.vote-selector').forEach(el => el.remove());
-        const selector = document.createElement('span');
-        selector.className = 'vote-selector';
-        selector.innerHTML = `
-            <button class="vote-option" data-vote="liked">❤️</button>
-            <button class="vote-option" data-vote="disliked">👎</button>
-            <button class="vote-option" data-vote="dont_know">🤷‍♂️</button>
-        `;
-        button.parentNode.insertBefore(selector, button.nextSibling);
-        selector.querySelectorAll('.vote-option').forEach(opt => {
-            opt.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                const newVote = opt.getAttribute('data-vote');
-                await changeVote(cityId, newVote);
-                selector.remove();
+        Object.keys(grouped).forEach(country => {
+            grouped[country].sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+        });
+        // Visited filter
+        const visitedCountries = Object.keys(grouped).filter(country =>
+            grouped[country].some(city => city.voteType === 'liked' || city.voteType === 'disliked')
+        );
+        // Remove visited filter
+        const removeVisitedCountries = Object.keys(grouped).filter(country =>
+            grouped[country].every(city => city.voteType !== 'liked' && city.voteType !== 'disliked')
+        );
+        let filteredCountries = Object.keys(grouped);
+        if (showVisitedOnly) {
+            filteredCountries = visitedCountries;
+        } else if (showRemoveVisited) {
+            filteredCountries = removeVisitedCountries;
+        }
+        // Stats
+        const visitedCities = profileCities.filter(c => c.voteType === 'liked' || c.voteType === 'disliked').length;
+        const totalCities = profileCities.length;
+        const totalCountries = Object.keys(grouped).length;
+        // Render stats, filter
+        let html = '';
+        html += `<div class=\"profile-stats\">\n`
+            + `<div><span class=\"stat-num\">${visitedCities}</span> / <span class=\"stat-num\">${totalCities}</span> городов посещено</div>`
+            + `<div><span class=\"stat-num\">${visitedCountries.length}</span> / <span class=\"stat-num\">${totalCountries}</span> стран посещено</div>`
+            + `<label class=\"visited-toggle\"><input type=\"checkbox\" id=\"visited-only-toggle\" ${showVisitedOnly ? 'checked' : ''}/> Только посещённые страны</label>`
+            + `<label class=\"visited-toggle\"><input type=\"checkbox\" id=\"remove-visited-toggle\" ${showRemoveVisited ? 'checked' : ''}/> Убрать посещенные страны</label>`
+            + `</div>`;
+        // Emoji legend in a styled box
+        html += `<div class=\"legend-box\">\n`
+            + `<b>Что означают эмодзи:</b><br>`
+            + `❤️ Лайк — город понравился (засчитывается как посещение)<br>`
+            + `👎 Дизлайк — город не понравился (засчитывается как посещение)<br>`
+            + `🤷‍♂️ Не был(а) — не посещали этот город\n`
+            + `</div>`;
+        // Render grouped cities with bulk voting buttons
+        filteredCountries.sort().forEach(country => {
+            const countryCities = grouped[country];
+            const flag = countryCities[0]?.flag || '';
+            // Determine bulk voting button states
+            const hasAnyVote = countryCities.some(city => city.voteType === 'liked' || city.voteType === 'disliked');
+            const allDontKnow = countryCities.every(city => city.voteType === 'dont_know' || !city.voteType);
+            let bulkBylClass = 'bulk-vote-btn';
+            let bulkNeBylClass = 'bulk-vote-btn';
+            let bulkBylDisabled = false;
+            let bulkNeBylDisabled = false;
+            if (hasAnyVote) {
+                bulkBylClass += ' active';
+                bulkNeBylClass += ' inactive';
+                bulkNeBylDisabled = true;
+            } else if (allDontKnow) {
+                bulkBylClass += ' inactive';
+                bulkBylDisabled = true;
+                bulkNeBylClass += ' grey';
+            } else {
+                // No votes at all
+                bulkBylClass += ' inactive';
+                bulkBylDisabled = true;
+                bulkNeBylClass += ' grey';
+            }
+            // If user just clicked 'Не был', make it red
+            if (allDontKnow && countryCities.some(city => city.voteType === 'dont_know')) {
+                bulkNeBylClass = 'bulk-vote-btn red';
+            }
+            html += `<div class=\"profile-country\"><b>${flag} ${country}</b></div>`;
+            html += `<div class=\"bulk-vote-group\">`
+                + `<button class=\"${bulkBylClass}\" data-country=\"${country}\" data-vote=\"liked\" ${bulkBylDisabled ? 'disabled' : ''}>Был</button>`
+                + `<button class=\"${bulkNeBylClass}\" data-country=\"${country}\" data-vote=\"dont_know\" ${bulkNeBylDisabled ? 'disabled' : ''}>Не был</button>`
+            + `</div>`;
+            html += '<ul style=\"margin-top:0;\">';
+            countryCities.forEach(city => {
+                // Emoji voting buttons
+                let likeClass = 'city-emoji-btn';
+                let dislikeClass = 'city-emoji-btn';
+                let dontKnowClass = 'city-emoji-btn';
+                if (!city.voteType) {
+                    likeClass += ' grey';
+                    dislikeClass += ' grey';
+                    dontKnowClass += ' grey';
+                } else {
+                    if (city.voteType === 'liked') likeClass += ' active-like'; else likeClass += ' grey';
+                    if (city.voteType === 'disliked') dislikeClass += ' active-dislike'; else dislikeClass += ' grey';
+                    if (city.voteType === 'dont_know') dontKnowClass += ' active-dontknow'; else dontKnowClass += ' grey';
+                }
+                html += `<li><span class='city-name'>${city.name}</span>`
+                    + `<button class='${likeClass}' data-cityid='${city.cityId}' data-vote='liked' title='Лайк'>❤️</button>`
+                    + `<button class='${dislikeClass}' data-cityid='${city.cityId}' data-vote='disliked' title='Дизлайк'>👎</button>`
+                    + `<button class='${dontKnowClass}' data-cityid='${city.cityId}' data-vote='dont_know' title='Не знаю'>🤷‍♂️</button>`
+                    + `</li>`;
+            });
+            html += '</ul>';
+        });
+        userVotesList.innerHTML = html;
+        // Toggle handler
+        const visitedToggle = document.getElementById('visited-only-toggle');
+        if (visitedToggle) {
+            visitedToggle.onchange = () => {
+                showVisitedOnly = visitedToggle.checked;
+                showRemoveVisited = false;
+                renderProfile();
+            };
+        }
+        const removeVisitedToggle = document.getElementById('remove-visited-toggle');
+        if (removeVisitedToggle) {
+            removeVisitedToggle.onchange = () => {
+                showRemoveVisited = removeVisitedToggle.checked;
+                showVisitedOnly = false;
+                renderProfile();
+            };
+        }
+        // Edit handlers
+        document.querySelectorAll('.city-emoji-btn').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const cityId = this.getAttribute('data-cityid');
+                const voteType = this.getAttribute('data-vote');
+                await changeVote(cityId, voteType);
                 renderProfile();
             });
         });
-        setTimeout(() => {
-            document.addEventListener('click', closeSelector, { once: true });
-        }, 0);
-        function closeSelector(e) {
-            if (!selector.contains(e.target)) selector.remove();
-        }
+        // Bulk voting handlers
+        document.querySelectorAll('.bulk-vote-btn').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const country = this.getAttribute('data-country');
+                const voteType = this.getAttribute('data-vote');
+                const countryCities = grouped[country];
+                // Custom logic for Был/Не был
+                if (voteType === 'liked') {
+                    // Only allow if at least one city is liked/disliked
+                    if (!countryCities.some(city => city.voteType === 'liked' || city.voteType === 'disliked')) return;
+                }
+                if (voteType === 'dont_know') {
+                    // Allow if all are dont_know or none voted
+                    for (const city of countryCities) {
+                        if (city.voteType !== 'dont_know') {
+                            await changeVote(city.cityId, 'dont_know');
+                        }
+                    }
+                    renderProfile();
+                    return;
+                }
+                for (const city of countryCities) {
+                    if (city.voteType !== voteType) {
+                        await changeVote(city.cityId, voteType);
+                    }
+                }
+                renderProfile();
+            });
+        });
     }
 
     // Меняет голос через сервер
@@ -403,4 +517,45 @@ async function changeVote(cityId, newVote) {
         alert('Не удалось изменить голос: ' + (e.message || e));
     }
 }
+
+    // Scroll-to-top button logic for Profile tab
+    function handleProfileScroll() {
+        // Attach scroll event to the main container
+        const container = document.querySelector('.container');
+        if (!container) return;
+        function checkScroll() {
+            const scrollTop = container.scrollTop;
+            const scrollHeight = container.scrollHeight - container.clientHeight;
+            if (scrollHeight > 0 && scrollTop / scrollHeight > 0.05) {
+                scrollToTopBtn.style.display = 'block';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        }
+        container.addEventListener('scroll', checkScroll);
+        checkScroll();
+        scrollToTopBtn.onclick = () => {
+            container.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+    }
+
+    // Tab switching logic (ensure these functions and listeners are present)
+    function showVotingPage() {
+        votingPage.style.display = '';
+        profilePage.style.display = 'none';
+        tabVoting.classList.add('active');
+        tabProfile.classList.remove('active');
+    }
+    function showProfilePage() {
+        votingPage.style.display = 'none';
+        profilePage.style.display = '';
+        tabVoting.classList.remove('active');
+        tabProfile.classList.add('active');
+        renderProfile();
+        setTimeout(() => {
+            handleProfileScroll();
+        }, 100);
+    }
+    tabVoting.addEventListener('click', showVotingPage);
+    tabProfile.addEventListener('click', showProfilePage);
 });

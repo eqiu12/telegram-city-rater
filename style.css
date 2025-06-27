@@ -1,6 +1,6 @@
 /* General Body and Font Styles */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Overpass', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -287,28 +287,252 @@ th {
     margin-top: 24px;
 }
 #user-votes-list ul {
-    list-style: none;
-    padding-left: 16px;
-    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-left: 0;
 }
 #user-votes-list li {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 6px;
-    font-size: 16px;
+    justify-content: space-between;
+    font-size: 22px;
+    padding: 2px 0;
+}
+.city-name {
+    flex: 0 1 80%;
+    font-size: 1.1em;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .city-vote {
-    font-size: 1.5em;
+    flex: 0 0 auto;
+    font-size: 1.2em;
+    margin: 0 4px;
     vertical-align: middle;
-    margin-left: 2px;
-    margin-right: 2px;
 }
-.change-vote-btn {
-    font-size: 14px;
+.edit-emoji-btn, .change-vote-btn {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 4px !important;
+    margin: 0 2px !important;
+    font-size: 1.1em !important;
+    color: #888 !important;
+    cursor: pointer;
+    min-width: unset;
+    min-height: unset;
     width: 22px;
     height: 22px;
-    min-width: 22px;
-    min-height: 22px;
+    border-radius: 0 !important;
+    transition: color 0.2s;
+}
+.edit-emoji-btn:hover, .change-vote-btn:hover {
+    color: #007aff !important;
+    background: none !important;
+}
+#profile-page b {
+    font-size: 30px;
+}
+.info-box {
+    background: #f8f8fa;
+    border-left: 4px solid #007aff;
+    padding: 12px 16px;
+    margin: 16px 0 20px 0;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.legend-box {
+    background: #f8f8fa;
+    border-left: 4px solid #007aff;
+    padding: 12px 16px;
+    margin: 16px 0 20px 0;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #333;
+    line-height: 1.5;
+    max-width: 100%;
+    font-weight: 400;
+}
+
+.legend-box b {
+    font-weight: 400;
+}
+
+.profile-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 18px;
+    background: #eaf4ff;
+    border-radius: 10px;
+    padding: 12px 16px;
+    border: 1px solid #b3d8ff;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.stat-num {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #007aff;
+    margin: 0 2px;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px #e0eaff;
+}
+
+.visited-toggle {
+    font-size: 1em;
+    color: #007aff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 6px 0;
+}
+
+.remove-visited-btn {
+    background: none;
+    color: #f44336;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-bottom: 4px;
+    margin-left: 2px;
     padding: 0;
+    transition: color 0.2s;
+}
+
+.remove-visited-btn:hover {
+    color: #b71c1c;
+}
+
+.bulk-vote-group {
+    display: flex;
+    gap: 10px;
+    margin: 8px 0 12px 0;
+}
+.bulk-vote-btn {
+    background: #f0f2f5;
+    color: #007aff;
+    border: 1px solid #b3d8ff;
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.bulk-vote-btn:hover {
+    background: #dbefff;
+    color: #005bb5;
+}
+
+.bulk-vote-btn.inactive {
+    background: #f5f5f5 !important;
+    color: #bdbdbd !important;
+    border: 1px solid #e0e0e0 !important;
+    cursor: not-allowed !important;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.bulk-vote-btn.active {
+    background: #e8f5e9 !important;
+    color: #388e3c !important;
+    border: 1px solid #81c784 !important;
+}
+
+.bulk-vote-btn.red {
+    background: #ffebee !important;
+    color: #d32f2f !important;
+    border: 1px solid #ffcdd2 !important;
+}
+
+.bulk-vote-btn.grey {
+    background: #f5f5f5 !important;
+    color: #888 !important;
+    border: 1px solid #e0e0e0 !important;
+    cursor: pointer !important;
+    pointer-events: auto;
+    opacity: 1;
+}
+
+.scroll-to-top-btn {
+    position: fixed;
+    bottom: 80px;
+    right: 30px;
+    z-index: 100;
+    background: #007aff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    cursor: pointer;
+    display: none;
+    transition: opacity 0.2s;
+    opacity: 0.9;
+}
+.scroll-to-top-btn:hover {
+    opacity: 1;
+    background: #005bb5;
+}
+
+.city-emoji-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    margin: 0 2px;
+    padding: 2px 4px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s, opacity 0.15s;
+    outline: none;
+    vertical-align: middle;
+    opacity: 0.55;
+    color: #bdbdbd;
+}
+.city-emoji-btn.grey {
+    color: #bdbdbd;
+    background: none;
+    opacity: 0.45;
+}
+.city-emoji-btn.active-like {
+    color: #00e676;
+    background: #e0ffe6;
+    font-weight: bold;
+    box-shadow: 0 0 6px 2px #00e67644;
+    opacity: 1;
+    z-index: 1;
+}
+.city-emoji-btn.active-dislike {
+    color: #ff1744;
+    background: #ffe0e6;
+    font-weight: bold;
+    box-shadow: 0 0 6px 2px #ff174444;
+    opacity: 1;
+    z-index: 1;
+}
+.city-emoji-btn.active-dontknow {
+    color: #616161;
+    background: #eeeeee;
+    font-weight: bold;
+    box-shadow: 0 0 6px 2px #bdbdbd44;
+    opacity: 1;
+    z-index: 1;
+}
+.city-emoji-btn:hover:not(.active-like):not(.active-dislike):not(.active-dontknow) {
+    background: #f0f0f0;
+    color: #888;
+    opacity: 0.7;
 } 
