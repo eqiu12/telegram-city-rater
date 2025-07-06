@@ -10000,605 +10000,605 @@
     "cityId": "city_yaren"
   },
   {
-    "name": "Тарту",
-    "country": "Эстония",
-    "flag": "🇪🇪",
-    "cityId": "city_tartu"
-  },
-  {
-    "name": "Нарва",
-    "country": "Эстония",
-    "flag": "🇪🇪",
-    "cityId": "city_narva"
-  },
-  {
-    "name": "Пярну",
-    "country": "Эстония",
-    "flag": "🇪🇪",
-    "cityId": "city_parnu"
-  },
-  {
-    "name": "Улцинь",
-    "country": "Черногория",
-    "flag": "🇲🇪",
-    "cityId": "city_ulcinj"
-  },
-  {
-    "name": "Свети Стефан",
-    "country": "Черногория",
-    "flag": "🇲🇪",
-    "cityId": "city_sveti_stefan"
-  },
-  {
-    "name": "Рисан",
-    "country": "Черногория",
-    "flag": "🇲🇪",
-    "cityId": "city_risan"
-  },
-  {
-    "name": "Пераст",
-    "country": "Черногория",
-    "flag": "🇲🇪",
-    "cityId": "city_perast"
-  },
-  {
-    "name": "Колашин",
-    "country": "Черногория",
-    "flag": "🇲🇪",
-    "cityId": "city_kolasin"
-  },
-  {
-    "name": "Никшич",
-    "country": "Черногория",
-    "flag": "🇲🇪",
-    "cityId": "city_niksic"
-  },
-  {
-    "name": "Цетинье",
-    "country": "Черногория",
-    "flag": "🇲🇪",
-    "cityId": "city_cetinje"
-  },
-  {
-    "name": "Петровац",
-    "country": "Черногория",
-    "flag": "🇲🇪",
-    "cityId": "city_petrovac"
-  },
-  {
-    "name": "Биело-Поле",
-    "country": "Черногория",
-    "flag": "🇲🇪",
-    "cityId": "city_bijelo_pole"
-  },
-  {
-    "name": "Авиньон",
-    "country": "Франция",
-    "flag": "🇫🇷",
-    "cityId": "city_avignon"
-  },
-  {
-    "name": "Каркассон",
-    "country": "Франция",
-    "flag": "🇫🇷",
-    "cityId": "city_carcassonne"
-  },
-  {
-    "name": "Лурд",
-    "country": "Франция",
-    "flag": "🇫🇷",
-    "cityId": "city_lourdes"
-  },
-  {
-    "name": "Сен-Мало",
-    "country": "Франция",
-    "flag": "🇫🇷",
-    "cityId": "city_saint_malo"
-  },
-  {
-    "name": "Кольмар",
-    "country": "Франция",
-    "flag": "🇫🇷",
-    "cityId": "city_colmar"
-  },
-  {
-    "name": "Арль",
-    "country": "Франция",
-    "flag": "🇫🇷",
-    "cityId": "city_arles"
-  },
-  {
-    "name": "Шамони-Мон-Блан",
-    "country": "Франция",
-    "flag": "🇫🇷",
-    "cityId": "city_chamonix_mont_blanc"
-  },
-  {
-    "name": "Этрета",
-    "country": "Франция",
-    "flag": "🇫🇷",
-    "cityId": "city_etretat"
-  },
-  {
-    "name": "Рокамадур",
-    "country": "Франция",
-    "flag": "🇫🇷",
-    "cityId": "city_rocamadour"
-  },
-  {
-    "name": "Перпиньян",
-    "country": "Франция",
-    "flag": "🇫🇷",
-    "cityId": "city_perpignan"
-  },
-  {
-    "name": "Монпелье",
-    "country": "Франция",
-    "flag": "🇫🇷",
-    "cityId": "city_montpellier"
-  },
-  {
-    "name": "Экс-ан-Прованс",
-    "country": "Франция",
-    "flag": "🇫🇷",
-    "cityId": "city_aix_en_provence"
-  },
-  {
-    "name": "Ко Тао",
-    "country": "Таиланд",
-    "flag": "🇹🇭",
-    "cityId": "city_ko_tao"
-  },
-  {
-    "name": "Ко Чанг",
-    "country": "Таиланд",
-    "flag": "🇹🇭",
-    "cityId": "city_ko_chang"
-  },
-  {
-    "name": "Ко Пхи-Пхи",
-    "country": "Таиланд",
-    "flag": "🇹🇭",
-    "cityId": "city_ko_phi_phi"
-  },
-  {
-    "name": "Бельцы",
-    "country": "Молдова",
-    "flag": "🇲🇩",
-    "cityId": "city_balti"
-  },
-  {
-    "name": "Коломна",
-    "country": "Россия",
-    "flag": "🇷🇺",
-    "cityId": "city_kolomna"
-  },
-  {
-    "name": "Галич",
-    "country": "Россия",
-    "flag": "🇷🇺",
-    "cityId": "city_galich"
-  },
-  {
-    "name": "Солигалич",
-    "country": "Россия",
-    "flag": "🇷🇺",
-    "cityId": "city_soligalich"
-  },
-  {
-    "name": "Великий Устюг",
-    "country": "Россия",
-    "flag": "🇷🇺",
-    "cityId": "city_veliky_ustyug"
-  },
-  {
-    "name": "Кронштадт",
-    "country": "Россия",
-    "flag": "🇷🇺",
-    "cityId": "city_kronstadt"
-  },
-  {
-    "name": "Соль-Илецк",
-    "country": "Россия",
-    "flag": "🇷🇺",
-    "cityId": "city_sol_iletsk"
-  },
-  {
-    "name": "Калязин",
-    "country": "Россия",
-    "flag": "🇷🇺",
-    "cityId": "city_kalyazin"
-  },
-  {
-    "name": "Мышкин",
-    "country": "Россия",
-    "flag": "🇷🇺",
-    "cityId": "city_myshkin"
-  },
-  {
-    "name": "Белокуриха",
-    "country": "Россия",
-    "flag": "🇷🇺",
-    "cityId": "city_belokurikha"
-  },
-  {
-    "name": "Рускеала",
-    "country": "Россия",
-    "flag": "🇷🇺",
-    "cityId": "city_ruskeala"
-  },
-  {
-    "name": "Гуанахуато",
-    "country": "Мексика",
-    "flag": "🇲🇽",
-    "cityId": "city_guanajuato"
-  },
-  {
-    "name": "Пуэрто-Вальярта",
-    "country": "Мексика",
-    "flag": "🇲🇽",
-    "cityId": "city_puerto_vallarta"
-  },
-  {
-    "name": "Тулум",
-    "country": "Мексика",
-    "flag": "🇲🇽",
-    "cityId": "city_tulum"
-  },
-  {
-    "name": "Косумель",
-    "country": "Мексика",
-    "flag": "🇲🇽",
-    "cityId": "city_cozumel"
-  },
-  {
-    "name": "Масатлан",
-    "country": "Мексика",
-    "flag": "🇲🇽",
-    "cityId": "city_mazatlan"
-  },
-  {
-    "name": "Керетаро",
-    "country": "Мексика",
-    "flag": "🇲🇽",
-    "cityId": "city_queretaro"
-  },
-  {
-    "name": "Марракеш",
-    "country": "Марокко",
-    "flag": "🇲🇦",
-    "cityId": "city_marrakesh"
-  },
-  {
-    "name": "Уарзазат",
-    "country": "Марокко",
-    "flag": "🇲🇦",
-    "cityId": "city_ouarzazate"
-  },
-  {
-    "name": "Мерзуга",
-    "country": "Марокко",
-    "flag": "🇲🇦",
-    "cityId": "city_merzouga"
-  },
-  {
-    "name": "Ифран",
-    "country": "Марокко",
-    "flag": "🇲🇦",
-    "cityId": "city_ifran"
-  },
-  {
-    "name": "Тетуан",
-    "country": "Марокко",
-    "flag": "🇲🇦",
-    "cityId": "city_tetouan"
-  },
-  {
-    "name": "Асила",
-    "country": "Марокко",
-    "flag": "🇲🇦",
-    "cityId": "city_asilah"
-  },
-  {
-    "name": "Дахла",
-    "country": "Марокко",
-    "flag": "🇲🇦",
-    "cityId": "city_dakhla"
-  },
-  {
-    "name": "Эль-Джадида",
-    "country": "Марокко",
-    "flag": "🇲🇦",
-    "cityId": "city_el_jadida"
-  },
-  {
-    "name": "Клайпеда",
-    "country": "Литва",
-    "flag": "🇱🇹",
-    "cityId": "city_klaipeda"
-  },
-  {
-    "name": "Шяуляй",
-    "country": "Литва",
-    "flag": "🇱🇹",
-    "cityId": "city_siauliai"
-  },
-  {
-    "name": "Паневежис",
-    "country": "Литва",
-    "flag": "🇱🇹",
-    "cityId": "city_panevezys"
-  },
-  {
-    "name": "Паланга",
-    "country": "Литва",
-    "flag": "🇱🇹",
-    "cityId": "city_palanga"
-  },
-  {
-    "name": "Даугавпилс",
-    "country": "Латвия",
-    "flag": "🇱🇻",
-    "cityId": "city_daugavpils"
-  },
-  {
-    "name": "Лиепая",
-    "country": "Латвия",
-    "flag": "🇱🇻",
-    "cityId": "city_liepaja"
-  },
-  {
-    "name": "Елгава",
-    "country": "Латвия",
-    "flag": "🇱🇻",
-    "cityId": "city_jelgava"
-  },
-  {
-    "name": "Валмиера",
-    "country": "Латвия",
-    "flag": "🇱🇻",
-    "cityId": "city_valmiera"
-  },
-  {
-    "name": "Вентспилс",
-    "country": "Латвия",
-    "flag": "🇱🇻",
-    "cityId": "city_ventspils"
-  },
-  {
-    "name": "Резекне",
-    "country": "Латвия",
-    "flag": "🇱🇻",
-    "cityId": "city_rezekne"
-  },
-  {
-    "name": "Сиань",
-    "country": "Китай",
-    "flag": "🇨🇳",
-    "cityId": "city_xian"
-  },
-  {
-    "name": "Нанкин",
-    "country": "Китай",
-    "flag": "🇨🇳",
-    "cityId": "city_nanjing"
-  },
-  {
-    "name": "Кашгар",
-    "country": "Китай",
-    "flag": "🇨🇳",
-    "cityId": "city_kashgar"
-  },
-  {
-    "name": "Амальфи",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_amalfi"
-  },
-  {
-    "name": "Капри",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_capri"
-  },
-  {
-    "name": "Альберобелло",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_alberobello"
-  },
-  {
-    "name": "Лечче",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_lecce"
-  },
-  {
-    "name": "Ассизи",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_assisi"
-  },
-  {
-    "name": "Сан-Джиминьяно",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_san_gimignano"
-  },
-  {
-    "name": "Перуджа",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_perugia"
-  },
-  {
-    "name": "Модена",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_modena"
-  },
-  {
-    "name": "Парма",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_parma"
-  },
-  {
-    "name": "Больцано",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_bolzano"
-  },
-  {
-    "name": "Кортина-д'Ампеццо",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_cortina_d_ampezzo"
-  },
-  {
-    "name": "Триест",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_trieste"
-  },
-  {
-    "name": "Сан-Ремо",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_sanremo"
-  },
-  {
-    "name": "Савона",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_savona"
-  },
-  {
-    "name": "Форте-дей-Марми",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_forte_dei_marmi"
-  },
-  {
-    "name": "Чефалу",
-    "country": "Италия",
-    "flag": "🇮🇹",
-    "cityId": "city_cefalu"
-  },
-  {
-    "name": "Сеговия",
-    "country": "Испания",
-    "flag": "🇪🇸",
-    "cityId": "city_segovia"
-  },
-  {
-    "name": "Авила",
-    "country": "Испания",
-    "flag": "🇪🇸",
-    "cityId": "city_avila"
-  },
-  {
-    "name": "Куэнка",
-    "country": "Испания",
-    "flag": "🇪🇸",
-    "cityId": "city_cuenca"
-  },
-  {
-    "name": "Памплона",
-    "country": "Испания",
-    "flag": "🇪🇸",
-    "cityId": "city_pamplona"
-  },
-  {
-    "name": "Ситжес",
-    "country": "Испания",
-    "flag": "🇪🇸",
-    "cityId": "city_sitges"
-  },
-  {
-    "name": "Фуэртевентура",
-    "country": "Испания",
-    "flag": "🇪🇸",
-    "cityId": "city_fuerteventura"
-  },
-  {
-    "name": "Менорка",
-    "country": "Испания",
-    "flag": "🇪🇸",
-    "cityId": "city_menorca"
-  },
-  {
-    "name": "Касерес",
-    "country": "Испания",
-    "flag": "🇪🇸",
-    "cityId": "city_caceres"
-  },
-  {
-    "name": "Бургос",
-    "country": "Испания",
-    "flag": "🇪🇸",
-    "cityId": "city_burgos"
-  },
-  {
-    "name": "Черновцы",
-    "country": "Украина",
-    "flag": "🇺🇦",
-    "cityId": "city_chernivtsi"
-  },
-  {
-    "name": "Харьков",
-    "country": "Украина",
-    "flag": "🇺🇦",
-    "cityId": "city_kharkiv"
-  },
-  {
-    "name": "Ужгород",
-    "country": "Украина",
-    "flag": "🇺🇦",
-    "cityId": "city_uzhhorod"
-  },
-  {
-    "name": "Каменец-Подольский",
-    "country": "Украина",
-    "flag": "🇺🇦",
-    "cityId": "city_kamianets_podilskyi"
-  },
-  {
-    "name": "Ивано-Франковск",
-    "country": "Украина",
-    "flag": "🇺🇦",
-    "cityId": "city_ivano_frankivsk"
-  },
-  {
-    "name": "Эчмиадзин (Вагаршапат)",
-    "country": "Армения",
-    "flag": "🇦🇲",
-    "cityId": "city_echmiadzin"
-  },
-  {
-    "name": "Джермук",
-    "country": "Армения",
-    "flag": "🇦🇲",
-    "cityId": "city_jermuk"
-  },
-  {
-    "name": "Цахкадзор",
-    "country": "Армения",
-    "flag": "🇦🇲",
-    "cityId": "city_tsaghkadzor"
-  },
-  {
-    "name": "Арени",
-    "country": "Армения",
-    "flag": "🇦🇲",
-    "cityId": "city_areni"
-  },
-  {
-    "name": "Гудауари",
-    "country": "Грузия",
-    "flag": "🇬🇪",
-    "cityId": "city_gudauri"
-  },
+  "name": "Марракеш",
+  "country": "Марокко",
+  "flag": "🇲🇦",
+  "cityId": "city_marrakesh"
+},
+{
+  "name": "Уарзазат",
+  "country": "Марокко",
+  "flag": "🇲🇦",
+  "cityId": "city_ouarzazate"
+},
+{
+  "name": "Мерзуга",
+  "country": "Марокко",
+  "flag": "🇲🇦",
+  "cityId": "city_merzouga"
+},
+{
+  "name": "Ифран",
+  "country": "Марокко",
+  "flag": "🇲🇦",
+  "cityId": "city_ifran"
+},
+{
+  "name": "Тетуан",
+  "country": "Марокко",
+  "flag": "🇲🇦",
+  "cityId": "city_tetouan"
+},
+{
+  "name": "Асила",
+  "country": "Марокко",
+  "flag": "🇲🇦",
+  "cityId": "city_asilah"
+},
+{
+  "name": "Дахла",
+  "country": "Марокко",
+  "flag": "🇲🇦",
+  "cityId": "city_dakhla"
+},
+{
+  "name": "Эль-Джадида",
+  "country": "Марокко",
+  "flag": "🇲🇦",
+  "cityId": "city_el_jadida"
+},
+{
+  "name": "Клайпеда",
+  "country": "Литва",
+  "flag": "🇱🇹",
+  "cityId": "city_klaipeda"
+},
+{
+  "name": "Шяуляй",
+  "country": "Литва",
+  "flag": "🇱🇹",
+  "cityId": "city_siauliai"
+},
+{
+  "name": "Паневежис",
+  "country": "Литва",
+  "flag": "🇱🇹",
+  "cityId": "city_panevezys"
+},
+{
+  "name": "Паланга",
+  "country": "Литва",
+  "flag": "🇱🇹",
+  "cityId": "city_palanga"
+},
+{
+  "name": "Даугавпилс",
+  "country": "Латвия",
+  "flag": "🇱🇻",
+  "cityId": "city_daugavpils"
+},
+{
+  "name": "Лиепая",
+  "country": "Латвия",
+  "flag": "🇱🇻",
+  "cityId": "city_liepaja"
+},
+{
+  "name": "Елгава",
+  "country": "Латвия",
+  "flag": "🇱🇻",
+  "cityId": "city_jelgava"
+},
+{
+  "name": "Валмиера",
+  "country": "Латвия",
+  "flag": "🇱🇻",
+  "cityId": "city_valmiera"
+},
+{
+  "name": "Вентспилс",
+  "country": "Латвия",
+  "flag": "🇱🇻",
+  "cityId": "city_ventspils"
+},
+{
+  "name": "Резекне",
+  "country": "Латвия",
+  "flag": "🇱🇻",
+  "cityId": "city_rezekne"
+},
+{
+  "name": "Сиань",
+  "country": "Китай",
+  "flag": "🇨🇳",
+  "cityId": "city_xian"
+},
+{
+  "name": "Нанкин",
+  "country": "Китай",
+  "flag": "🇨🇳",
+  "cityId": "city_nanjing"
+},
+{
+  "name": "Кашгар",
+  "country": "Китай",
+  "flag": "🇨🇳",
+  "cityId": "city_kashgar"
+},
+{
+  "name": "Амальфи",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_amalfi"
+},
+{
+  "name": "Капри",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_capri"
+},
+{
+  "name": "Альберобелло",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_alberobello"
+},
+{
+  "name": "Лечче",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_lecce"
+},
+{
+  "name": "Ассизи",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_assisi"
+},
+{
+  "name": "Сан-Джиминьяно",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_san_gimignano"
+},
+{
+  "name": "Перуджа",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_perugia"
+},
+{
+  "name": "Модена",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_modena"
+},
+{
+  "name": "Парма",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_parma"
+},
+{
+  "name": "Больцано",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_bolzano"
+},
+{
+  "name": "Кортина-д'Ампеццо",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_cortina_d_ampezzo"
+},
+{
+  "name": "Триест",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_trieste"
+},
+{
+  "name": "Сан-Ремо",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_sanremo"
+},
+{
+  "name": "Савона",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_savona"
+},
+{
+  "name": "Форте-дей-Марми",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_forte_dei_marmi"
+},
+{
+  "name": "Чефалу",
+  "country": "Италия",
+  "flag": "🇮🇹",
+  "cityId": "city_cefalu"
+},
+{
+  "name": "Сеговия",
+  "country": "Испания",
+  "flag": "🇪🇸",
+  "cityId": "city_segovia"
+},
+{
+  "name": "Авила",
+  "country": "Испания",
+  "flag": "🇪🇸",
+  "cityId": "city_avila"
+},
+{
+  "name": "Куэнка",
+  "country": "Испания",
+  "flag": "🇪🇸",
+  "cityId": "city_cuenca"
+},
+{
+  "name": "Памплона",
+  "country": "Испания",
+  "flag": "🇪🇸",
+  "cityId": "city_pamplona"
+},
+{
+  "name": "Ситжес",
+  "country": "Испания",
+  "flag": "🇪🇸",
+  "cityId": "city_sitges"
+},
+{
+  "name": "Фуэртевентура",
+  "country": "Испания",
+  "flag": "🇪🇸",
+  "cityId": "city_fuerteventura"
+},
+{
+  "name": "Менорка",
+  "country": "Испания",
+  "flag": "🇪🇸",
+  "cityId": "city_menorca"
+},
+{
+  "name": "Касерес",
+  "country": "Испания",
+  "flag": "🇪🇸",
+  "cityId": "city_caceres"
+},
+{
+  "name": "Бургос",
+  "country": "Испания",
+  "flag": "🇪🇸",
+  "cityId": "city_burgos"
+},
+{
+  "name": "Черновцы",
+  "country": "Украина",
+  "flag": "🇺🇦",
+  "cityId": "city_chernivtsi"
+},
+{
+  "name": "Харьков",
+  "country": "Украина",
+  "flag": "🇺🇦",
+  "cityId": "city_kharkiv"
+},
+{
+  "name": "Ужгород",
+  "country": "Украина",
+  "flag": "🇺🇦",
+  "cityId": "city_uzhhorod"
+},
+{
+  "name": "Каменец-Подольский",
+  "country": "Украина",
+  "flag": "🇺🇦",
+  "cityId": "city_kamianets_podilskyi"
+},
+{
+  "name": "Ивано-Франковск",
+  "country": "Украина",
+  "flag": "🇺🇦",
+  "cityId": "city_ivano_frankivsk"
+},
+{
+  "name": "Эчмиадзин (Вагаршапат)",
+  "country": "Армения",
+  "flag": "🇦🇲",
+  "cityId": "city_echmiadzin"
+},
+{
+  "name": "Джермук",
+  "country": "Армения",
+  "flag": "🇦🇲",
+  "cityId": "city_jermuk"
+},
+{
+  "name": "Цахкадзор",
+  "country": "Армения",
+  "flag": "🇦🇲",
+  "cityId": "city_tsaghkadzor"
+},
+{
+  "name": "Арени",
+  "country": "Армения",
+  "flag": "🇦🇲",
+  "cityId": "city_areni"
+},
+{
+  "name": "Гудауари",
+  "country": "Грузия",
+  "flag": "🇬🇪",
+  "cityId": "city_gudauri"
+},
+{
+  "name": "Тарту",
+  "country": "Эстония",
+  "flag": "🇪🇪",
+  "cityId": "city_tartu"
+},
+{
+  "name": "Нарва",
+  "country": "Эстония",
+  "flag": "🇪🇪",
+  "cityId": "city_narva"
+},
+{
+  "name": "Пярну",
+  "country": "Эстония",
+  "flag": "🇪🇪",
+  "cityId": "city_parnu"
+},
+{
+  "name": "Улцинь",
+  "country": "Черногория",
+  "flag": "🇲🇪",
+  "cityId": "city_ulcinj"
+},
+{
+  "name": "Свети Стефан",
+  "country": "Черногория",
+  "flag": "🇲🇪",
+  "cityId": "city_sveti_stefan"
+},
+{
+  "name": "Рисан",
+  "country": "Черногория",
+  "flag": "🇲🇪",
+  "cityId": "city_risan"
+},
+{
+  "name": "Пераст",
+  "country": "Черногория",
+  "flag": "🇲🇪",
+  "cityId": "city_perast"
+},
+{
+  "name": "Колашин",
+  "country": "Черногория",
+  "flag": "🇲🇪",
+  "cityId": "city_kolasin"
+},
+{
+  "name": "Никшич",
+  "country": "Черногория",
+  "flag": "🇲🇪",
+  "cityId": "city_niksic"
+},
+{
+  "name": "Цетинье",
+  "country": "Черногория",
+  "flag": "🇲🇪",
+  "cityId": "city_cetinje"
+},
+{
+  "name": "Петровац",
+  "country": "Черногория",
+  "flag": "🇲🇪",
+  "cityId": "city_petrovac"
+},
+{
+  "name": "Биело-Поле",
+  "country": "Черногория",
+  "flag": "🇲🇪",
+  "cityId": "city_bijelo_pole"
+},
+{
+  "name": "Авиньон",
+  "country": "Франция",
+  "flag": "🇫🇷",
+  "cityId": "city_avignon"
+},
+{
+  "name": "Каркассон",
+  "country": "Франция",
+  "flag": "🇫🇷",
+  "cityId": "city_carcassonne"
+},
+{
+  "name": "Лурд",
+  "country": "Франция",
+  "flag": "🇫🇷",
+  "cityId": "city_lourdes"
+},
+{
+  "name": "Сен-Мало",
+  "country": "Франция",
+  "flag": "🇫🇷",
+  "cityId": "city_saint_malo"
+},
+{
+  "name": "Кольмар",
+  "country": "Франция",
+  "flag": "🇫🇷",
+  "cityId": "city_colmar"
+},
+{
+  "name": "Арль",
+  "country": "Франция",
+  "flag": "🇫🇷",
+  "cityId": "city_arles"
+},
+{
+  "name": "Шамони-Мон-Блан",
+  "country": "Франция",
+  "flag": "🇫🇷",
+  "cityId": "city_chamonix_mont_blanc"
+},
+{
+  "name": "Этрета",
+  "country": "Франция",
+  "flag": "🇫🇷",
+  "cityId": "city_etretat"
+},
+{
+  "name": "Рокамадур",
+  "country": "Франция",
+  "flag": "🇫🇷",
+  "cityId": "city_rocamadour"
+},
+{
+  "name": "Перпиньян",
+  "country": "Франция",
+  "flag": "🇫🇷",
+  "cityId": "city_perpignan"
+},
+{
+  "name": "Монпелье",
+  "country": "Франция",
+  "flag": "🇫🇷",
+  "cityId": "city_montpellier"
+},
+{
+  "name": "Экс-ан-Прованс",
+  "country": "Франция",
+  "flag": "🇫🇷",
+  "cityId": "city_aix_en_provence"
+},
+{
+  "name": "Ко Тао",
+  "country": "Таиланд",
+  "flag": "🇹🇭",
+  "cityId": "city_ko_tao"
+},
+{
+  "name": "Ко Чанг",
+  "country": "Таиланд",
+  "flag": "🇹🇭",
+  "cityId": "city_ko_chang"
+},
+{
+  "name": "Ко Пхи-Пхи",
+  "country": "Таиланд",
+  "flag": "🇹🇭",
+  "cityId": "city_ko_phi_phi"
+},
+{
+  "name": "Бельцы",
+  "country": "Молдова",
+  "flag": "🇲🇩",
+  "cityId": "city_balti"
+},
+{
+  "name": "Коломна",
+  "country": "Россия",
+  "flag": "🇷🇺",
+  "cityId": "city_kolomna"
+},
+{
+  "name": "Галич",
+  "country": "Россия",
+  "flag": "🇷🇺",
+  "cityId": "city_galich"
+},
+{
+  "name": "Солигалич",
+  "country": "Россия",
+  "flag": "🇷🇺",
+  "cityId": "city_soligalich"
+},
+{
+  "name": "Великий Устюг",
+  "country": "Россия",
+  "flag": "🇷🇺",
+  "cityId": "city_veliky_ustyug"
+},
+{
+  "name": "Кронштадт",
+  "country": "Россия",
+  "flag": "🇷🇺",
+  "cityId": "city_kronstadt"
+},
+{
+  "name": "Соль-Илецк",
+  "country": "Россия",
+  "flag": "🇷🇺",
+  "cityId": "city_sol_iletsk"
+},
+{
+  "name": "Калязин",
+  "country": "Россия",
+  "flag": "🇷🇺",
+  "cityId": "city_kalyazin"
+},
+{
+  "name": "Мышкин",
+  "country": "Россия",
+  "flag": "🇷🇺",
+  "cityId": "city_myshkin"
+},
+{
+  "name": "Белокуриха",
+  "country": "Россия",
+  "flag": "🇷🇺",
+  "cityId": "city_belokurikha"
+},
+{
+  "name": "Рускеала",
+  "country": "Россия",
+  "flag": "🇷🇺",
+  "cityId": "city_ruskeala"
+},
+{
+  "name": "Гуанахуато",
+  "country": "Мексика",
+  "flag": "🇲🇽",
+  "cityId": "city_guanajuato"
+},
+{
+  "name": "Пуэрто-Вальярта",
+  "country": "Мексика",
+  "flag": "🇲🇽",
+  "cityId": "city_puerto_vallarta"
+},
+{
+  "name": "Тулум",
+  "country": "Мексика",
+  "flag": "🇲🇽",
+  "cityId": "city_tulum"
+},
+{
+  "name": "Косумель",
+  "country": "Мексика",
+  "flag": "🇲🇽",
+  "cityId": "city_cozumel"
+},
+{
+  "name": "Масатлан",
+  "country": "Мексика",
+  "flag": "🇲🇽",
+  "cityId": "city_mazatlan"
+},
+{
+  "name": "Керетаро",
+  "country": "Мексика",
+  "flag": "🇲🇽",
+  "cityId": "city_queretaro"
+},
   {
     "name": "Ялта",
     "country": "Россия",
