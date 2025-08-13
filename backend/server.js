@@ -531,6 +531,77 @@ app.post('/api/change-vote', voteLimiter, async (req, res) => {
     }
 });
 
+// Bulk change votes for many cityIds in one request
+app.post('/api/bulk-change-vote', voteLimiter, async (req, res) => {
+    const { userId, voteType, cityIds } = req.body || {};
+    if (!userId || !voteType || !Array.isArray(cityIds) || cityIds.length === 0) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+    if (!VALID_VOTE_TYPES.has(voteType)) {
+        return res.status(400).json({ error: 'Invalid vote type' });
+    }
+    if (cityIds.length > 500) {
+        return res.status(400).json({ error: 'Too many cities in one request' });
+    }
+    try {
+        let changed = 0;
+        await db.transaction(async (tx) => {
+            for (const cityId of cityIds) {
+                // Skip unknown cities to be safe
+                const cityExists = cityData.some(c => c.cityId === cityId);
+                if (!cityExists) continue;
+                const currentRes = await tx.execute({
+                    sql: 'SELECT vote_type FROM user_votes WHERE user_id = ? AND city_id = ?',
+                    args: [userId, cityId]
+                });
+                if (currentRes.rows.length === 0) {
+                    // Create new vote
+                    await tx.execute({
+                        sql: 'INSERT INTO user_votes (user_id, city_id, vote_type) VALUES (?, ?, ?)',
+                        args: [userId, cityId, voteType]
+                    });
+                    const col = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
+                    await tx.execute({
+                        sql: `INSERT INTO city_votes (city_id, ${col}) VALUES (?, 1)
+                              ON CONFLICT(city_id) DO UPDATE SET ${col} = ${col} + 1`,
+                        args: [cityId]
+                    });
+                    changed++;
+                    continue;
+                }
+                const oldVote = currentRes.rows[0].vote_type;
+                if (oldVote === voteType) {
+                    continue;
+                }
+                // Update
+                await tx.execute({
+                    sql: 'UPDATE user_votes SET vote_type = ? WHERE user_id = ? AND city_id = ?',
+                    args: [voteType, userId, cityId]
+                });
+                const voteMap = { liked: 'likes', disliked: 'dislikes', dont_know: 'dont_know' };
+                const oldCol = voteMap[oldVote];
+                const newCol = voteMap[voteType];
+                if (oldCol && newCol) {
+                    await tx.execute({
+                        sql: `UPDATE city_votes SET ${oldCol} = CASE WHEN ${oldCol} > 0 THEN ${oldCol} - 1 ELSE 0 END WHERE city_id = ?`,
+                        args: [cityId]
+                    });
+                    await tx.execute({
+                        sql: `UPDATE city_votes SET ${newCol} = ${newCol} + 1 WHERE city_id = ?`,
+                        args: [cityId]
+                    });
+                }
+                changed++;
+            }
+        });
+        clearRankingCaches();
+        return res.json({ success: true, changed });
+    } catch (error) {
+        log('error', 'bulk_change_vote_failed', { error: error?.message || String(error), userId, count: Array.isArray(cityIds) ? cityIds.length : 0 });
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 // Health check endpoint
 app.get('/health', async (req, res) => {
     try {

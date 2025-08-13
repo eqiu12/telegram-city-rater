@@ -541,33 +541,36 @@ let userId = getUserId();
                 renderProfile();
             });
         });
-        // Bulk voting handlers
+        // Bulk voting handlers (switch to batch endpoint)
         document.querySelectorAll('.bulk-vote-btn').forEach(btn => {
             btn.addEventListener('click', async function() {
                 const country = this.getAttribute('data-country');
                 const voteType = this.getAttribute('data-vote');
                 const countryCities = grouped[country];
-                // Custom logic for Был/Не был
+                const targetIds = [];
                 if (voteType === 'liked') {
                     // Only allow if at least one city is liked/disliked
                     if (!countryCities.some(city => city.voteType === 'liked' || city.voteType === 'disliked')) return;
+                    countryCities.forEach(c => { if (c.voteType !== 'liked') targetIds.push(c.cityId); });
+                } else if (voteType === 'dont_know') {
+                    countryCities.forEach(c => { if (c.voteType !== 'dont_know') targetIds.push(c.cityId); });
+                } else if (voteType === 'disliked') {
+                    countryCities.forEach(c => { if (c.voteType !== 'disliked') targetIds.push(c.cityId); });
                 }
-                if (voteType === 'dont_know') {
-                    // Allow if all are dont_know or none voted
-                    for (const city of countryCities) {
-                        if (city.voteType !== 'dont_know') {
-                            await changeVote(city.cityId, 'dont_know');
-                        }
-                    }
-                    renderProfile();
-                    return;
+                if (targetIds.length === 0) { return; }
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/bulk-change-vote`, {
+                        method: 'POST',
+                        headers: authHeaders({ 'Content-Type': 'application/json' }),
+                        body: JSON.stringify({ userId, voteType, cityIds: targetIds })
+                    });
+                    if (!res.ok) throw new Error('Ошибка пакетного голосования');
+                    const data = await res.json();
+                    if (!data.success) throw new Error(data.error || 'Ошибка пакетного голосования');
+                    await renderProfile();
+                } catch (e) {
+                    alert('Не удалось применить пакетное голосование: ' + (e.message || e));
                 }
-                for (const city of countryCities) {
-                    if (city.voteType !== voteType) {
-                        await changeVote(city.cityId, voteType);
-                    }
-                }
-                renderProfile();
             });
         });
     }
