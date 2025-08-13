@@ -296,12 +296,12 @@ th {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 22px;
+    font-size: 20px;
     padding: 2px 0;
 }
 .city-name {
     flex: 0 1 80%;
-    font-size: 1.1em;
+    font-size: 20px;
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -333,8 +333,13 @@ th {
     color: #007aff !important;
     background: none !important;
 }
-#profile-page b {
+.profile-country {
     font-size: 30px;
+    font-weight: 600;
+}
+.profile-country-sub {
+    font-size: 26px;
+    font-weight: 600;
 }
 .info-box {
     background: #f8f8fa;

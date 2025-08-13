@@ -546,9 +546,9 @@ let userId = getUserId();
                 + `</div>`;
                 html += '<ul style=\"margin-top:0;\">';
                 countryAirports.forEach(ap => {
-                    let likeClass = 'airport-emoji-btn';
-                    let dislikeClass = 'airport-emoji-btn';
-                    let dontKnowClass = 'airport-emoji-btn';
+                    let likeClass = 'city-emoji-btn';
+                    let dislikeClass = 'city-emoji-btn';
+                    let dontKnowClass = 'city-emoji-btn';
                     if (!ap.voteType) {
                         likeClass += ' grey';
                         dislikeClass += ' grey';
@@ -558,10 +558,11 @@ let userId = getUserId();
                         if (ap.voteType === 'disliked') dislikeClass += ' active-dislike'; else dislikeClass += ' grey';
                         if (ap.voteType === 'dont_know') dontKnowClass += ' active-dontknow'; else dontKnowClass += ' grey';
                     }
-                    html += `<li><span class='city-name'>${ap.flag} ${ap.airport_city} — ${ap.airport_name} (${ap.airport_code})</span>`
-                        + `<button class='${likeClass}' data-airportid='${ap.airportId}' data-vote='liked' title='Лайк'>❤️</button>`
-                        + `<button class='${dislikeClass}' data-airportid='${ap.airportId}' data-vote='disliked' title='Дизлайк'>👎</button>`
-                        + `<button class='${dontKnowClass}' data-airportid='${ap.airportId}' data-vote='dont_know' title='Не знаю'>🤷‍♂️</button>`
+                    const apLabel = `${ap.airport_code}, ${ap.airport_city}`;
+                    html += `<li><span class='city-name'>${ap.flag} ${apLabel}</span>`
+                        + `<button class='${likeClass} airport-emoji-btn' data-airportid='${ap.airportId}' data-vote='liked' title='Лайк'>❤️</button>`
+                        + `<button class='${dislikeClass} airport-emoji-btn' data-airportid='${ap.airportId}' data-vote='disliked' title='Дизлайк'>👎</button>`
+                        + `<button class='${dontKnowClass} airport-emoji-btn' data-airportid='${ap.airportId}' data-vote='dont_know' title='Не знаю'>🤷‍♂️</button>`
                         + `</li>`;
                 });
                 html += '</ul>';
