@@ -546,9 +546,9 @@ let userId = getUserId();
                 + `</div>`;
                 html += '<ul style=\"margin-top:0;\">';
                 countryAirports.forEach(ap => {
-                    let likeClass = 'city-emoji-btn';
-                    let dislikeClass = 'city-emoji-btn';
-                    let dontKnowClass = 'city-emoji-btn';
+                    let likeClass = 'airport-emoji-btn';
+                    let dislikeClass = 'airport-emoji-btn';
+                    let dontKnowClass = 'airport-emoji-btn';
                     if (!ap.voteType) {
                         likeClass += ' grey';
                         dislikeClass += ' grey';
@@ -560,9 +560,9 @@ let userId = getUserId();
                     }
                     const apLabel = `${ap.airport_code}, ${ap.airport_city}`;
                     html += `<li><span class='city-name'>${ap.flag} ${apLabel}</span>`
-                        + `<button class='${likeClass} airport-emoji-btn' data-airportid='${ap.airportId}' data-vote='liked' title='Лайк'>❤️</button>`
-                        + `<button class='${dislikeClass} airport-emoji-btn' data-airportid='${ap.airportId}' data-vote='disliked' title='Дизлайк'>👎</button>`
-                        + `<button class='${dontKnowClass} airport-emoji-btn' data-airportid='${ap.airportId}' data-vote='dont_know' title='Не знаю'>🤷‍♂️</button>`
+                        + `<button class='${likeClass}' data-airportid='${ap.airportId}' data-vote='liked' title='Лайк'>❤️</button>`
+                        + `<button class='${dislikeClass}' data-airportid='${ap.airportId}' data-vote='disliked' title='Дизлайк'>👎</button>`
+                        + `<button class='${dontKnowClass}' data-airportid='${ap.airportId}' data-vote='dont_know' title='Не знаю'>🤷‍♂️</button>`
                         + `</li>`;
                 });
                 html += '</ul>';
@@ -666,6 +666,7 @@ async function changeVote(cityId, newVote) {
                 });
                 const cityId = emojiBtn.getAttribute('data-cityid');
                 const voteType = emojiBtn.getAttribute('data-vote');
+                if (!cityId || !voteType) return;
                 try {
                     await changeVote(cityId, voteType);
                     await renderProfile();
@@ -678,6 +679,7 @@ async function changeVote(cityId, newVote) {
             if (bulkBtn) {
                 const country = bulkBtn.getAttribute('data-country');
                 const voteType = bulkBtn.getAttribute('data-vote');
+                if (!country || !voteType) return;
                 // Work off the latest profileCities
                 const countryCities = profileCities.filter(c => c.country === country);
                 const targetIds = [];
@@ -719,6 +721,7 @@ async function changeVote(cityId, newVote) {
             if (apBtn) {
                 const airportId = apBtn.getAttribute('data-airportid');
                 const voteType = apBtn.getAttribute('data-vote');
+                if (!airportId || !voteType) return;
                 try {
                     const res = await fetch(`${API_BASE_URL}/api/change-airport-vote`, {
                         method: 'POST',
@@ -737,6 +740,7 @@ async function changeVote(cityId, newVote) {
             if (apBulk) {
                 const countryAir = apBulk.getAttribute('data-country-air');
                 const voteType = apBulk.getAttribute('data-vote');
+                if (!countryAir || !voteType) return;
                 const aps = (typeof profileAirports !== 'undefined' ? profileAirports : []).filter(a => a.country === countryAir);
                 const targetIds = [];
                 if (voteType === 'liked') {
