@@ -615,6 +615,27 @@ app.get('/api/user-votes/:userId', async (req, res) => {
     }
 });
 
+// Temporary debug endpoint to verify raw persisted rows (no enrichment)
+app.get('/api/debug/user-votes-raw/:userId', async (req, res) => {
+    const { userId } = req.params;
+    if (!userId) return res.status(400).json({ error: 'User ID is required' });
+    try {
+        await trySync();
+        const countRes = await db.execute({
+            sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?',
+            args: [userId]
+        });
+        const sampleRes = await db.execute({
+            sql: 'SELECT id, city_id, vote_type FROM user_votes WHERE user_id = ? ORDER BY id DESC LIMIT 10',
+            args: [userId]
+        });
+        res.json({ count: countRes.rows?.[0]?.c ?? 0, sample: sampleRes.rows });
+    } catch (error) {
+        log('error', 'debug_user_votes_raw_failed', { error: error?.message || String(error), userId });
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.post('/api/register-telegram', authLimiter, async (req, res) => {
     const { initData, userId } = req.body;
     
