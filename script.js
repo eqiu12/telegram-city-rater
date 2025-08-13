@@ -607,6 +607,10 @@ async function changeVote(cityId, newVote) {
             }
             const emojiBtn = targetEl && targetEl.closest ? targetEl.closest('.city-emoji-btn') : null;
             if (emojiBtn) {
+                console.log('profile: emoji click', {
+                    cityId: emojiBtn.getAttribute('data-cityid'),
+                    voteType: emojiBtn.getAttribute('data-vote')
+                });
                 const cityId = emojiBtn.getAttribute('data-cityid');
                 const voteType = emojiBtn.getAttribute('data-vote');
                 try {
@@ -632,6 +636,7 @@ async function changeVote(cityId, newVote) {
                 } else if (voteType === 'disliked') {
                     countryCities.forEach(c => { if (c.voteType !== 'disliked') targetIds.push(c.cityId); });
                 }
+                console.log('profile: bulk click', { country, voteType, count: targetIds.length });
                 if (targetIds.length === 0) return;
                 try {
                     const res = await fetch(`${API_BASE_URL}/api/bulk-change-vote`, {
@@ -639,7 +644,10 @@ async function changeVote(cityId, newVote) {
                         headers: authHeaders({ 'Content-Type': 'application/json' }),
                         body: JSON.stringify({ userId, voteType, cityIds: targetIds })
                     });
-                    if (!res.ok) throw new Error('Ошибка пакетного голосования');
+                    if (!res.ok) {
+                        const txt = await res.text();
+                        throw new Error('Ошибка пакетного голосования: ' + txt);
+                    }
                     const data = await res.json();
                     if (!data.success) throw new Error(data.error || 'Ошибка пакетного голосования');
                     await renderProfile();

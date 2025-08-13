@@ -540,6 +540,12 @@ app.post('/api/bulk-change-vote', voteLimiter, async (req, res) => {
         return res.status(400).json({ error: 'Too many cities in one request' });
     }
     try {
+        // If a JWT is provided, enforce userId consistency but don't require JWT
+        const jwtUser = getJwtUserFromRequest(req);
+        if (jwtUser && jwtUser.hasUserId && jwtUser.sub && jwtUser.sub !== userId) {
+            return res.status(403).json({ error: 'Token subject does not match userId' });
+        }
+
         let changed = 0;
         await db.transaction(async (tx) => {
             for (const cityId of cityIds) {
