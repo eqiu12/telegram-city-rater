@@ -744,6 +744,46 @@ app.get('/api/hidden-jam-ratings', async (req, res) => {
     }
 });
 
+// Optimized profile payload: merged cities + user's votes + ratings
+app.get('/api/profile/:userId', async (req, res) => {
+    const { userId } = req.params;
+    if (!userId) return res.status(400).json({ error: 'User ID is required' });
+    try {
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
+
+        const [votesResult, aggVotes] = await Promise.all([
+            db.execute({ sql: 'SELECT city_id, vote_type FROM user_votes WHERE user_id = ?', args: [userId] }),
+            getAggregatedVotes()
+        ]);
+        const votesMap = {};
+        for (const row of votesResult.rows) {
+            votesMap[row.city_id] = row.vote_type;
+        }
+        const profileCities = cityData.map(city => {
+            const cityVotes = aggVotes[city.cityId] || { likes: 0, dislikes: 0, dont_know: 0 };
+            const totalVotes = cityVotes.likes + cityVotes.dislikes;
+            const rating = totalVotes > 0 ? (cityVotes.likes / totalVotes) : 0;
+            return {
+                cityId: city.cityId,
+                name: city.name,
+                country: city.country,
+                flag: city.flag,
+                voteType: votesMap[city.cityId],
+                rating,
+                likes: cityVotes.likes,
+                dislikes: cityVotes.dislikes,
+                dont_know: cityVotes.dont_know,
+            };
+        });
+        res.json({ profileCities });
+    } catch (error) {
+        log('error', 'fetch_profile_failed', { error: error?.message || String(error), userId });
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.get('/api/user-votes/:userId', async (req, res) => {
     const { userId } = req.params;
     if (!userId) {

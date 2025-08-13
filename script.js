@@ -366,29 +366,39 @@ let userId = getUserId();
         profileLoading = true;
         profileError = null;
         try {
-            const [citiesRes, votesRes, ratingsRes] = await Promise.all([
-                fetch(`${API_BASE_URL}/api/all-cities`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('all-cities failed'); return r.json(); }),
-                fetch(`${API_BASE_URL}/api/user-votes/${userId}`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('user-votes failed'); return r.json(); }),
-                fetch(`${API_BASE_URL}/api/rankings`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('rankings failed'); return r.json(); }),
-            ]);
-            const allCities = citiesRes.cities || [];
-            const userVotes = (votesRes.userVotes || []);
-            const ratingsMap = {};
-            (ratingsRes || []).forEach(r => { ratingsMap[r.cityId] = r; });
-            const votesMap = {};
-            userVotes.forEach(v => { votesMap[v.cityId] = v; });
-            profileCities = allCities.map(city => {
-                const vote = votesMap[city.cityId];
-                const rating = ratingsMap[city.cityId];
-                return {
-                    ...city,
-                    voteType: vote ? vote.voteType : undefined,
-                    rating: rating ? rating.rating : null,
-                    likes: rating ? rating.likes : 0,
-                    dislikes: rating ? rating.dislikes : 0,
-                    dont_know: rating ? rating.dont_know : 0,
-                };
-            });
+            // If inside Telegram, use optimized endpoint to avoid multi-fetch issues
+            let useOptimized = false;
+            try { useOptimized = Boolean(window.Telegram?.WebApp?.initData); } catch (_) {}
+            if (useOptimized) {
+                const res = await fetch(`${API_BASE_URL}/api/profile/${userId}`, { headers: authHeaders(), cache: 'no-store' });
+                if (!res.ok) throw new Error('profile endpoint failed');
+                const data = await res.json();
+                profileCities = data.profileCities || [];
+            } else {
+                const [citiesRes, votesRes, ratingsRes] = await Promise.all([
+                    fetch(`${API_BASE_URL}/api/all-cities`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('all-cities failed'); return r.json(); }),
+                    fetch(`${API_BASE_URL}/api/user-votes/${userId}`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('user-votes failed'); return r.json(); }),
+                    fetch(`${API_BASE_URL}/api/rankings`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('rankings failed'); return r.json(); }),
+                ]);
+                const allCities = citiesRes.cities || [];
+                const userVotes = (votesRes.userVotes || []);
+                const ratingsMap = {};
+                (ratingsRes || []).forEach(r => { ratingsMap[r.cityId] = r; });
+                const votesMap = {};
+                userVotes.forEach(v => { votesMap[v.cityId] = v; });
+                profileCities = allCities.map(city => {
+                    const vote = votesMap[city.cityId];
+                    const rating = ratingsMap[city.cityId];
+                    return {
+                        ...city,
+                        voteType: vote ? vote.voteType : undefined,
+                        rating: rating ? rating.rating : null,
+                        likes: rating ? rating.likes : 0,
+                        dislikes: rating ? rating.dislikes : 0,
+                        dont_know: rating ? rating.dont_know : 0,
+                    };
+                });
+            }
             profileLoading = false;
         } catch (e) {
             profileError = 'Не удалось загрузить данные';
