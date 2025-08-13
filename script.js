@@ -367,9 +367,9 @@ let userId = getUserId();
         profileError = null;
         try {
             const [citiesRes, votesRes, ratingsRes] = await Promise.all([
-                fetch(`${API_BASE_URL}/api/all-cities`, { headers: authHeaders(), cache: 'no-store' }).then(r => r.json()),
-                fetch(`${API_BASE_URL}/api/user-votes/${userId}`, { headers: authHeaders(), cache: 'no-store' }).then(r => r.json()),
-                fetch(`${API_BASE_URL}/api/rankings`, { headers: authHeaders(), cache: 'no-store' }).then(r => r.json()),
+                fetch(`${API_BASE_URL}/api/all-cities`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('all-cities failed'); return r.json(); }),
+                fetch(`${API_BASE_URL}/api/user-votes/${userId}`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('user-votes failed'); return r.json(); }),
+                fetch(`${API_BASE_URL}/api/rankings`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('rankings failed'); return r.json(); }),
             ]);
             const allCities = citiesRes.cities || [];
             const userVotes = (votesRes.userVotes || []);
@@ -392,6 +392,7 @@ let userId = getUserId();
             profileLoading = false;
         } catch (e) {
             profileError = 'Не удалось загрузить данные';
+            console.error('profile fetch failed:', e);
             profileLoading = false;
         }
     }

@@ -79,14 +79,29 @@ const defaultCorsOrigins = [
     'https://ratethis.town',
     'https://www.ratethis.town',
     // Render deployments
-    'https://telegram-city-rater-ra6r.onrender.com'
+    'https://telegram-city-rater-ra6r.onrender.com',
+    // Telegram WebApp origins
+    /^https:\/\/(t\.me|web\.telegram\.org)(\/.*)?$/
 ];
 const extraCorsOrigins = (process.env.CORS_ALLOWED_ORIGINS || '')
     .split(',')
     .map(s => s.trim())
     .filter(Boolean);
+
+const allowedOrigins = [...defaultCorsOrigins, ...extraCorsOrigins];
+function isAllowedOrigin(origin) {
+    return allowedOrigins.some(entry =>
+        typeof entry === 'string' ? entry === origin : (entry && typeof entry.test === 'function' ? entry.test(origin) : false)
+    );
+}
+
 const corsOptions = {
-    origin: [...defaultCorsOrigins, ...extraCorsOrigins],
+    origin: (origin, callback) => {
+        // Allow requests with no origin (mobile apps, curl, same-origin)
+        if (!origin) return callback(null, true);
+        if (isAllowedOrigin(origin)) return callback(null, true);
+        return callback(null, false);
+    },
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: false,
