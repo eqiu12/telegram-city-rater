@@ -382,11 +382,7 @@ app.post('/api/vote', voteLimiter, async (req, res) => {
         log('info', 'vote_accepted_uuid_user', { userId });
     }
     
-    const cityIdNum = Number(cityId);
-    if (!Number.isFinite(cityIdNum)) {
-        return res.status(400).json({ error: 'Invalid cityId' });
-    }
-    const city = cityData.find(c => c.cityId === cityIdNum);
+    const city = cityData.find(c => c.cityId === cityId);
     if (!city) {
         return res.status(404).json({ error: 'City not found' });
     }
@@ -395,7 +391,7 @@ app.post('/api/vote', voteLimiter, async (req, res) => {
         // Revert to pre-transaction flow: pre-check duplicate, then insert + upsert without explicit transaction
         const existingVote = await db.execute({
             sql: 'SELECT id FROM user_votes WHERE user_id = ? AND city_id = ?',
-            args: [userId, cityIdNum]
+            args: [userId, cityId]
         });
         if (existingVote.rows.length > 0) {
             return res.status(409).json({ error: 'User has already voted for this city' });
@@ -403,21 +399,21 @@ app.post('/api/vote', voteLimiter, async (req, res) => {
 
         await db.execute({
             sql: 'INSERT INTO user_votes (user_id, city_id, vote_type) VALUES (?, ?, ?)',
-            args: [userId, cityIdNum, voteType]
+            args: [userId, cityId, voteType]
         });
 
         const columnToIncrement = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
         await db.execute({
             sql: `INSERT INTO city_votes (city_id, ${columnToIncrement}) VALUES (?, 1)
                   ON CONFLICT(city_id) DO UPDATE SET ${columnToIncrement} = ${columnToIncrement} + 1`,
-            args: [cityIdNum]
+            args: [cityId]
         });
         clearRankingCaches();
         log('info', 'vote_recorded', { userId, cityId, voteType });
         res.json({ success: true });
 
     } catch (error) {
-        log('error', 'vote_record_failed', { error: error?.message || String(error), userId, cityId: cityIdNum, voteType });
+        log('error', 'vote_record_failed', { error: error?.message || String(error), userId, cityId, voteType });
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -464,11 +460,7 @@ app.post('/api/change-vote', voteLimiter, async (req, res) => {
         log('info', 'change_vote_uuid_user', { userId });
     }
     // Validate city exists
-    const cityIdNum = Number(cityId);
-    if (!Number.isFinite(cityIdNum)) {
-        return res.status(400).json({ error: 'Invalid cityId' });
-    }
-    const city = cityData.find(c => c.cityId === cityIdNum);
+    const city = cityData.find(c => c.cityId === cityId);
     if (!city) {
         return res.status(404).json({ error: 'City not found' });
     }
@@ -480,18 +472,18 @@ app.post('/api/change-vote', voteLimiter, async (req, res) => {
             // Найти старый голос
             const oldVoteRes = await tx.execute({
                 sql: 'SELECT vote_type FROM user_votes WHERE user_id = ? AND city_id = ?',
-                args: [userId, cityIdNum]
+                args: [userId, cityId]
             });
             if (oldVoteRes.rows.length === 0) {
                 await tx.execute({
                     sql: "INSERT INTO user_votes (user_id, city_id, vote_type) VALUES (?, ?, ?)",
-                    args: [userId, cityIdNum, voteType]
+                    args: [userId, cityId, voteType]
                 });
                 const columnToIncrement = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
                 await tx.execute({
                     sql: `INSERT INTO city_votes (city_id, ${columnToIncrement}) VALUES (?, 1)
                           ON CONFLICT(city_id) DO UPDATE SET ${columnToIncrement} = ${columnToIncrement} + 1`,
-                    args: [cityIdNum]
+                    args: [cityId]
                 });
                 created = true;
                 return;
@@ -503,7 +495,7 @@ app.post('/api/change-vote', voteLimiter, async (req, res) => {
             }
             await tx.execute({
                 sql: 'UPDATE user_votes SET vote_type = ? WHERE user_id = ? AND city_id = ?',
-                args: [voteType, userId, cityIdNum]
+                args: [voteType, userId, cityId]
             });
             const voteMap = { liked: 'likes', disliked: 'dislikes', dont_know: 'dont_know' };
             const oldCol = voteMap[oldVote];
@@ -511,11 +503,11 @@ app.post('/api/change-vote', voteLimiter, async (req, res) => {
             if (oldCol && newCol) {
                 await tx.execute({
                     sql: `UPDATE city_votes SET ${oldCol} = CASE WHEN ${oldCol} > 0 THEN ${oldCol} - 1 ELSE 0 END WHERE city_id = ?`,
-                    args: [cityIdNum]
+                    args: [cityId]
                 });
                 await tx.execute({
                     sql: `UPDATE city_votes SET ${newCol} = ${newCol} + 1 WHERE city_id = ?`,
-                    args: [cityIdNum]
+                    args: [cityId]
                 });
             }
         });
@@ -530,7 +522,7 @@ app.post('/api/change-vote', voteLimiter, async (req, res) => {
         log('info', 'vote_changed', { userId, cityId, voteType });
         res.json({ success: true });
     } catch (error) {
-        log('error', 'change_vote_failed', { error: error?.message || String(error), userId, cityId: cityIdNum, voteType });
+        log('error', 'change_vote_failed', { error: error?.message || String(error), userId, cityId, voteType });
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -548,10 +540,9 @@ app.post('/api/bulk-change-vote', voteLimiter, async (req, res) => {
         return res.status(400).json({ error: 'Too many cities in one request' });
     }
     try {
-        const cityIdsNum = cityIds.map(id => Number(id)).filter(n => Number.isFinite(n));
         let changed = 0;
         await db.transaction(async (tx) => {
-            for (const cityId of cityIdsNum) {
+            for (const cityId of cityIds) {
                 // Skip unknown cities to be safe
                 const cityExists = cityData.some(c => c.cityId === cityId);
                 if (!cityExists) continue;

@@ -538,7 +538,7 @@ let userId = getUserId();
                 const cityId = this.getAttribute('data-cityid');
                 const voteType = this.getAttribute('data-vote');
                 try {
-                    await changeVote(Number(cityId), voteType);
+                    await changeVote(cityId, voteType);
                     await renderProfile();
                 } catch (e) {
                     alert('Не удалось изменить голос: ' + (e.message || e));
@@ -566,7 +566,7 @@ let userId = getUserId();
                     const res = await fetch(`${API_BASE_URL}/api/bulk-change-vote`, {
                         method: 'POST',
                         headers: authHeaders({ 'Content-Type': 'application/json' }),
-                        body: JSON.stringify({ userId, voteType, cityIds: targetIds.map(Number) })
+                        body: JSON.stringify({ userId, voteType, cityIds: targetIds })
                     });
                     if (!res.ok) throw new Error('Ошибка пакетного голосования');
                     const data = await res.json();
