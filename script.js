@@ -337,6 +337,7 @@ let userId = getUserId();
 
     function fallbackToLocalMode() {
         console.log('📱 Using local UUID mode.');
+        // Also fetch profile data so Profile tab works in web mode
         fetchCities();
     }
 
@@ -366,9 +367,9 @@ let userId = getUserId();
         profileError = null;
         try {
             const [citiesRes, votesRes, ratingsRes] = await Promise.all([
-                fetch(`${API_BASE_URL}/api/all-cities`).then(r => r.json()),
-                fetch(`${API_BASE_URL}/api/user-votes/${userId}`).then(r => r.json()),
-                fetch(`${API_BASE_URL}/api/rankings`).then(r => r.json()),
+                fetch(`${API_BASE_URL}/api/all-cities`, { headers: authHeaders() }).then(r => r.json()),
+                fetch(`${API_BASE_URL}/api/user-votes/${userId}`, { headers: authHeaders() }).then(r => r.json()),
+                fetch(`${API_BASE_URL}/api/rankings`, { headers: authHeaders() }).then(r => r.json()),
             ]);
             const allCities = citiesRes.cities || [];
             const userVotes = (votesRes.userVotes || []);
@@ -470,8 +471,8 @@ let userId = getUserId();
             let bulkNeBylDisabled = false;
             if (hasAnyVote) {
                 bulkBylClass += ' active';
-                bulkNeBylClass += ' inactive';
-                bulkNeBylDisabled = true;
+                bulkNeBylClass += ' grey';
+                bulkNeBylDisabled = false; // allow overriding to 'Не был'
             } else if (allDontKnow) {
                 bulkBylClass += ' inactive';
                 bulkBylDisabled = true;
@@ -600,7 +601,11 @@ async function changeVote(cityId, newVote) {
     // Delegated click handlers for Profile actions (stable across re-renders)
     if (userVotesList) {
         userVotesList.addEventListener('click', async (ev) => {
-            const emojiBtn = ev.target.closest('.city-emoji-btn');
+            let targetEl = ev.target;
+            if (targetEl && targetEl.nodeType !== 1) {
+                targetEl = targetEl.parentElement;
+            }
+            const emojiBtn = targetEl && targetEl.closest ? targetEl.closest('.city-emoji-btn') : null;
             if (emojiBtn) {
                 const cityId = emojiBtn.getAttribute('data-cityid');
                 const voteType = emojiBtn.getAttribute('data-vote');
@@ -612,7 +617,7 @@ async function changeVote(cityId, newVote) {
                 }
                 return;
             }
-            const bulkBtn = ev.target.closest('.bulk-vote-btn');
+            const bulkBtn = targetEl && targetEl.closest ? targetEl.closest('.bulk-vote-btn') : null;
             if (bulkBtn) {
                 const country = bulkBtn.getAttribute('data-country');
                 const voteType = bulkBtn.getAttribute('data-vote');
