@@ -16,12 +16,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const rankingsBody = document.getElementById('rankings-body');
     const hiddenJamBody = document.getElementById('hidden-jam-body');
 
+    let mode = 'cities'; // 'cities' | 'airports'
     let cities = [];
-let currentCityIndex = 0;
+    let airports = [];
+    let currentIndex = 0;
 let votedCount = 0;
 let totalCount = 0;
 
 const API_BASE_URL = 'https://telegram-city-rater-backend.onrender.com';
+
+// Optional JWT support
+const TOKEN_KEY = 'cityRaterToken';
+function getToken() {
+    return localStorage.getItem(TOKEN_KEY) || null;
+}
+function setToken(token) {
+    if (token) localStorage.setItem(TOKEN_KEY, token);
+}
+function authHeaders(base = {}) {
+    const t = getToken();
+    if (t) {
+        return { ...base, 'Authorization': `Bearer ${t}` };
+    }
+    return base;
+}
 
 function getUserId() {
     let id = localStorage.getItem('cityRaterUserId');
@@ -45,7 +63,9 @@ let userId = getUserId();
             return;
         }
         try {
-            const response = await fetch(`${API_BASE_URL}/api/cities?userId=${userId}`);
+            const response = await fetch(`${API_BASE_URL}/api/cities?userId=${userId}`, {
+                headers: authHeaders()
+            });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -55,7 +75,7 @@ let userId = getUserId();
             totalCount = data.totalCount;
 
             updateScore();
-            loadCity();
+            loadItem();
         } catch (error) {
             console.error('Error fetching cities:', error);
             cityNameEl.textContent = 'Ошибка';
@@ -63,38 +83,53 @@ let userId = getUserId();
         }
     }
 
-    function loadCity() {
-        if (currentCityIndex < cities.length) {
-            const city = cities[currentCityIndex];
-            cityNameEl.textContent = city.name;
-            countryNameEl.textContent = `${city.country} ${city.flag}`;
+    function loadItem() {
+        if (mode === 'cities') {
+            if (currentIndex < cities.length) {
+                const city = cities[currentIndex];
+                cityNameEl.textContent = city.name;
+                countryNameEl.textContent = `${city.country} ${city.flag}`;
+            } else {
+                cityNameEl.textContent = 'Города закончились';
+                countryNameEl.textContent = 'Спасибо за участие!';
+                disableVoting();
+            }
         } else {
-            cityNameEl.textContent = 'Города закончились';
-            countryNameEl.textContent = 'Спасибо за участие!';
-            disableVoting();
+            if (currentIndex < airports.length) {
+                const ap = airports[currentIndex];
+                cityNameEl.textContent = `${ap.airport_name} (${ap.airport_code})`;
+                countryNameEl.textContent = `${ap.airport_city}, ${ap.country} ${ap.flag}`;
+            } else {
+                cityNameEl.textContent = 'Аэропорты закончились';
+                countryNameEl.textContent = 'Спасибо за участие!';
+                disableVoting();
+            }
         }
     }
 
     async function vote(voteType) {
-        if (currentCityIndex >= cities.length) return;
-
-        const city = cities[currentCityIndex];
         try {
-            const response = await fetch(`${API_BASE_URL}/api/vote`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId, cityId: city.cityId, voteType }),
-            });
-
-            if (response.ok) {
-                votedCount++;
-                updateScore();
+            if (mode === 'cities') {
+                if (currentIndex >= cities.length) return;
+                const city = cities[currentIndex];
+                const response = await fetch(`${API_BASE_URL}/api/vote`, {
+                    method: 'POST',
+                    headers: authHeaders({ 'Content-Type': 'application/json' }),
+                    body: JSON.stringify({ userId, cityId: city.cityId, voteType }),
+                });
+                if (response.ok) { votedCount++; updateScore(); }
             } else {
-                console.error("Failed to record vote:", await response.text());
+                if (currentIndex >= airports.length) return;
+                const ap = airports[currentIndex];
+                const response = await fetch(`${API_BASE_URL}/api/airport-vote`, {
+                    method: 'POST',
+                    headers: authHeaders({ 'Content-Type': 'application/json' }),
+                    body: JSON.stringify({ userId, airportId: ap.airportId, voteType }),
+                });
+                if (response.ok) { votedCount++; updateScore(); }
             }
-
-            currentCityIndex++;
-            loadCity();
+            currentIndex++;
+            loadItem();
         } catch (error) {
             console.error('Error sending vote:', error);
         }
@@ -161,6 +196,36 @@ let userId = getUserId();
 
     showRatingsBtn.addEventListener('click', () => showRatings('ratings'));
     showHiddenGemsBtn.addEventListener('click', () => showRatings('gems'));
+
+    const modeCitiesBtn = document.getElementById('mode-cities');
+    const modeAirportsBtn = document.getElementById('mode-airports');
+    if (modeCitiesBtn && modeAirportsBtn) {
+        modeCitiesBtn.onclick = async () => {
+            mode = 'cities'; currentIndex = 0; await fetchCities();
+            modeCitiesBtn.classList.add('active'); modeAirportsBtn.classList.remove('active');
+        };
+        modeAirportsBtn.onclick = async () => {
+            mode = 'airports'; currentIndex = 0; await fetchAirports();
+            modeAirportsBtn.classList.add('active'); modeCitiesBtn.classList.remove('active');
+        };
+    }
+
+    async function fetchAirports() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/airports?userId=${userId}`, { headers: authHeaders() });
+            if (!res.ok) throw new Error('Network response was not ok');
+            const data = await res.json();
+            airports = data.airports || [];
+            votedCount = data.votedCount;
+            totalCount = data.totalCount;
+            updateScore();
+            loadItem();
+        } catch (e) {
+            console.error('Error fetching airports:', e);
+            cityNameEl.textContent = 'Ошибка';
+            countryNameEl.textContent = 'Не удалось загрузить аэропорты.';
+        }
+    }
     
     const closeModal = () => {
         ratingsModal.style.display = 'none';
@@ -195,6 +260,7 @@ let userId = getUserId();
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
+                        if (data.token) setToken(data.token);
                         if (data.found && data.user && data.user.user_id) {
                             // User exists - restore their UUID
                             const restoredUserId = data.user.user_id;
@@ -236,12 +302,13 @@ let userId = getUserId();
     function registerNewTelegramUser(initData) {
         fetch(`${API_BASE_URL}/api/register-telegram`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: authHeaders({ 'Content-Type': 'application/json' }),
             body: JSON.stringify({ initData, userId })
         })
         .then(res => res.json())
         .then(data => {
             if (data.success && data.user) {
+                if (data.token) setToken(data.token);
                 if (data.user.user_id) {
                     // Use the user_id from the database (could be existing UUID or new one)
                     userId = data.user.user_id;
@@ -510,7 +577,7 @@ async function changeVote(cityId, newVote) {
     try {
         const res = await fetch(`${API_BASE_URL}/api/change-vote`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: authHeaders({ 'Content-Type': 'application/json' }),
             body: JSON.stringify({ userId, cityId, voteType: newVote })
         });
         if (!res.ok) throw new Error('Ошибка смены голоса');

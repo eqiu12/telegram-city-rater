@@ -244,6 +244,49 @@ function shuffleArray(array) {
 // Allowed vote types
 const VALID_VOTE_TYPES = new Set(['liked', 'disliked', 'dont_know']);
 
+// Airports API
+app.get('/api/airports', async (req, res) => {
+    const { userId } = req.query;
+    if (!userId) return res.status(400).json({ error: 'User ID is required' });
+    try {
+        // Load airports list from file
+        const apPath = path.join(__dirname, '..', 'airports.json');
+        const apList = JSON.parse(fs.readFileSync(apPath, 'utf8'));
+        // Filter out already voted airports for this user
+        const votedRes = await db.execute({ sql: 'SELECT airport_id FROM user_airport_votes WHERE user_id = ?', args: [userId] });
+        const votedIds = new Set(votedRes.rows.map(r => r.airport_id));
+        const unvoted = apList.filter(a => !votedIds.has(a.airportId));
+        const shuffled = shuffleArray(unvoted);
+        // Totals
+        const totalCount = apList.length;
+        const votedCount = votedIds.size;
+        res.json({ airports: shuffled, votedCount, totalCount });
+    } catch (e) {
+        log('error', 'fetch_airports_failed', { error: e?.message || String(e) });
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.post('/api/airport-vote', voteLimiter, async (req, res) => {
+    const { userId, airportId, voteType } = req.body;
+    if (!userId || !airportId || !voteType) return res.status(400).json({ error: 'Missing required fields' });
+    if (!VALID_VOTE_TYPES.has(voteType)) return res.status(400).json({ error: 'Invalid vote type' });
+    try {
+        const existing = await db.execute({ sql: 'SELECT id FROM user_airport_votes WHERE user_id = ? AND airport_id = ?', args: [userId, airportId] });
+        if (existing.rows.length > 0) return res.status(409).json({ error: 'User has already voted for this airport' });
+        await db.execute({ sql: 'INSERT INTO user_airport_votes (user_id, airport_id, vote_type) VALUES (?, ?, ?)', args: [userId, airportId, voteType] });
+        const col = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
+        await db.execute({ sql: `INSERT INTO airport_votes (airport_id, ${col}) VALUES (?, 1)
+                                 ON CONFLICT(airport_id) DO UPDATE SET ${col} = ${col} + 1`, args: [airportId] });
+        clearRankingCaches();
+        log('info', 'airport_vote_recorded', { userId, airportId, voteType });
+        res.json({ success: true });
+    } catch (e) {
+        log('error', 'airport_vote_failed', { error: e?.message || String(e), userId, airportId, voteType });
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.get('/api/cities', async (req, res) => {
     const { userId } = req.query;
 
