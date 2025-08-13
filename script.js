@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Main app elements
     const mainApp = document.getElementById('main-app');
+    
+    // App state tracking
+    let isAppVisible = true;
+    let lastActiveTime = Date.now();
 
     // Main app elements
     const cityNameEl = document.getElementById('cityName');
@@ -47,6 +51,47 @@ function authHeaders(base = {}) {
     return base;
 }
 
+// Enhanced fetch with retry logic
+async function fetchWithRetry(url, options = {}, maxRetries = 3) {
+    const defaultOptions = {
+        timeout: 10000,
+        ...options
+    };
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+            console.log(`🌐 Fetch attempt ${attempt}/${maxRetries} to ${url}`);
+            
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), defaultOptions.timeout);
+            
+            const response = await fetch(url, {
+                ...defaultOptions,
+                signal: controller.signal
+            });
+            
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+            return response;
+        } catch (error) {
+            console.warn(`❌ Fetch attempt ${attempt} failed:`, error.message);
+            
+            if (attempt === maxRetries) {
+                throw new Error(`Request failed after ${maxRetries} attempts: ${error.message}`);
+            }
+            
+            // Exponential backoff: wait 1s, then 2s, then 4s
+            const delay = Math.pow(2, attempt - 1) * 1000;
+            console.log(`⏳ Retrying in ${delay}ms...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
+}
+
 function getUserId() {
     return localStorage.getItem('cityRaterUserId') || null;
 }
@@ -82,12 +127,9 @@ function showMainApp() {
             return;
         }
         try {
-            const response = await fetch(`${API_BASE_URL}/api/cities?userId=${userId}`, {
+            const response = await fetchWithRetry(`${API_BASE_URL}/api/cities?userId=${userId}`, {
                 headers: authHeaders()
             });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
             const data = await response.json();
             cities = data.cities;
             votedCount = data.votedCount;
@@ -143,30 +185,68 @@ function showMainApp() {
     }
 
     async function vote(voteType) {
+        // Validate app state before voting
+        if (!isAppVisible) {
+            console.warn('⚠️ App not visible, skipping vote');
+            return;
+        }
+        
+        const idleTime = Date.now() - lastActiveTime;
+        if (idleTime > 60000) { // 1 minute idle
+            console.warn('⚠️ App been idle too long, refreshing first');
+            try {
+                if (mode === 'cities') {
+                    await fetchCities();
+                } else {
+                    await fetchAirports();
+                }
+            } catch (e) {
+                console.error('Failed to refresh data before voting:', e);
+                showVoteError('Не удалось обновить данные. Попробуйте перезапустить приложение.');
+                return;
+            }
+        }
+        
+        // Show loading state
+        disableVoting();
+        showVoteLoading(voteType);
+        
         try {
             if (mode === 'cities') {
                 if (currentIndex >= cities.length) return;
                 const city = cities[currentIndex];
-                const response = await fetch(`${API_BASE_URL}/api/vote`, {
+                const response = await fetchWithRetry(`${API_BASE_URL}/api/vote`, {
                     method: 'POST',
                     headers: authHeaders({ 'Content-Type': 'application/json' }),
                     body: JSON.stringify({ userId, cityId: city.cityId, voteType }),
                 });
-                if (response.ok) { votedCount++; updateScore(); }
+                if (response.ok) { 
+                    votedCount++; 
+                    updateScore(); 
+                    showVoteSuccess(voteType);
+                }
             } else {
                 if (currentIndex >= airports.length) return;
                 const ap = airports[currentIndex];
-                const response = await fetch(`${API_BASE_URL}/api/airport-vote`, {
+                const response = await fetchWithRetry(`${API_BASE_URL}/api/airport-vote`, {
                     method: 'POST',
                     headers: authHeaders({ 'Content-Type': 'application/json' }),
                     body: JSON.stringify({ userId, airportId: ap.airportId, voteType }),
                 });
-                if (response.ok) { votedCount++; updateScore(); }
+                if (response.ok) { 
+                    votedCount++; 
+                    updateScore(); 
+                    showVoteSuccess(voteType);
+                }
             }
             currentIndex++;
             loadItem();
+            lastActiveTime = Date.now(); // Update activity timestamp
         } catch (error) {
             console.error('Error sending vote:', error);
+            showVoteError('Не удалось отправить голос. Проверьте соединение.');
+        } finally {
+            enableVoting();
         }
     }
 
@@ -180,6 +260,76 @@ function showMainApp() {
         likeBtn.disabled = false;
         dislikeBtn.disabled = false;
         dontKnowBtn.disabled = false;
+        
+        // Clear any loading states
+        clearVoteFeedback();
+    }
+    
+    // Visual feedback functions for voting
+    function showVoteLoading(voteType) {
+        const btn = getVoteButton(voteType);
+        if (btn) {
+            btn.style.opacity = '0.5';
+            btn.textContent = btn.textContent + ' ⏳';
+        }
+    }
+    
+    function showVoteSuccess(voteType) {
+        const btn = getVoteButton(voteType);
+        if (btn) {
+            btn.style.backgroundColor = '#4CAF50';
+            btn.style.color = 'white';
+            setTimeout(() => {
+                btn.style.backgroundColor = '';
+                btn.style.color = '';
+            }, 1000);
+        }
+    }
+    
+    function showVoteError(message) {
+        // Show error message briefly
+        const errorDiv = document.createElement('div');
+        errorDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            font-size: 14px;
+        `;
+        errorDiv.textContent = message;
+        document.body.appendChild(errorDiv);
+        
+        setTimeout(() => {
+            if (errorDiv.parentNode) {
+                errorDiv.parentNode.removeChild(errorDiv);
+            }
+        }, 3000);
+    }
+    
+    function clearVoteFeedback() {
+        [likeBtn, dislikeBtn, dontKnowBtn].forEach(btn => {
+            if (btn) {
+                btn.style.opacity = '';
+                btn.style.backgroundColor = '';
+                btn.style.color = '';
+                // Remove loading spinner
+                btn.textContent = btn.textContent.replace(' ⏳', '');
+            }
+        });
+    }
+    
+    function getVoteButton(voteType) {
+        switch (voteType) {
+            case 'liked': return likeBtn;
+            case 'disliked': return dislikeBtn;
+            case 'dont_know': return dontKnowBtn;
+            default: return null;
+        }
     }
 
     async function showRatings(type) {
@@ -295,8 +445,9 @@ function showMainApp() {
 
     async function fetchAirports() {
         try {
-            const res = await fetch(`${API_BASE_URL}/api/airports?userId=${userId}`, { headers: authHeaders() });
-            if (!res.ok) throw new Error('Network response was not ok');
+            const res = await fetchWithRetry(`${API_BASE_URL}/api/airports?userId=${userId}`, { 
+                headers: authHeaders() 
+            });
             const data = await res.json();
             airports = data.airports || [];
             votedCount = data.votedCount;
@@ -425,8 +576,52 @@ function showMainApp() {
     }
 
 
+    // Telegram WebApp lifecycle management
+    function setupTelegramLifecycle() {
+        if (window.Telegram && window.Telegram.WebApp) {
+            const webApp = window.Telegram.WebApp;
+            
+            // Handle viewport changes (app going to background/foreground)
+            webApp.onEvent('viewportChanged', () => {
+                console.log('📱 Telegram viewport changed');
+                lastActiveTime = Date.now();
+                isAppVisible = true;
+            });
+            
+            // Track when app becomes visible again
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) {
+                    console.log('👁️ App became visible again');
+                    isAppVisible = true;
+                    lastActiveTime = Date.now();
+                    
+                    // Refresh data if app was hidden for more than 30 seconds
+                    const idleTime = Date.now() - lastActiveTime;
+                    if (idleTime > 30000) {
+                        console.log('🔄 App was idle, refreshing data');
+                        if (mode === 'cities') {
+                            fetchCities();
+                        } else {
+                            fetchAirports();
+                        }
+                    }
+                } else {
+                    isAppVisible = false;
+                }
+            });
+            
+            // Set up periodic connectivity check
+            setInterval(() => {
+                if (isAppVisible) {
+                    lastActiveTime = Date.now();
+                }
+            }, 5000);
+        }
+    }
+
     // Initialize app function
     function initializeApp() {
+        setupTelegramLifecycle();
         initializeUser();
     }
 
