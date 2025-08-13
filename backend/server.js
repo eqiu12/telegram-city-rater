@@ -18,7 +18,6 @@ const { monitorEventLoopDelay } = require('perf_hooks');
 const app = express();
 const PORT = process.env.PORT || 3000;
 let httpServer;
-const DEBUG_VOTE_LOGS = (process.env.DEBUG_VOTE_LOGS || '').toLowerCase() === '1' || (process.env.DEBUG_VOTE_LOGS || '').toLowerCase() === 'true';
 
 // You'll need to set this in your environment variables
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -67,14 +66,7 @@ function getJwtUserFromRequest(req) {
     }
 }
 
-// Ensure read-your-writes on Turso/libsql replicas when available
-async function trySync() {
-    try {
-        if (typeof db.sync === 'function') {
-            await db.sync();
-        }
-    } catch (_) {}
-}
+// Reverted: no explicit db.sync() usage
 
 // CORS allowlist (merge defaults with comma-separated env CORS_ALLOWED_ORIGINS)
 const defaultCorsOrigins = [
@@ -260,7 +252,6 @@ app.get('/api/cities', async (req, res) => {
     }
 
     try {
-        await trySync();
         const votedCitiesResult = await db.execute({
             sql: "SELECT city_id FROM user_votes WHERE user_id = ?",
             args: [userId]
@@ -335,56 +326,31 @@ app.post('/api/vote', voteLimiter, async (req, res) => {
     }
 
     try {
-        if (DEBUG_VOTE_LOGS) {
-            const pre = await db.execute({ sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?', args: [userId] });
-            log('info', 'debug_vote_pre_count', { userId, count: pre.rows?.[0]?.c ?? null, requestId: req.requestId });
-        }
-        await db.transaction(async (tx) => {
-            try {
-                const insRes = await tx.execute({
-                    sql: "INSERT INTO user_votes (user_id, city_id, vote_type) VALUES (?, ?, ?)",
-                    args: [userId, cityId, voteType]
-                });
-                if (DEBUG_VOTE_LOGS) {
-                    log('info', 'debug_vote_insert_result', { requestId: req.requestId, rowsAffected: insRes?.rowsAffected ?? null });
-                }
-            } catch (e) {
-                // Duplicate vote
-                throw Object.assign(new Error('duplicate_vote'), { code: 'DUPLICATE' });
-            }
-
-            const columnToIncrement = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
-            const upRes = await tx.execute({
-                sql: `INSERT INTO city_votes (city_id, ${columnToIncrement}) VALUES (?, 1)
-                      ON CONFLICT(city_id) DO UPDATE SET ${columnToIncrement} = ${columnToIncrement} + 1`,
-                args: [cityId]
-            });
-            if (DEBUG_VOTE_LOGS) {
-                log('info', 'debug_city_upsert_result', { requestId: req.requestId, rowsAffected: upRes?.rowsAffected ?? null });
-            }
-
-            if (DEBUG_VOTE_LOGS) {
-                const txCount = await tx.execute({ sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?', args: [userId] });
-                log('info', 'debug_vote_tx_count', { userId, count: txCount.rows?.[0]?.c ?? null, requestId: req.requestId });
-            }
+        // Revert to pre-transaction flow: pre-check duplicate, then insert + upsert without explicit transaction
+        const existingVote = await db.execute({
+            sql: 'SELECT id FROM user_votes WHERE user_id = ? AND city_id = ?',
+            args: [userId, cityId]
         });
-        if (DEBUG_VOTE_LOGS) {
-            const post = await db.execute({ sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?', args: [userId] });
-            log('info', 'debug_vote_post_count', { userId, count: post.rows?.[0]?.c ?? null, requestId: req.requestId });
+        if (existingVote.rows.length > 0) {
+            return res.status(409).json({ error: 'User has already voted for this city' });
         }
-        await trySync();
-        if (DEBUG_VOTE_LOGS) {
-            const postSync = await db.execute({ sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?', args: [userId] });
-            log('info', 'debug_vote_postsync_count', { userId, count: postSync.rows?.[0]?.c ?? null, requestId: req.requestId });
-        }
+
+        await db.execute({
+            sql: 'INSERT INTO user_votes (user_id, city_id, vote_type) VALUES (?, ?, ?)',
+            args: [userId, cityId, voteType]
+        });
+
+        const columnToIncrement = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
+        await db.execute({
+            sql: `INSERT INTO city_votes (city_id, ${columnToIncrement}) VALUES (?, 1)
+                  ON CONFLICT(city_id) DO UPDATE SET ${columnToIncrement} = ${columnToIncrement} + 1`,
+            args: [cityId]
+        });
         clearRankingCaches();
         log('info', 'vote_recorded', { userId, cityId, voteType });
         res.json({ success: true });
 
     } catch (error) {
-        if (error && error.code === 'DUPLICATE') {
-            return res.status(409).json({ error: 'User has already voted for this city' });
-        }
         log('error', 'vote_record_failed', { error: error?.message || String(error), userId, cityId, voteType });
         res.status(500).json({ error: 'Internal server error' });
     }
@@ -486,11 +452,7 @@ app.post('/api/change-vote', voteLimiter, async (req, res) => {
                 });
             }
         });
-        if (DEBUG_VOTE_LOGS) {
-            const post = await db.execute({ sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?', args: [userId] });
-            log('info', 'debug_change_vote_post_count', { userId, count: post.rows?.[0]?.c ?? null, requestId: req.requestId });
-        }
-        await trySync();
+        // No explicit sync
         clearRankingCaches();
         if (created) {
             return res.json({ success: true, message: 'Vote created' });
