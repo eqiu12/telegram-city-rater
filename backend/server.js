@@ -18,6 +18,7 @@ const { monitorEventLoopDelay } = require('perf_hooks');
 const app = express();
 const PORT = process.env.PORT || 3000;
 let httpServer;
+const DEBUG_VOTE_LOGS = (process.env.DEBUG_VOTE_LOGS || '').toLowerCase() === '1' || (process.env.DEBUG_VOTE_LOGS || '').toLowerCase() === 'true';
 
 // You'll need to set this in your environment variables
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -30,6 +31,15 @@ if (!BOT_TOKEN) {
 if (!JWT_SECRET) {
     console.warn('WARNING: JWT_SECRET not set. JWT issuing/verification will be disabled.');
 }
+
+// Log DB host to confirm which DB we're connected to
+try {
+    const dbUrl = process.env.TURSO_DATABASE_URL || '';
+    const host = dbUrl.replace(/^libsql:\/\//, '').split(/[/?#]/)[0];
+    if (host) {
+        console.log(JSON.stringify({ level: 'info', message: 'db_connected', host }));
+    }
+} catch (_) {}
 
 function issueJwtForUser(userRow) {
     if (!JWT_SECRET) return null;
@@ -325,6 +335,10 @@ app.post('/api/vote', voteLimiter, async (req, res) => {
     }
 
     try {
+        if (DEBUG_VOTE_LOGS) {
+            const pre = await db.execute({ sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?', args: [userId] });
+            log('info', 'debug_vote_pre_count', { userId, count: pre.rows?.[0]?.c ?? null, requestId: req.requestId });
+        }
         await db.transaction(async (tx) => {
             try {
                 await tx.execute({
@@ -343,6 +357,10 @@ app.post('/api/vote', voteLimiter, async (req, res) => {
                 args: [cityId]
             });
         });
+        if (DEBUG_VOTE_LOGS) {
+            const post = await db.execute({ sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?', args: [userId] });
+            log('info', 'debug_vote_post_count', { userId, count: post.rows?.[0]?.c ?? null, requestId: req.requestId });
+        }
         await trySync();
         clearRankingCaches();
         log('info', 'vote_recorded', { userId, cityId, voteType });
@@ -453,6 +471,10 @@ app.post('/api/change-vote', voteLimiter, async (req, res) => {
                 });
             }
         });
+        if (DEBUG_VOTE_LOGS) {
+            const post = await db.execute({ sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?', args: [userId] });
+            log('info', 'debug_change_vote_post_count', { userId, count: post.rows?.[0]?.c ?? null, requestId: req.requestId });
+        }
         await trySync();
         clearRankingCaches();
         if (created) {
