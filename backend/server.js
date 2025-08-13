@@ -219,8 +219,29 @@ app.get('/', (req, res) => {
 
 // Static file serving disabled for security; serve frontend separately
 
-const cityDataPath = path.join(__dirname, '..', 'cities.json');
+function resolveDataFile(filename) {
+    const candidates = [
+        path.join(__dirname, '..', filename),
+        path.join(__dirname, filename),
+        path.join(process.cwd(), filename)
+    ];
+    for (const p of candidates) {
+        try { if (fs.existsSync(p)) return p; } catch (_) {}
+    }
+    throw new Error(`data_file_not_found:${filename}`);
+}
+
+const cityDataPath = resolveDataFile('cities.json');
 const cityData = JSON.parse(fs.readFileSync(cityDataPath, 'utf8'));
+let airportsData = [];
+try {
+    const apPath = resolveDataFile('airports.json');
+    airportsData = JSON.parse(fs.readFileSync(apPath, 'utf8'));
+    log('info', 'airports_data_loaded', { count: Array.isArray(airportsData) ? airportsData.length : 0 });
+} catch (e) {
+    log('error', 'airports_data_load_failed', { error: e?.message || String(e) });
+    airportsData = [];
+}
 
 // Simple in-memory cache for rankings endpoints
 const CACHE_TTL_MS = Number(process.env.RANKINGS_CACHE_TTL_MS || 20000); // default 20s
@@ -249,9 +270,7 @@ app.get('/api/airports', async (req, res) => {
     const { userId } = req.query;
     if (!userId) return res.status(400).json({ error: 'User ID is required' });
     try {
-        // Load airports list from file
-        const apPath = path.join(__dirname, '..', 'airports.json');
-        const apList = JSON.parse(fs.readFileSync(apPath, 'utf8'));
+        const apList = Array.isArray(airportsData) ? airportsData : [];
         // Filter out already voted airports for this user
         const votedRes = await db.execute({ sql: 'SELECT airport_id FROM user_airport_votes WHERE user_id = ?', args: [userId] });
         const votedIds = new Set(votedRes.rows.map(r => r.airport_id));
@@ -263,7 +282,8 @@ app.get('/api/airports', async (req, res) => {
         res.json({ airports: shuffled, votedCount, totalCount });
     } catch (e) {
         log('error', 'fetch_airports_failed', { error: e?.message || String(e) });
-        res.status(500).json({ error: 'Internal server error' });
+        // Return graceful empty payload to avoid frontend error UI
+        res.json({ airports: [], votedCount: 0, totalCount: 0 });
     }
 });
 
