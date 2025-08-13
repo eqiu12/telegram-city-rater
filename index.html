@@ -10,7 +10,22 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <!-- Страница входа -->
+    <div id="login-page">
+        <div class="login-container">
+            <h1>City Rater</h1>
+            <p>Введите UID или создайте новый</p>
+            <div class="login-form">
+                <input type="text" id="uid-input" placeholder="Введите UID или оставьте пустым" />
+                <div class="login-buttons">
+                    <button id="generate-uid-btn" class="btn">Сгенерировать новый UID</button>
+                    <button id="login-btn" class="btn">Войти</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="main-app" style="display:none;">
         <!-- Голосование -->
         <div id="voting-page">
             <div id="score-display">
@@ -22,6 +37,8 @@
             </div>
             <div id="city-display">
                 <h1 id="cityName"></h1>
+                <div id="airportCode" class="airport-code" style="display: none;"></div>
+                <div id="airportName" class="airport-name" style="display: none;"></div>
                 <p id="countryName"></p>
             </div>
             <div class="buttons">
@@ -37,7 +54,7 @@
         <!-- Профиль -->
         <div id="profile-page" style="display:none;">
             <h2>Личный кабинет</h2>
-            <div><b>Ваш UID:</b> <span id="user-uid"></span> <button id="copy-uid-btn" title="Скопировать UID">📋</button></div>
+            <div><b>Ваш UID:</b> <span id="user-uid"></span> <button id="copy-uid-btn" title="Скопировать UID">📋</button> <button id="logout-btn" title="Выйти">🚪</button></div>
             <div id="user-votes-list"></div>
             <button id="scroll-to-top-btn" class="scroll-to-top-btn" style="display:none;">⬆️ Наверх</button>
         </div>

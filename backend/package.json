@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "node scripts/test_smoke.js",
+    "test": "node scripts/test_smoke.js && node scripts/test_telegram.js && node scripts/test_jwt_rate_change.js",
     "start": "node server.js",
     "start:db": "node server_with_db.js",
     "migrate": "node -r dotenv/config scripts/migrate.js"

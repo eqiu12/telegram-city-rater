@@ -483,60 +483,60 @@ app.post('/api/change-vote', voteLimiter, async (req, res) => {
     }
 
     try {
-        let created = false;
-        let same = false;
-        await db.transaction(async (tx) => {
-            // Найти старый голос
-            const oldVoteRes = await tx.execute({
-                sql: 'SELECT vote_type FROM user_votes WHERE user_id = ? AND city_id = ?',
-                args: [userId, cityId]
-            });
-            if (oldVoteRes.rows.length === 0) {
-                await tx.execute({
-                    sql: "INSERT INTO user_votes (user_id, city_id, vote_type) VALUES (?, ?, ?)",
-                    args: [userId, cityId, voteType]
-                });
-                const columnToIncrement = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
-                await tx.execute({
-                    sql: `INSERT INTO city_votes (city_id, ${columnToIncrement}) VALUES (?, 1)
-                          ON CONFLICT(city_id) DO UPDATE SET ${columnToIncrement} = ${columnToIncrement} + 1`,
-                    args: [cityId]
-                });
-                created = true;
-                return;
-            }
-            const oldVote = oldVoteRes.rows[0].vote_type;
-            if (oldVote === voteType) {
-                same = true;
-                return;
-            }
-            await tx.execute({
-                sql: 'UPDATE user_votes SET vote_type = ? WHERE user_id = ? AND city_id = ?',
-                args: [voteType, userId, cityId]
-            });
-            const voteMap = { liked: 'likes', disliked: 'dislikes', dont_know: 'dont_know' };
-            const oldCol = voteMap[oldVote];
-            const newCol = voteMap[voteType];
-            if (oldCol && newCol) {
-                await tx.execute({
-                    sql: `UPDATE city_votes SET ${oldCol} = CASE WHEN ${oldCol} > 0 THEN ${oldCol} - 1 ELSE 0 END WHERE city_id = ?`,
-                    args: [cityId]
-                });
-                await tx.execute({
-                    sql: `UPDATE city_votes SET ${newCol} = ${newCol} + 1 WHERE city_id = ?`,
-                    args: [cityId]
-                });
-            }
+        // Simplified non-transaction approach like the working /api/vote
+        // First check if vote exists
+        const oldVoteRes = await db.execute({
+            sql: 'SELECT vote_type FROM user_votes WHERE user_id = ? AND city_id = ?',
+            args: [userId, cityId]
         });
-        // No explicit sync
-        clearRankingCaches();
-        if (created) {
+        
+        if (oldVoteRes.rows.length === 0) {
+            // No existing vote - create new one
+            await db.execute({
+                sql: "INSERT INTO user_votes (user_id, city_id, vote_type) VALUES (?, ?, ?)",
+                args: [userId, cityId, voteType]
+            });
+            const columnToIncrement = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
+            await db.execute({
+                sql: `INSERT INTO city_votes (city_id, ${columnToIncrement}) VALUES (?, 1)
+                      ON CONFLICT(city_id) DO UPDATE SET ${columnToIncrement} = ${columnToIncrement} + 1`,
+                args: [cityId]
+            });
+            clearRankingCaches();
+            log('info', 'vote_created_via_change', { userId, cityId, voteType });
             return res.json({ success: true, message: 'Vote created' });
         }
-        if (same) {
+        
+        const oldVote = oldVoteRes.rows[0].vote_type;
+        if (oldVote === voteType) {
             return res.json({ success: true, message: 'Vote is already set to this value' });
         }
-        log('info', 'vote_changed', { userId, cityId, voteType });
+        
+        // Update existing vote
+        await db.execute({
+            sql: 'UPDATE user_votes SET vote_type = ? WHERE user_id = ? AND city_id = ?',
+            args: [voteType, userId, cityId]
+        });
+        
+        // Update city vote counts
+        const voteMap = { liked: 'likes', disliked: 'dislikes', dont_know: 'dont_know' };
+        const oldCol = voteMap[oldVote];
+        const newCol = voteMap[voteType];
+        if (oldCol && newCol) {
+            // Decrement old vote type
+            await db.execute({
+                sql: `UPDATE city_votes SET ${oldCol} = CASE WHEN ${oldCol} > 0 THEN ${oldCol} - 1 ELSE 0 END WHERE city_id = ?`,
+                args: [cityId]
+            });
+            // Increment new vote type
+            await db.execute({
+                sql: `UPDATE city_votes SET ${newCol} = ${newCol} + 1 WHERE city_id = ?`,
+                args: [cityId]
+            });
+        }
+        
+        clearRankingCaches();
+        log('info', 'vote_changed', { userId, cityId, oldVote, newVote: voteType });
         res.json({ success: true });
     } catch (error) {
         log('error', 'change_vote_failed', { error: error?.message || String(error), userId, cityId, voteType });
@@ -872,29 +872,57 @@ app.post('/api/change-airport-vote', voteLimiter, async (req, res) => {
         return res.status(403).json({ error: 'Token subject does not match userId' });
     }
     try {
-        let created = false;
-        let same = false;
-        await db.transaction(async (tx) => {
-            const existing = await tx.execute({ sql: 'SELECT vote_type FROM user_airport_votes WHERE user_id = ? AND airport_id = ?', args: [userId, airportId] });
-            if (existing.rows.length === 0) {
-                await tx.execute({ sql: 'INSERT INTO user_airport_votes (user_id, airport_id, vote_type) VALUES (?, ?, ?)', args: [userId, airportId, voteType] });
-                const col = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
-                await tx.execute({ sql: `INSERT INTO airport_votes (airport_id, ${col}) VALUES (?, 1)
-                                           ON CONFLICT(airport_id) DO UPDATE SET ${col} = ${col} + 1`, args: [airportId] });
-                created = true;
-                return;
-            }
-            const oldVote = existing.rows[0].vote_type;
-            if (oldVote === voteType) { same = true; return; }
-            await tx.execute({ sql: 'UPDATE user_airport_votes SET vote_type = ? WHERE user_id = ? AND airport_id = ?', args: [voteType, userId, airportId] });
-            const voteMap = { liked: 'likes', disliked: 'dislikes', dont_know: 'dont_know' };
-            const oldCol = voteMap[oldVote];
-            const newCol = voteMap[voteType];
-            await tx.execute({ sql: `UPDATE airport_votes SET ${oldCol} = CASE WHEN ${oldCol} > 0 THEN ${oldCol} - 1 ELSE 0 END WHERE airport_id = ?`, args: [airportId] });
-            await tx.execute({ sql: `UPDATE airport_votes SET ${newCol} = ${newCol} + 1 WHERE airport_id = ?`, args: [airportId] });
+        // Simplified non-transaction approach like the working /api/airport-vote
+        // First check if vote exists
+        const existing = await db.execute({ 
+            sql: 'SELECT vote_type FROM user_airport_votes WHERE user_id = ? AND airport_id = ?', 
+            args: [userId, airportId] 
         });
-        if (created) return res.json({ success: true, message: 'Vote created' });
-        if (same) return res.json({ success: true, message: 'Vote is already set to this value' });
+        
+        if (existing.rows.length === 0) {
+            // No existing vote - create new one
+            await db.execute({ 
+                sql: 'INSERT INTO user_airport_votes (user_id, airport_id, vote_type) VALUES (?, ?, ?)', 
+                args: [userId, airportId, voteType] 
+            });
+            const col = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
+            await db.execute({ 
+                sql: `INSERT INTO airport_votes (airport_id, ${col}) VALUES (?, 1)
+                      ON CONFLICT(airport_id) DO UPDATE SET ${col} = ${col} + 1`, 
+                args: [airportId] 
+            });
+            log('info', 'airport_vote_created_via_change', { userId, airportId, voteType });
+            return res.json({ success: true, message: 'Vote created' });
+        }
+        
+        const oldVote = existing.rows[0].vote_type;
+        if (oldVote === voteType) { 
+            return res.json({ success: true, message: 'Vote is already set to this value' }); 
+        }
+        
+        // Update existing vote
+        await db.execute({ 
+            sql: 'UPDATE user_airport_votes SET vote_type = ? WHERE user_id = ? AND airport_id = ?', 
+            args: [voteType, userId, airportId] 
+        });
+        
+        // Update airport vote counts
+        const voteMap = { liked: 'likes', disliked: 'dislikes', dont_know: 'dont_know' };
+        const oldCol = voteMap[oldVote];
+        const newCol = voteMap[voteType];
+        
+        // Decrement old vote type
+        await db.execute({ 
+            sql: `UPDATE airport_votes SET ${oldCol} = CASE WHEN ${oldCol} > 0 THEN ${oldCol} - 1 ELSE 0 END WHERE airport_id = ?`, 
+            args: [airportId] 
+        });
+        // Increment new vote type
+        await db.execute({ 
+            sql: `UPDATE airport_votes SET ${newCol} = ${newCol} + 1 WHERE airport_id = ?`, 
+            args: [airportId] 
+        });
+        
+        log('info', 'airport_vote_changed', { userId, airportId, oldVote, newVote: voteType });
         return res.json({ success: true });
     } catch (e) {
         log('error', 'change_airport_vote_failed', { error: e?.message || String(e), userId, airportId, voteType });

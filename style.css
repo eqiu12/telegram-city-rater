@@ -33,6 +33,21 @@ body {
     margin: 0;
 }
 
+/* Airport Display Styles */
+.airport-code {
+    font-size: 36px;
+    font-weight: 600;
+    margin: 0;
+    color: #1d1d1f;
+}
+
+.airport-name {
+    font-size: 20px;
+    font-weight: 400;
+    margin: 8px 0 4px 0;
+    color: #1d1d1f;
+}
+
 #countryName {
     font-size: 20px;
     color: #6e6e73; /* Apple's secondary text color */
@@ -43,6 +58,41 @@ body {
     font-size: 16px;
     margin-bottom: 15px;
     font-weight: 500;
+}
+
+/* Navigation Switcher */
+.switcher {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 40px;
+    padding: 8px;
+    background-color: #f2f2f7;
+    border-radius: 12px;
+}
+
+.switch-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: none;
+    color: #6e6e73;
+    font-family: inherit;
+}
+
+.switch-btn.active {
+    background-color: #ffffff;
+    color: #007aff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.switch-btn:hover:not(.active) {
+    color: #1d1d1f;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 /* Main Action Buttons Container */
@@ -542,4 +592,107 @@ th {
     background: #f0f0f0;
     color: #888;
     opacity: 0.7;
+}
+
+/* Login Page Styles */
+#login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+}
+
+.login-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+}
+
+.login-container h1 {
+    font-size: 36px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    color: #1d1d1f;
+}
+
+.login-container p {
+    color: #6e6e73;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#uid-input {
+    padding: 15px 20px;
+    border: 2px solid #e5e5e7;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: border-color 0.2s ease;
+}
+
+#uid-input:focus {
+    outline: none;
+    border-color: #007aff;
+}
+
+.login-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.login-buttons .btn {
+    padding: 15px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+#generate-uid-btn {
+    background-color: #f2f2f7;
+    color: #007aff;
+}
+
+#generate-uid-btn:hover {
+    background-color: #e5e5ea;
+}
+
+#login-btn {
+    background-color: #007aff;
+    color: white;
+}
+
+#login-btn:hover {
+    background-color: #0056cc;
+}
+
+/* Logout button styling */
+#logout-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 8px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+#logout-btn:hover {
+    background-color: #f0f0f0;
 } 

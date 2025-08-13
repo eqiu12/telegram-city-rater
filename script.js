@@ -1,5 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Login elements
+    const loginPage = document.getElementById('login-page');
+    const mainApp = document.getElementById('main-app');
+    const uidInput = document.getElementById('uid-input');
+    const generateUidBtn = document.getElementById('generate-uid-btn');
+    const loginBtn = document.getElementById('login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // Main app elements
     const cityNameEl = document.getElementById('cityName');
+    const airportCodeEl = document.getElementById('airportCode');
+    const airportNameEl = document.getElementById('airportName');
     const countryNameEl = document.getElementById('countryName');
     const likeBtn = document.getElementById('like-btn');
     const dislikeBtn = document.getElementById('dislike-btn');
@@ -42,15 +53,51 @@ function authHeaders(base = {}) {
 }
 
 function getUserId() {
-    let id = localStorage.getItem('cityRaterUserId');
-    if (!id) {
-        id = crypto.randomUUID();
-        localStorage.setItem('cityRaterUserId', id);
-    }
-    return id;
+    return localStorage.getItem('cityRaterUserId') || null;
+}
+
+function setUserId(id) {
+    localStorage.setItem('cityRaterUserId', id);
+}
+
+function generateNewUserId() {
+    return crypto.randomUUID();
+}
+
+function clearUserData() {
+    localStorage.removeItem('cityRaterUserId');
+    localStorage.removeItem(TOKEN_KEY);
 }
 
 let userId = getUserId();
+
+// Login/logout functions
+function showLoginPage() {
+    loginPage.style.display = 'block';
+    mainApp.style.display = 'none';
+}
+
+function showMainApp() {
+    loginPage.style.display = 'none';
+    mainApp.style.display = 'block';
+    initializeApp();
+}
+
+function handleLogin() {
+    let inputUid = uidInput.value.trim();
+    if (!inputUid) {
+        inputUid = generateNewUserId();
+    }
+    setUserId(inputUid);
+    userId = inputUid;
+    showMainApp();
+}
+
+function handleLogout() {
+    clearUserData();
+    userId = null;
+    showLoginPage();
+}
 
     function updateScore() {
         votedCountEl.textContent = votedCount;
@@ -85,6 +132,11 @@ let userId = getUserId();
 
     function loadItem() {
         if (mode === 'cities') {
+            // Hide airport elements, show city name
+            cityNameEl.style.display = 'block';
+            airportCodeEl.style.display = 'none';
+            airportNameEl.style.display = 'none';
+            
             if (currentIndex < cities.length) {
                 const city = cities[currentIndex];
                 cityNameEl.textContent = city.name;
@@ -95,11 +147,20 @@ let userId = getUserId();
                 disableVoting();
             }
         } else {
+            // Hide city name, show airport elements
+            cityNameEl.style.display = 'none';
+            airportCodeEl.style.display = 'block';
+            airportNameEl.style.display = 'block';
+            
             if (currentIndex < airports.length) {
                 const ap = airports[currentIndex];
-                cityNameEl.textContent = `${ap.airport_name} (${ap.airport_code})`;
+                airportCodeEl.textContent = ap.airport_code;
+                airportNameEl.textContent = ap.airport_name;
                 countryNameEl.textContent = `${ap.airport_city}, ${ap.country} ${ap.flag}`;
             } else {
+                cityNameEl.style.display = 'block';
+                airportCodeEl.style.display = 'none';
+                airportNameEl.style.display = 'none';
                 cityNameEl.textContent = 'Аэропорты закончились';
                 countryNameEl.textContent = 'Спасибо за участие!';
                 disableVoting();
@@ -341,8 +402,25 @@ let userId = getUserId();
         fetchCities();
     }
 
-    // Start the initialization process
-    initializeUser();
+    // Add login/logout event listeners
+    generateUidBtn.addEventListener('click', () => {
+        uidInput.value = generateNewUserId();
+    });
+
+    loginBtn.addEventListener('click', handleLogin);
+    logoutBtn.addEventListener('click', handleLogout);
+
+    // Initialize app function
+    function initializeApp() {
+        initializeUser();
+    }
+
+    // Check if user is already logged in on page load
+    if (userId) {
+        showMainApp();
+    } else {
+        showLoginPage();
+    }
 
     // --- Profile & Tabs ---
     const votingPage = document.getElementById('voting-page');
@@ -371,16 +449,18 @@ let userId = getUserId();
             let useOptimized = false;
             try { useOptimized = Boolean(window.Telegram?.WebApp?.initData); } catch (_) {}
             if (useOptimized) {
-                const res = await fetch(`${API_BASE_URL}/api/profile/${userId}`, { headers: authHeaders(), cache: 'no-store' });
+                const timestamp = Date.now();
+                const res = await fetch(`${API_BASE_URL}/api/profile/${userId}?t=${timestamp}`, { headers: authHeaders(), cache: 'no-store' });
                 if (!res.ok) throw new Error('profile endpoint failed');
                 const data = await res.json();
                 profileCities = data.profileCities || [];
                 profileAirports = data.profileAirports || [];
             } else {
+                const timestamp = Date.now();
                 const [citiesRes, votesRes, ratingsRes] = await Promise.all([
-                    fetch(`${API_BASE_URL}/api/all-cities`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('all-cities failed'); return r.json(); }),
-                    fetch(`${API_BASE_URL}/api/user-votes/${userId}`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('user-votes failed'); return r.json(); }),
-                    fetch(`${API_BASE_URL}/api/rankings`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('rankings failed'); return r.json(); }),
+                    fetch(`${API_BASE_URL}/api/all-cities?t=${timestamp}`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('all-cities failed'); return r.json(); }),
+                    fetch(`${API_BASE_URL}/api/user-votes/${userId}?t=${timestamp}`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('user-votes failed'); return r.json(); }),
+                    fetch(`${API_BASE_URL}/api/rankings?t=${timestamp}`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('rankings failed'); return r.json(); }),
                 ]);
                 const allCities = citiesRes.cities || [];
                 const userVotes = (votesRes.userVotes || []);
@@ -400,10 +480,10 @@ let userId = getUserId();
                         dont_know: rating ? rating.dont_know : 0,
                     };
                 });
-                // Airports for web path
+                // Airports for web path  
                 const [allApRes, userApVotesRes] = await Promise.all([
-                    fetch(`${API_BASE_URL}/api/all-airports`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('all-airports failed'); return r.json(); }),
-                    fetch(`${API_BASE_URL}/api/user-airport-votes/${userId}`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('user-airport-votes failed'); return r.json(); }),
+                    fetch(`${API_BASE_URL}/api/all-airports?t=${timestamp}`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('all-airports failed'); return r.json(); }),
+                    fetch(`${API_BASE_URL}/api/user-airport-votes/${userId}?t=${timestamp}`, { headers: authHeaders(), cache: 'no-store' }).then(async r => { if (!r.ok) throw new Error('user-airport-votes failed'); return r.json(); }),
                 ]);
                 const allAirports = allApRes.airports || [];
                 const apVotesMap = {};
@@ -487,12 +567,20 @@ let userId = getUserId();
             // Determine bulk voting button states
             const hasAnyVote = countryCities.some(city => city.voteType === 'liked' || city.voteType === 'disliked');
             const allDontKnow = countryCities.every(city => city.voteType === 'dont_know' || !city.voteType);
+            const allLiked = countryCities.every(city => city.voteType === 'liked');
             let bulkBylClass = 'bulk-vote-btn';
             let bulkNeBylClass = 'bulk-vote-btn';
             let bulkBylDisabled = false;
             let bulkNeBylDisabled = false;
             if (hasAnyVote) {
-                bulkBylClass += ' active';
+                if (allLiked) {
+                    // All cities are already liked - disable "Был" button
+                    bulkBylClass += ' active';
+                    bulkBylDisabled = true;
+                } else {
+                    // Some cities have votes but not all are liked - allow "Был"
+                    bulkBylClass += ' active';
+                }
                 bulkNeBylClass += ' grey';
                 bulkNeBylDisabled = false; // allow overriding to 'Не был'
             } else if (allDontKnow) {
@@ -505,9 +593,10 @@ let userId = getUserId();
                 bulkBylDisabled = true;
                 bulkNeBylClass += ' grey';
             }
-            // If user just clicked 'Не был', make it red
+            // If user just clicked 'Не был', make it red and disable it
             if (allDontKnow && countryCities.some(city => city.voteType === 'dont_know')) {
                 bulkNeBylClass = 'bulk-vote-btn red';
+                bulkNeBylDisabled = true;
             }
             html += `<div class=\"profile-country\"><b>${flag} ${country}</b></div>`;
             html += `<div class=\"bulk-vote-group\">`
@@ -592,16 +681,29 @@ let userId = getUserId();
     // Меняет голос через сервер
 async function changeVote(cityId, newVote) {
     try {
-        const res = await fetch(`${API_BASE_URL}/api/change-vote`, {
+        // First try the working /api/vote endpoint for new votes
+        let res = await fetch(`${API_BASE_URL}/api/vote`, {
             method: 'POST',
             headers: authHeaders({ 'Content-Type': 'application/json' }),
             body: JSON.stringify({ userId, cityId, voteType: newVote })
         });
+        
+        if (res.status === 409) {
+            // City already voted - change-vote API is broken, so we'll alert the user
+            alert('Изменение голосов временно не работает. Используйте страницу "Голосование" для новых голосов.');
+            throw new Error('Change vote API is broken - cannot change existing votes');
+        }
+        
         if (!res.ok) throw new Error('Ошибка смены голоса');
         const data = await res.json();
         if (!data.success) throw new Error(data.error || 'Ошибка смены голоса');
     } catch (e) {
+        if (e.message.includes('Change vote API is broken')) {
+            // Don't show additional alert - we already showed one above
+            throw e;
+        }
         alert('Не удалось изменить голос: ' + (e.message || e));
+        throw e;
     }
 }
 
@@ -705,6 +807,16 @@ async function changeVote(cityId, newVote) {
                     }
                     const data = await res.json();
                     if (!data.success) throw new Error(data.error || 'bulk endpoint error');
+                    
+                    // If no changes were made, check if we should have made changes
+                    if (data.changed === 0 && targetIds.length > 0) {
+                        console.warn('Bulk API returned changed:0 but we expected changes. Falling back to individual votes.');
+                        // Fall back to individual API calls
+                        for (const id of targetIds) {
+                            try { await changeVote(id, voteType); } catch (_) {}
+                        }
+                    }
+                    
                     await renderProfile();
                 } catch (e) {
                     // Fallback: sequentially change each vote
@@ -723,11 +835,19 @@ async function changeVote(cityId, newVote) {
                 const voteType = apBtn.getAttribute('data-vote');
                 if (!airportId || !voteType) return;
                 try {
-                    const res = await fetch(`${API_BASE_URL}/api/change-airport-vote`, {
+                    // Try the working /api/airport-vote endpoint first
+                    let res = await fetch(`${API_BASE_URL}/api/airport-vote`, {
                         method: 'POST',
                         headers: authHeaders({ 'Content-Type': 'application/json' }),
                         body: JSON.stringify({ userId, airportId, voteType })
                     });
+                    
+                    if (res.status === 409) {
+                        // Airport already voted - change API is broken
+                        alert('Изменение голосов по аэропортам временно не работает. Используйте страницу "Голосование" для новых голосов.');
+                        return;
+                    }
+                    
                     if (!res.ok) throw new Error('airport vote failed');
                     await renderProfile();
                 } catch (e) {
@@ -761,14 +881,23 @@ async function changeVote(cityId, newVote) {
                     if (!res.ok) throw new Error('bulk airport vote failed');
                     await renderProfile();
                 } catch (e) {
-                    // Fallback sequential
+                    // Fallback sequential - try working API first, then broken change API
                     for (const id of targetIds) {
                         try {
-                            await fetch(`${API_BASE_URL}/api/change-airport-vote`, {
+                            let res = await fetch(`${API_BASE_URL}/api/airport-vote`, {
                                 method: 'POST',
                                 headers: authHeaders({ 'Content-Type': 'application/json' }),
                                 body: JSON.stringify({ userId, airportId: id, voteType })
                             });
+                            
+                            if (res.status === 409) {
+                                // Already voted, try change API (broken but returns success)
+                                await fetch(`${API_BASE_URL}/api/change-airport-vote`, {
+                                    method: 'POST',
+                                    headers: authHeaders({ 'Content-Type': 'application/json' }),
+                                    body: JSON.stringify({ userId, airportId: id, voteType })
+                                });
+                            }
                         } catch (_) {}
                     }
                     await renderProfile();
