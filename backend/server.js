@@ -61,8 +61,8 @@ function getJwtUserFromRequest(req) {
         const decoded = jwt.verify(token, JWT_SECRET);
         return decoded; // contains telegramId, hasUserId, iat, exp, sub
     } catch (err) {
-        // invalid token
-        return { __invalid: true, error: err?.message || 'Invalid token' };
+        // Invalid or expired token: treat as absent so the app still works in web mode
+        return null;
     }
 }
 
@@ -77,7 +77,9 @@ const defaultCorsOrigins = [
     'http://127.0.0.1:8000',
     /^https:\/\/.*\.vercel\.app$/,
     'https://ratethis.town',
-    'https://www.ratethis.town'
+    'https://www.ratethis.town',
+    // Render deployments
+    'https://telegram-city-rater-ra6r.onrender.com'
 ];
 const extraCorsOrigins = (process.env.CORS_ALLOWED_ORIGINS || '')
     .split(',')
@@ -350,9 +352,6 @@ app.post('/api/vote', voteLimiter, async (req, res) => {
 
     // If a JWT is provided, enforce userId consistency
     const jwtUser = getJwtUserFromRequest(req);
-    if (jwtUser && jwtUser.__invalid) {
-        return res.status(401).json({ error: 'Invalid authorization token' });
-    }
     if (jwtUser && jwtUser.hasUserId && jwtUser.sub && jwtUser.sub !== userId) {
         return res.status(403).json({ error: 'Token subject does not match userId' });
     }
@@ -435,9 +434,6 @@ app.post('/api/change-vote', voteLimiter, async (req, res) => {
 
     // If a JWT is provided, enforce userId consistency
     const jwtUser = getJwtUserFromRequest(req);
-    if (jwtUser && jwtUser.__invalid) {
-        return res.status(401).json({ error: 'Invalid authorization token' });
-    }
     if (jwtUser && jwtUser.hasUserId && jwtUser.sub && jwtUser.sub !== userId) {
         return res.status(403).json({ error: 'Token subject does not match userId' });
     }
