@@ -641,6 +641,9 @@ async function getAggregatedVotes() {
 
 app.get('/api/rankings', async (req, res) => {
     try {
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
         const now = Date.now();
         if (rankingsCache.data && now - rankingsCache.ts < CACHE_TTL_MS) {
             return res.json(rankingsCache.data);
@@ -682,6 +685,9 @@ app.get('/api/rankings', async (req, res) => {
 
 app.get('/api/hidden-jam-ratings', async (req, res) => {
     try {
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
         const now = Date.now();
         if (hiddenJamCache.data && now - hiddenJamCache.ts < CACHE_TTL_MS) {
             return res.json(hiddenJamCache.data);
@@ -727,6 +733,9 @@ app.get('/api/user-votes/:userId', async (req, res) => {
         return res.status(400).json({ error: 'User ID is required' });
     }
     try {
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
         const votesResult = await db.execute({
             sql: 'SELECT city_id, vote_type FROM user_votes WHERE user_id = ?',
             args: [userId]
