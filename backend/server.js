@@ -121,6 +121,8 @@ const authLimiter = rateLimit({
 });
 
 app.disable('x-powered-by');
+// Disable ETag so conditional requests do not return 304 for dynamic data
+app.set('etag', false);
 app.use(cors(corsOptions));
 app.use(helmet());
 app.use(compression());
@@ -1000,6 +1002,9 @@ app.post("/api/validate-user", async (req, res) => {
 
 // Add this endpoint after cityData is loaded
 app.get('/api/all-cities', (req, res) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
     res.json({ cities: cityData });
 });
 

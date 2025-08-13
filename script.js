@@ -367,9 +367,9 @@ let userId = getUserId();
         profileError = null;
         try {
             const [citiesRes, votesRes, ratingsRes] = await Promise.all([
-                fetch(`${API_BASE_URL}/api/all-cities`, { headers: { ...authHeaders(), 'Cache-Control': 'no-cache' } }).then(r => r.json()),
-                fetch(`${API_BASE_URL}/api/user-votes/${userId}`, { headers: { ...authHeaders(), 'Cache-Control': 'no-cache' } }).then(r => r.json()),
-                fetch(`${API_BASE_URL}/api/rankings`, { headers: { ...authHeaders(), 'Cache-Control': 'no-cache' } }).then(r => r.json()),
+                fetch(`${API_BASE_URL}/api/all-cities`, { headers: authHeaders(), cache: 'no-store' }).then(r => r.json()),
+                fetch(`${API_BASE_URL}/api/user-votes/${userId}`, { headers: authHeaders(), cache: 'no-store' }).then(r => r.json()),
+                fetch(`${API_BASE_URL}/api/rankings`, { headers: authHeaders(), cache: 'no-store' }).then(r => r.json()),
             ]);
             const allCities = citiesRes.cities || [];
             const userVotes = (votesRes.userVotes || []);
