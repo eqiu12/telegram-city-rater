@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      # Telegram bot token and JWT secret should be supplied via env or .env
+      - BOT_TOKEN=${BOT_TOKEN}
+      - JWT_SECRET=${JWT_SECRET}
+      # For Turso/libsql, pass your remote URL and token; otherwise backend can use sqlite fallback if coded
+      - TURSO_DATABASE_URL=${TURSO_DATABASE_URL}
+      - TURSO_AUTH_TOKEN=${TURSO_AUTH_TOKEN}
+      - RANKINGS_CACHE_TTL_MS=${RANKINGS_CACHE_TTL_MS:-20000}
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+    # No local DB; service uses remote Turso via env vars
+
+
