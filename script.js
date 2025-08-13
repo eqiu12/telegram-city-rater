@@ -646,13 +646,18 @@ async function changeVote(cityId, newVote) {
                     });
                     if (!res.ok) {
                         const txt = await res.text();
-                        throw new Error('Ошибка пакетного голосования: ' + txt);
+                        throw new Error(txt || 'bulk endpoint failed');
                     }
                     const data = await res.json();
-                    if (!data.success) throw new Error(data.error || 'Ошибка пакетного голосования');
+                    if (!data.success) throw new Error(data.error || 'bulk endpoint error');
                     await renderProfile();
                 } catch (e) {
-                    alert('Не удалось применить пакетное голосование: ' + (e.message || e));
+                    // Fallback: sequentially change each vote
+                    console.warn('bulk endpoint failed, falling back to sequential', e?.message || e);
+                    for (const id of targetIds) {
+                        try { await changeVote(id, voteType); } catch (_) {}
+                    }
+                    await renderProfile();
                 }
             }
         });
