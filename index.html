@@ -10,26 +10,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Страница входа -->
-    <div id="login-page">
-        <div class="login-container">
-            <h1>City Rater</h1>
-            <p>Введите UID или создайте новый</p>
-            <div class="login-form">
-                <input type="text" id="uid-input" placeholder="Введите UID или оставьте пустым" />
-                <div class="login-buttons">
-                    <button id="generate-uid-btn" class="btn">Сгенерировать новый UID</button>
-                    <button id="login-btn" class="btn">Войти</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="container" id="main-app" style="display:none;">
         <!-- Голосование -->
         <div id="voting-page">
-            <div id="score-display">
-                 <span id="voted-count">0</span> / <span id="total-count">0</span>
+            <div class="voting-header">
+                <div id="score-display">
+                     <span id="voted-count">0</span> / <span id="total-count">0</span>
+                </div>
+                <button id="profile-icon-btn" class="profile-icon-btn" title="Профиль">👤</button>
             </div>
             <div class="switcher">
                 <button id="mode-cities" class="switch-btn active">Города</button>
@@ -49,19 +38,18 @@
             <div class="action-buttons">
                 <button id="show-ratings-btn" class="action-btn">Рейтинг</button>
                 <button id="show-hidden-gems-btn" class="action-btn">Хидден-джемовость</button>
+                <button id="show-airport-ratings-btn" class="action-btn">Рейтинг аэропортов</button>
             </div>
         </div>
         <!-- Профиль -->
         <div id="profile-page" style="display:none;">
-            <h2>Личный кабинет</h2>
-            <div><b>Ваш UID:</b> <span id="user-uid"></span> <button id="copy-uid-btn" title="Скопировать UID">📋</button> <button id="logout-btn" title="Выйти">🚪</button></div>
+            <div class="profile-header">
+                <button id="back-btn" class="back-btn" title="Назад">←</button>
+                <h2>Личный кабинет</h2>
+            </div>
+            <div><b>Ваш UID:</b> <span id="user-uid"></span> <button id="copy-uid-btn" title="Скопировать UID">📋</button></div>
             <div id="user-votes-list"></div>
             <button id="scroll-to-top-btn" class="scroll-to-top-btn" style="display:none;">⬆️ Наверх</button>
-        </div>
-        <!-- Таб-бар -->
-        <div class="tab-bar">
-            <button id="tab-voting" class="tab-btn active">Голосование</button>
-            <button id="tab-profile" class="tab-btn">Профиль</button>
         </div>
     </div>
 

@@ -270,6 +270,7 @@ let hiddenJamCache = { data: null, ts: 0 };
 function clearRankingCaches() {
     rankingsCache = { data: null, ts: 0 };
     hiddenJamCache = { data: null, ts: 0 };
+    airportRankingsCache = { data: null, ts: 0 };
 }
 
 // Fisher-Yates shuffle algorithm
@@ -740,6 +741,67 @@ app.get('/api/hidden-jam-ratings', async (req, res) => {
         res.json(filteredRatings);
     } catch (error) {
         log('error', 'fetch_hidden_jam_failed', { error: error?.message || String(error) });
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Airport aggregated votes helper function
+async function getAggregatedAirportVotes() {
+    const votesResult = await db.execute("SELECT * FROM airport_votes");
+    const votes = {};
+    for (const row of votesResult.rows) {
+        votes[row.airport_id] = {
+            likes: row.likes,
+            dislikes: row.dislikes,
+            dont_know: row.dont_know,
+        };
+    }
+    return votes;
+}
+
+// Airport rankings cache
+let airportRankingsCache = { data: null, ts: 0 };
+
+app.get('/api/airport-rankings', async (req, res) => {
+    try {
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
+        const now = Date.now();
+        if (airportRankingsCache.data && now - airportRankingsCache.ts < CACHE_TTL_MS) {
+            return res.json(airportRankingsCache.data);
+        }
+        const votes = await getAggregatedAirportVotes();
+        const rankings = airportsData.map(airport => {
+            const airportVotes = votes[airport.airportId] || { likes: 0, dislikes: 0, dont_know: 0 };
+            const { likes, dislikes, dont_know } = airportVotes;
+            
+            const totalVotes = likes + dislikes;
+            const rating = totalVotes > 0 ? (likes / totalVotes) : 0;
+            
+            const totalResponses = likes + dislikes + dont_know;
+            const popularity = totalResponses > 0 ? ((likes + dislikes) / totalResponses) : 0;
+            
+            return {
+                ...airport,
+                ...airportVotes,
+                rating,
+                popularity,
+                totalVotes,
+                totalResponses
+            };
+        });
+        
+        rankings.sort((a, b) => {
+            if (a.rating !== b.rating) return b.rating - a.rating;
+            if (a.popularity !== b.popularity) return b.popularity - a.popularity;
+            return b.totalVotes - a.totalVotes;
+        });
+        
+        airportRankingsCache = { data: rankings, ts: Date.now() };
+        res.json(rankings);
+    } catch (error) {
+        log('error', 'fetch_airport_rankings_failed', { error: error?.message || String(error) });
         res.status(500).json({ error: 'Internal server error' });
     }
 });
