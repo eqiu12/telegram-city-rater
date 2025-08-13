@@ -57,17 +57,32 @@ function getJwtUserFromRequest(req) {
     }
 }
 
+// Ensure read-your-writes on Turso/libsql replicas when available
+async function trySync() {
+    try {
+        if (typeof db.sync === 'function') {
+            await db.sync();
+        }
+    } catch (_) {}
+}
+
+// CORS allowlist (merge defaults with comma-separated env CORS_ALLOWED_ORIGINS)
+const defaultCorsOrigins = [
+    'https://eqiu12.github.io',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    /^https:\/\/.*\.vercel\.app$/,
+    'https://ratethis.town',
+    'https://www.ratethis.town'
+];
+const extraCorsOrigins = (process.env.CORS_ALLOWED_ORIGINS || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
 const corsOptions = {
-    origin: [
-        'https://eqiu12.github.io',
-        'http://localhost:3000',
-        'http://127.0.0.1:3000',
-        'http://localhost:8000',
-        'http://127.0.0.1:8000',
-        /^https:\/\/.*\.vercel\.app$/,
-        'https://ratethis.town',
-        'https://www.ratethis.town'
-    ],
+    origin: [...defaultCorsOrigins, ...extraCorsOrigins],
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: false,
@@ -235,6 +250,7 @@ app.get('/api/cities', async (req, res) => {
     }
 
     try {
+        await trySync();
         const votedCitiesResult = await db.execute({
             sql: "SELECT city_id FROM user_votes WHERE user_id = ?",
             args: [userId]
@@ -327,6 +343,7 @@ app.post('/api/vote', voteLimiter, async (req, res) => {
                 args: [cityId]
             });
         });
+        await trySync();
         clearRankingCaches();
         log('info', 'vote_recorded', { userId, cityId, voteType });
         res.json({ success: true });
@@ -436,6 +453,7 @@ app.post('/api/change-vote', voteLimiter, async (req, res) => {
                 });
             }
         });
+        await trySync();
         clearRankingCaches();
         if (created) {
             return res.json({ success: true, message: 'Vote created' });
@@ -574,6 +592,7 @@ app.get('/api/user-votes/:userId', async (req, res) => {
         return res.status(400).json({ error: 'User ID is required' });
     }
     try {
+        await trySync();
         const votesResult = await db.execute({
             sql: 'SELECT city_id, vote_type FROM user_votes WHERE user_id = ?',
             args: [userId]
