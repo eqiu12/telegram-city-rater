@@ -532,51 +532,7 @@ let userId = getUserId();
                 renderProfile();
             };
         }
-        // Edit handlers
-        document.querySelectorAll('.city-emoji-btn').forEach(btn => {
-            btn.addEventListener('click', async function() {
-                const cityId = this.getAttribute('data-cityid');
-                const voteType = this.getAttribute('data-vote');
-                try {
-                    await changeVote(cityId, voteType);
-                    await renderProfile();
-                } catch (e) {
-                    alert('Не удалось изменить голос: ' + (e.message || e));
-                }
-            });
-        });
-        // Bulk voting handlers (switch to batch endpoint)
-        document.querySelectorAll('.bulk-vote-btn').forEach(btn => {
-            btn.addEventListener('click', async function() {
-                const country = this.getAttribute('data-country');
-                const voteType = this.getAttribute('data-vote');
-                const countryCities = grouped[country];
-                const targetIds = [];
-                if (voteType === 'liked') {
-                    // Only allow if at least one city is liked/disliked
-                    if (!countryCities.some(city => city.voteType === 'liked' || city.voteType === 'disliked')) return;
-                    countryCities.forEach(c => { if (c.voteType !== 'liked') targetIds.push(c.cityId); });
-                } else if (voteType === 'dont_know') {
-                    countryCities.forEach(c => { if (c.voteType !== 'dont_know') targetIds.push(c.cityId); });
-                } else if (voteType === 'disliked') {
-                    countryCities.forEach(c => { if (c.voteType !== 'disliked') targetIds.push(c.cityId); });
-                }
-                if (targetIds.length === 0) { return; }
-                try {
-                    const res = await fetch(`${API_BASE_URL}/api/bulk-change-vote`, {
-                        method: 'POST',
-                        headers: authHeaders({ 'Content-Type': 'application/json' }),
-                        body: JSON.stringify({ userId, voteType, cityIds: targetIds })
-                    });
-                    if (!res.ok) throw new Error('Ошибка пакетного голосования');
-                    const data = await res.json();
-                    if (!data.success) throw new Error(data.error || 'Ошибка пакетного голосования');
-                    await renderProfile();
-                } catch (e) {
-                    alert('Не удалось применить пакетное голосование: ' + (e.message || e));
-                }
-            });
-        });
+        // Handlers moved to a single delegated listener below for robustness
     }
 
     // Меняет голос через сервер
@@ -640,4 +596,52 @@ async function changeVote(cityId, newVote) {
     }
     tabVoting.addEventListener('click', showVotingPage);
     tabProfile.addEventListener('click', showProfilePage);
+
+    // Delegated click handlers for Profile actions (stable across re-renders)
+    if (userVotesList) {
+        userVotesList.addEventListener('click', async (ev) => {
+            const emojiBtn = ev.target.closest('.city-emoji-btn');
+            if (emojiBtn) {
+                const cityId = emojiBtn.getAttribute('data-cityid');
+                const voteType = emojiBtn.getAttribute('data-vote');
+                try {
+                    await changeVote(cityId, voteType);
+                    await renderProfile();
+                } catch (e) {
+                    alert('Не удалось изменить голос: ' + (e.message || e));
+                }
+                return;
+            }
+            const bulkBtn = ev.target.closest('.bulk-vote-btn');
+            if (bulkBtn) {
+                const country = bulkBtn.getAttribute('data-country');
+                const voteType = bulkBtn.getAttribute('data-vote');
+                // Work off the latest profileCities
+                const countryCities = profileCities.filter(c => c.country === country);
+                const targetIds = [];
+                if (voteType === 'liked') {
+                    if (!countryCities.some(c => c.voteType === 'liked' || c.voteType === 'disliked')) return;
+                    countryCities.forEach(c => { if (c.voteType !== 'liked') targetIds.push(c.cityId); });
+                } else if (voteType === 'dont_know') {
+                    countryCities.forEach(c => { if (c.voteType !== 'dont_know') targetIds.push(c.cityId); });
+                } else if (voteType === 'disliked') {
+                    countryCities.forEach(c => { if (c.voteType !== 'disliked') targetIds.push(c.cityId); });
+                }
+                if (targetIds.length === 0) return;
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/bulk-change-vote`, {
+                        method: 'POST',
+                        headers: authHeaders({ 'Content-Type': 'application/json' }),
+                        body: JSON.stringify({ userId, voteType, cityIds: targetIds })
+                    });
+                    if (!res.ok) throw new Error('Ошибка пакетного голосования');
+                    const data = await res.json();
+                    if (!data.success) throw new Error(data.error || 'Ошибка пакетного голосования');
+                    await renderProfile();
+                } catch (e) {
+                    alert('Не удалось применить пакетное голосование: ' + (e.message || e));
+                }
+            }
+        });
+    }
 });
