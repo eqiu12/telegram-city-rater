@@ -654,7 +654,6 @@ app.get('/api/user-votes/:userId', async (req, res) => {
         return res.status(400).json({ error: 'User ID is required' });
     }
     try {
-        await trySync();
         const votesResult = await db.execute({
             sql: 'SELECT city_id, vote_type FROM user_votes WHERE user_id = ?',
             args: [userId]
@@ -682,7 +681,6 @@ app.get('/api/debug/user-votes-raw/:userId', async (req, res) => {
     const { userId } = req.params;
     if (!userId) return res.status(400).json({ error: 'User ID is required' });
     try {
-        await trySync();
         const countRes = await db.execute({
             sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?',
             args: [userId]
