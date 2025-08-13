@@ -356,12 +356,21 @@ app.post('/api/vote', voteLimiter, async (req, res) => {
                       ON CONFLICT(city_id) DO UPDATE SET ${columnToIncrement} = ${columnToIncrement} + 1`,
                 args: [cityId]
             });
+
+            if (DEBUG_VOTE_LOGS) {
+                const txCount = await tx.execute({ sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?', args: [userId] });
+                log('info', 'debug_vote_tx_count', { userId, count: txCount.rows?.[0]?.c ?? null, requestId: req.requestId });
+            }
         });
         if (DEBUG_VOTE_LOGS) {
             const post = await db.execute({ sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?', args: [userId] });
             log('info', 'debug_vote_post_count', { userId, count: post.rows?.[0]?.c ?? null, requestId: req.requestId });
         }
         await trySync();
+        if (DEBUG_VOTE_LOGS) {
+            const postSync = await db.execute({ sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?', args: [userId] });
+            log('info', 'debug_vote_postsync_count', { userId, count: postSync.rows?.[0]?.c ?? null, requestId: req.requestId });
+        }
         clearRankingCaches();
         log('info', 'vote_recorded', { userId, cityId, voteType });
         res.json({ success: true });
