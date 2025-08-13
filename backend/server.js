@@ -251,9 +251,11 @@ app.get('/api/cities', async (req, res) => {
 
     try {
         await trySync();
-        const votedCitiesResult = await db.execute({
-            sql: "SELECT city_id FROM user_votes WHERE user_id = ?",
-            args: [userId]
+        const votedCitiesResult = await db.transaction(async (tx) => {
+            return tx.execute({
+                sql: "SELECT city_id FROM user_votes WHERE user_id = ?",
+                args: [userId]
+            });
         });
 
         const votedCityIds = new Set(votedCitiesResult.rows.map(row => row.city_id));
@@ -593,9 +595,11 @@ app.get('/api/user-votes/:userId', async (req, res) => {
     }
     try {
         await trySync();
-        const votesResult = await db.execute({
-            sql: 'SELECT city_id, vote_type FROM user_votes WHERE user_id = ?',
-            args: [userId]
+        const votesResult = await db.transaction(async (tx) => {
+            return tx.execute({
+                sql: 'SELECT city_id, vote_type FROM user_votes WHERE user_id = ?',
+                args: [userId]
+            });
         });
         // enrich with city info
         const userVotes = votesResult.rows.map(row => {
