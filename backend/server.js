@@ -753,9 +753,10 @@ app.get('/api/profile/:userId', async (req, res) => {
         res.set('Pragma', 'no-cache');
         res.set('Expires', '0');
 
-        const [votesResult, aggVotes] = await Promise.all([
+        const [votesResult, aggVotes, airportVotesResult] = await Promise.all([
             db.execute({ sql: 'SELECT city_id, vote_type FROM user_votes WHERE user_id = ?', args: [userId] }),
-            getAggregatedVotes()
+            getAggregatedVotes(),
+            db.execute({ sql: 'SELECT airport_id, vote_type FROM user_airport_votes WHERE user_id = ?', args: [userId] })
         ]);
         const votesMap = {};
         for (const row of votesResult.rows) {
@@ -777,7 +778,20 @@ app.get('/api/profile/:userId', async (req, res) => {
                 dont_know: cityVotes.dont_know,
             };
         });
-        res.json({ profileCities });
+        const airportVotesMap = {};
+        for (const row of airportVotesResult.rows) {
+            airportVotesMap[row.airport_id] = row.vote_type;
+        }
+        const profileAirports = (Array.isArray(airportsData) ? airportsData : []).map(ap => ({
+            airportId: ap.airportId,
+            airport_name: ap.airport_name,
+            airport_code: ap.airport_code,
+            airport_city: ap.airport_city,
+            country: ap.country,
+            flag: ap.flag,
+            voteType: airportVotesMap[ap.airportId]
+        }));
+        res.json({ profileCities, profileAirports });
     } catch (error) {
         log('error', 'fetch_profile_failed', { error: error?.message || String(error), userId });
         res.status(500).json({ error: 'Internal server error' });
@@ -812,6 +826,118 @@ app.get('/api/user-votes/:userId', async (req, res) => {
     } catch (error) {
         log('error', 'fetch_user_votes_failed', { error: error?.message || String(error), userId });
         res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Airports profile support endpoints for web path
+app.get('/api/all-airports', (req, res) => {
+    try {
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
+        res.json({ airports: Array.isArray(airportsData) ? airportsData : [] });
+    } catch (e) {
+        log('error', 'fetch_all_airports_failed', { error: e?.message || String(e) });
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.get('/api/user-airport-votes/:userId', async (req, res) => {
+    const { userId } = req.params;
+    if (!userId) return res.status(400).json({ error: 'User ID is required' });
+    try {
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
+        const votesResult = await db.execute({
+            sql: 'SELECT airport_id, vote_type FROM user_airport_votes WHERE user_id = ?',
+            args: [userId]
+        });
+        const userVotes = votesResult.rows.map(r => ({ airportId: r.airport_id, voteType: r.vote_type }));
+        res.json({ userVotes });
+    } catch (e) {
+        log('error', 'fetch_user_airport_votes_failed', { error: e?.message || String(e), userId });
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Change airport vote (create or overwrite)
+app.post('/api/change-airport-vote', voteLimiter, async (req, res) => {
+    const { userId, airportId, voteType } = req.body || {};
+    if (!userId || !airportId || !voteType) return res.status(400).json({ error: 'Missing required fields' });
+    if (!VALID_VOTE_TYPES.has(voteType)) return res.status(400).json({ error: 'Invalid vote type' });
+    // Optional JWT subject check
+    const jwtUser = getJwtUserFromRequest(req);
+    if (jwtUser && jwtUser.hasUserId && jwtUser.sub && jwtUser.sub !== userId) {
+        return res.status(403).json({ error: 'Token subject does not match userId' });
+    }
+    try {
+        let created = false;
+        let same = false;
+        await db.transaction(async (tx) => {
+            const existing = await tx.execute({ sql: 'SELECT vote_type FROM user_airport_votes WHERE user_id = ? AND airport_id = ?', args: [userId, airportId] });
+            if (existing.rows.length === 0) {
+                await tx.execute({ sql: 'INSERT INTO user_airport_votes (user_id, airport_id, vote_type) VALUES (?, ?, ?)', args: [userId, airportId, voteType] });
+                const col = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
+                await tx.execute({ sql: `INSERT INTO airport_votes (airport_id, ${col}) VALUES (?, 1)
+                                           ON CONFLICT(airport_id) DO UPDATE SET ${col} = ${col} + 1`, args: [airportId] });
+                created = true;
+                return;
+            }
+            const oldVote = existing.rows[0].vote_type;
+            if (oldVote === voteType) { same = true; return; }
+            await tx.execute({ sql: 'UPDATE user_airport_votes SET vote_type = ? WHERE user_id = ? AND airport_id = ?', args: [voteType, userId, airportId] });
+            const voteMap = { liked: 'likes', disliked: 'dislikes', dont_know: 'dont_know' };
+            const oldCol = voteMap[oldVote];
+            const newCol = voteMap[voteType];
+            await tx.execute({ sql: `UPDATE airport_votes SET ${oldCol} = CASE WHEN ${oldCol} > 0 THEN ${oldCol} - 1 ELSE 0 END WHERE airport_id = ?`, args: [airportId] });
+            await tx.execute({ sql: `UPDATE airport_votes SET ${newCol} = ${newCol} + 1 WHERE airport_id = ?`, args: [airportId] });
+        });
+        if (created) return res.json({ success: true, message: 'Vote created' });
+        if (same) return res.json({ success: true, message: 'Vote is already set to this value' });
+        return res.json({ success: true });
+    } catch (e) {
+        log('error', 'change_airport_vote_failed', { error: e?.message || String(e), userId, airportId, voteType });
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Bulk airport vote change
+app.post('/api/bulk-change-airport-vote', voteLimiter, async (req, res) => {
+    const { userId, voteType, airportIds } = req.body || {};
+    if (!userId || !voteType || !Array.isArray(airportIds) || airportIds.length === 0) return res.status(400).json({ error: 'Missing required fields' });
+    if (!VALID_VOTE_TYPES.has(voteType)) return res.status(400).json({ error: 'Invalid vote type' });
+    const jwtUser = getJwtUserFromRequest(req);
+    if (jwtUser && jwtUser.hasUserId && jwtUser.sub && jwtUser.sub !== userId) {
+        return res.status(403).json({ error: 'Token subject does not match userId' });
+    }
+    try {
+        let changed = 0;
+        await db.transaction(async (tx) => {
+            for (const airportId of airportIds) {
+                const existing = await tx.execute({ sql: 'SELECT vote_type FROM user_airport_votes WHERE user_id = ? AND airport_id = ?', args: [userId, airportId] });
+                if (existing.rows.length === 0) {
+                    await tx.execute({ sql: 'INSERT INTO user_airport_votes (user_id, airport_id, vote_type) VALUES (?, ?, ?)', args: [userId, airportId, voteType] });
+                    const col = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
+                    await tx.execute({ sql: `INSERT INTO airport_votes (airport_id, ${col}) VALUES (?, 1)
+                                               ON CONFLICT(airport_id) DO UPDATE SET ${col} = ${col} + 1`, args: [airportId] });
+                    changed++; continue;
+                }
+                const oldVote = existing.rows[0].vote_type;
+                if (oldVote === voteType) continue;
+                await tx.execute({ sql: 'UPDATE user_airport_votes SET vote_type = ? WHERE user_id = ? AND airport_id = ?', args: [voteType, userId, airportId] });
+                const voteMap = { liked: 'likes', disliked: 'dislikes', dont_know: 'dont_know' };
+                const oldCol = voteMap[oldVote];
+                const newCol = voteMap[voteType];
+                await tx.execute({ sql: `UPDATE airport_votes SET ${oldCol} = CASE WHEN ${oldCol} > 0 THEN ${oldCol} - 1 ELSE 0 END WHERE airport_id = ?`, args: [airportId] });
+                await tx.execute({ sql: `UPDATE airport_votes SET ${newCol} = ${newCol} + 1 WHERE airport_id = ?`, args: [airportId] });
+                changed++;
+            }
+        });
+        return res.json({ success: true, changed });
+    } catch (e) {
+        log('error', 'bulk_change_airport_vote_failed', { error: e?.message || String(e), userId, count: Array.isArray(airportIds) ? airportIds.length : 0 });
+        return res.status(500).json({ error: 'Internal server error' });
     }
 });
 
