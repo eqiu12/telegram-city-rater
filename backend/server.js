@@ -341,21 +341,27 @@ app.post('/api/vote', voteLimiter, async (req, res) => {
         }
         await db.transaction(async (tx) => {
             try {
-                await tx.execute({
+                const insRes = await tx.execute({
                     sql: "INSERT INTO user_votes (user_id, city_id, vote_type) VALUES (?, ?, ?)",
                     args: [userId, cityId, voteType]
                 });
+                if (DEBUG_VOTE_LOGS) {
+                    log('info', 'debug_vote_insert_result', { requestId: req.requestId, rowsAffected: insRes?.rowsAffected ?? null });
+                }
             } catch (e) {
                 // Duplicate vote
                 throw Object.assign(new Error('duplicate_vote'), { code: 'DUPLICATE' });
             }
 
             const columnToIncrement = voteType === 'liked' ? 'likes' : voteType === 'disliked' ? 'dislikes' : 'dont_know';
-            await tx.execute({
+            const upRes = await tx.execute({
                 sql: `INSERT INTO city_votes (city_id, ${columnToIncrement}) VALUES (?, 1)
                       ON CONFLICT(city_id) DO UPDATE SET ${columnToIncrement} = ${columnToIncrement} + 1`,
                 args: [cityId]
             });
+            if (DEBUG_VOTE_LOGS) {
+                log('info', 'debug_city_upsert_result', { requestId: req.requestId, rowsAffected: upRes?.rowsAffected ?? null });
+            }
 
             if (DEBUG_VOTE_LOGS) {
                 const txCount = await tx.execute({ sql: 'SELECT COUNT(*) AS c FROM user_votes WHERE user_id = ?', args: [userId] });
