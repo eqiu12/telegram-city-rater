@@ -1096,9 +1096,24 @@ app.post('/api/register-telegram', authLimiter, async (req, res) => {
         });
         
         if (userRes.rows.length > 0) {
-            // User exists, return their existing userId
-            const existingUser = userRes.rows[0];
-            log('info', 'telegram_existing_user', { telegramId, userId: existingUser.user_id });
+            // User exists
+            let existingUser = userRes.rows[0];
+            if (!existingUser.user_id) {
+                // Backfill a proper UUID for legacy/null records
+                const newUserId = crypto.randomUUID();
+                await db.execute({
+                    sql: 'UPDATE users SET user_id = ? WHERE telegram_id = ?',
+                    args: [newUserId, telegramId]
+                });
+                const refreshed = await db.execute({
+                    sql: 'SELECT * FROM users WHERE telegram_id = ?',
+                    args: [telegramId]
+                });
+                existingUser = refreshed.rows[0];
+                log('info', 'telegram_existing_user_upgraded', { telegramId, userId: existingUser.user_id });
+            } else {
+                log('info', 'telegram_existing_user', { telegramId, userId: existingUser.user_id });
+            }
             return res.json({ 
                 success: true, 
                 user: existingUser,
@@ -1137,10 +1152,11 @@ app.post('/api/register-telegram', authLimiter, async (req, res) => {
             }
         }
 
-        // 3. Create a new user with both telegramId and the provided userId (or null if none)
+        // 3. Create a new user with both telegramId and the provided userId (or a new UUID if none)
+        const newUserId = (userId && String(userId).trim() !== '') ? userId : crypto.randomUUID();
         await db.execute({
             sql: 'INSERT INTO users (telegram_id, user_id) VALUES (?, ?)',
-            args: [telegramId, userId || null]
+            args: [telegramId, newUserId]
         });
         
         userRes = await db.execute({
@@ -1148,7 +1164,7 @@ app.post('/api/register-telegram', authLimiter, async (req, res) => {
             args: [telegramId]
         });
         
-        log('info', 'telegram_user_created', { telegramId, userId: userId || null });
+        log('info', 'telegram_user_created', { telegramId, userId: newUserId });
         return res.json({ 
             success: true, 
             user: userRes.rows[0],
